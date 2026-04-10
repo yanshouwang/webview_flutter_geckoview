@@ -19,7 +19,7 @@ import 'package:pigeon/pigeon.dart';
 )
 abstract class GeckoRuntime {
   @static
-  GeckoRuntime create();
+  late GeckoRuntime instance;
 }
 
 @ProxyApi(
@@ -30,10 +30,18 @@ abstract class GeckoRuntime {
 abstract class GeckoSession {
   GeckoSession();
 
-  GeckoSessionSettings getSettings();
+  @attached
+  late GeckoSessionSettings settings;
+
   void open(GeckoRuntime runtime);
   void setContentDelegate(GeckoSessionContentDelegate delegate);
+  void setProgressDelegate(GeckoSessionProgressDelegate delegate);
   void loadUri(String uri);
+  void goBack();
+  void goForward();
+  void reload();
+  @async
+  String? getUserAgent();
 }
 
 @ProxyApi(
@@ -52,6 +60,24 @@ abstract class GeckoSessionSettings {
 )
 abstract class GeckoSessionContentDelegate {
   GeckoSessionContentDelegate();
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.GeckoSession.ProgressDelegate',
+  ),
+)
+abstract class GeckoSessionProgressDelegate {
+  GeckoSessionProgressDelegate();
+
+  /// A View has started loading content from the network.
+  late void Function(GeckoSession session, String url)? onPageStart;
+
+  /// A View has finished loading content from the network.
+  late void Function(GeckoSession session, bool success)? onPageStop;
+
+  /// Page loading has progressed.
+  late void Function(GeckoSession session, int progress)? onProgressChange;
 }
 
 /// A View that displays web pages.
@@ -146,9 +172,6 @@ abstract class GeckoView extends View {
   /// Sets the chrome handler.
   // void setWebChromeClient(WebChromeClient? client);
 
-  /// Sets the background color for this view.
-  // void setBackgroundColor(int color);
-
   /// Destroys the internal state of this WebView.
   // void destroy();
 }
@@ -161,6 +184,9 @@ abstract class GeckoView extends View {
   kotlinOptions: KotlinProxyApiOptions(fullClassName: 'android.view.View'),
 )
 abstract class View {
+  /// Sets the background color for this view.
+  void setBackgroundColor(int color);
+
   /// Set the scrolled position of your view.
   // void scrollTo(int x, int y);
 

@@ -9,7 +9,7 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) : PigeonApiGeckoS
         return GeckoSession()
     }
 
-    override fun getSettings(pigeon_instance: GeckoSession): GeckoSessionSettings {
+    override fun settings(pigeon_instance: GeckoSession): GeckoSessionSettings {
         return pigeon_instance.settings
     }
 
@@ -21,7 +21,27 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) : PigeonApiGeckoS
         pigeon_instance.contentDelegate = delegate
     }
 
+    override fun setProgressDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.ProgressDelegate) {
+        pigeon_instance.progressDelegate = delegate
+    }
+
     override fun loadUri(pigeon_instance: GeckoSession, uri: String) {
         pigeon_instance.loadUri(uri)
+    }
+
+    override fun goBack(pigeon_instance: GeckoSession) {
+        pigeon_instance.goBack()
+    }
+
+    override fun goForward(pigeon_instance: GeckoSession) {
+        pigeon_instance.goForward()
+    }
+
+    override fun reload(pigeon_instance: GeckoSession) {
+        pigeon_instance.reload()
+    }
+
+    override fun getUserAgent(pigeon_instance: GeckoSession, callback: (Result<String?>) -> Unit) {
+        pigeon_instance.userAgent.accept { value -> callback(Result.success(value)) }
     }
 }

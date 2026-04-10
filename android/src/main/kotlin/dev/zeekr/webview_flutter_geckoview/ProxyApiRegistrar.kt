@@ -21,7 +21,15 @@ class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) 
         return GeckoSessionContentDelegateProxyApi(this)
     }
 
+    override fun getPigeonApiGeckoSessionProgressDelegate(): PigeonApiGeckoSessionProgressDelegate {
+        return GeckoSessionProgressDelegateProxyApi(this)
+    }
+
     override fun getPigeonApiGeckoView(): PigeonApiGeckoView {
         return GeckoViewProxyApi(this)
+    }
+
+    override fun getPigeonApiView(): PigeonApiView {
+        return ViewProxyApi(this)
     }
 }

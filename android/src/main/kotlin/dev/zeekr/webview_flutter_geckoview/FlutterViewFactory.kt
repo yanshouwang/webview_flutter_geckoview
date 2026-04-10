@@ -9,8 +9,8 @@ import io.flutter.plugin.platform.PlatformViewFactory
 class FlutterViewFactory(val instanceManager: MozillaGeckoviewLibraryPigeonInstanceManager) :
     PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        val identifier =
-            args as Long? ?: throw IllegalStateException("An identifier is required to retrieve a View instance.")
+        val identifier = if (args is Int) args.toLong()
+        else throw IllegalStateException("An identifier is required to retrieve a View instance.")
         return when (val instance = instanceManager.getInstance<Any>(identifier)) {
             is PlatformView -> instance
             is View -> object : PlatformView {
