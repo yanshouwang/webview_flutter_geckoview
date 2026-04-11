@@ -25,6 +25,10 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) : PigeonApiGeckoS
         pigeon_instance.progressDelegate = delegate
     }
 
+    override fun setNavigationDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.NavigationDelegate) {
+        pigeon_instance.navigationDelegate = delegate
+    }
+
     override fun loadUri(pigeon_instance: GeckoSession, uri: String) {
         pigeon_instance.loadUri(uri)
     }

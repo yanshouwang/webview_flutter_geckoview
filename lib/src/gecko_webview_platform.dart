@@ -1,5 +1,7 @@
-import 'package:webview_flutter_geckoview/src/gecko_webview_controller.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
+
+import 'gecko_webview_controller.dart';
+import 'gecko_webview_cookie_manager.dart';
 
 /// Implementation of [WebViewPlatform] using the GeckoView API.
 class GeckoWebViewPlatform extends WebViewPlatform {
@@ -35,7 +37,6 @@ class GeckoWebViewPlatform extends WebViewPlatform {
   PlatformWebViewCookieManager createPlatformCookieManager(
     PlatformWebViewCookieManagerCreationParams params,
   ) {
-    // TODO: implement createPlatformCookieManager
-    return super.createPlatformCookieManager(params);
+    return GeckoWebViewCookieManager(params);
   }
 }

@@ -5,6 +5,7 @@ import 'package:webview_flutter_platform_interface/webview_flutter_platform_inte
 
 import 'mozilla_geckoview.g.dart' as geckoview;
 import 'platform_views_service_proxy.dart';
+import 'weak_reference_utils.dart';
 
 /// Object specifying creation parameters for creating a [GeckoWebViewController].
 ///
@@ -36,6 +37,28 @@ class GeckoWebViewController extends PlatformWebViewController {
   /// The native [GeckoView] being controlled.
   final geckoview.GeckoView _geckoView;
 
+  late final geckoview.GeckoSessionNavigationDelegate _geckoNavigationDelegate =
+      geckoview.GeckoSessionNavigationDelegate(
+        onCanGoBack: withWeakReferenceTo(
+          this,
+          (weakReference) => (_, session, canGoBack) {
+            debugPrint('onCanGoBack: $canGoBack ');
+            weakReference.target?._canGoBack = canGoBack;
+          },
+        ),
+        onCanGoForward: withWeakReferenceTo(
+          this,
+          (weakReference) => (_, session, canGoForward) {
+            debugPrint('onCanGoForward: $canGoForward ');
+            weakReference.target?._canGoForward = canGoForward;
+          },
+        ),
+      );
+
+  var _canGoBack = false;
+  var _canGoForward = false;
+  GeckoNavigationDelegate? _currentNavigationDelegate;
+
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
     : _geckoRuntime = geckoview.GeckoRuntime.instance,
       _geckoSession = geckoview.GeckoSession(),
@@ -63,6 +86,8 @@ class GeckoWebViewController extends PlatformWebViewController {
     _geckoSession.open(_geckoRuntime);
     _geckoSession.settings.setAllowJavascript(true);
     _geckoView.setSession(_geckoSession);
+
+    _geckoSession.setNavigationDelegate(_geckoNavigationDelegate);
   }
 
   @override
@@ -125,16 +150,10 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   @override
-  Future<bool> canGoBack() {
-    // TODO: implement canGoBack
-    return super.canGoBack();
-  }
+  Future<bool> canGoBack() => Future.value(_canGoBack);
 
   @override
-  Future<bool> canGoForward() {
-    // TODO: implement canGoForward
-    return super.canGoForward();
-  }
+  Future<bool> canGoForward() => Future.value(_canGoForward);
 
   @override
   Future<void> goBack() => _geckoSession.goBack();
@@ -161,6 +180,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<void> setPlatformNavigationDelegate(
     covariant GeckoNavigationDelegate handler,
   ) async {
+    _currentNavigationDelegate = handler;
     await Future.wait([
       _geckoSession.setProgressDelegate(handler.geckoProgressDelegate),
     ]);
@@ -235,10 +255,8 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<String?> getUserAgent() => _geckoSession.getUserAgent();
 
   @override
-  Future<void> setUserAgent(String? userAgent) {
-    // TODO: implement setUserAgent
-    return super.setUserAgent(userAgent);
-  }
+  Future<void> setUserAgent(String? userAgent) =>
+      _geckoSession.settings.setUserAgentOverride(userAgent);
 
   @override
   Future<void> setOnScrollPositionChange(

@@ -36,6 +36,7 @@ abstract class GeckoSession {
   void open(GeckoRuntime runtime);
   void setContentDelegate(GeckoSessionContentDelegate delegate);
   void setProgressDelegate(GeckoSessionProgressDelegate delegate);
+  void setNavigationDelegate(GeckoSessionNavigationDelegate delegate);
   void loadUri(String uri);
   void goBack();
   void goForward();
@@ -50,7 +51,65 @@ abstract class GeckoSession {
   ),
 )
 abstract class GeckoSessionSettings {
+  /// Whether javascript execution is allowed.
+  bool getAllowJavascript();
+
+  /// Set the chrome window URI.
+  String? getChromeUri();
+
+  /// The context ID for this session.
+  String? getContextId();
+
+  /// The current display mode.
+  int getDisplayMode();
+
+  /// Whether entire accessible tree is exposed with no caching.
+  bool getFullAccessibilityTree();
+
+  /// Set the window screen ID.
+  int getScreenId();
+
+  /// Whether media will be suspended when the session is inactice.
+  bool getSuspendMediaWhenInactive();
+
+  /// Whether private mode is enabled.
+  bool getUsePrivateMode();
+
+  /// The current user agent Mode
+  int getUserAgentMode();
+
+  /// The user agent override string.
+  String? getUserAgentOverride();
+
+  /// Whether tracking protection is enabled.
+  bool getUserTrackingProtection();
+
+  /// The current viewport Mode
+  int getViewportMode();
+
+  /// Set whether JavaScript support should be enabled.
   void setAllowJavascript(bool value);
+
+  /// Set the display mode.
+  void setDisplayMode(int value);
+
+  /// Set whether the entire accessible tree should be exposed with no caching.
+  void setFullAccessibilityTree(bool value);
+
+  /// Set whether to suspend the playing of media when the session is inactive.
+  void setSuspendMediaWhenInactive(bool value);
+
+  /// Specify which user agent mode we should use
+  void setUserAgentMode(int value);
+
+  /// Specify the user agent override string.
+  void setUserAgentOverride(String? value);
+
+  /// Set whether tracking protection should be enabled.
+  void setUseTrackingProtection(bool value);
+
+  /// Specify which viewport mode we should use
+  void setViewportMode(int value);
 }
 
 @ProxyApi(
@@ -78,6 +137,70 @@ abstract class GeckoSessionProgressDelegate {
 
   /// Page loading has progressed.
   late void Function(GeckoSession session, int progress)? onProgressChange;
+
+  /// The security status has been updated.
+  // late void Function(
+  //   GeckoSession session,
+  //   GeckoSessionProgressDelegateSecurityInformation securityInfo,
+  // )?
+  // onSecurityChange;
+
+  /// The browser session state has changed.
+  // late void Function(
+  //   GeckoSession session,
+  //   GeckoSessionSessionState sessionState,
+  // )?
+  // onSessionStateChange;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.GeckoSession.NavigationDelegate',
+  ),
+)
+abstract class GeckoSessionNavigationDelegate {
+  GeckoSessionNavigationDelegate();
+
+  /// The view's ability to go back has changed.
+  late void Function(GeckoSession session, bool canGoBack)? onCanGoBack;
+
+  /// The view's ability to go forward has changed.
+  late void Function(GeckoSession session, bool canGoForward)? onCanGoForward;
+
+  ///
+  // late GeckoResult<String> Function(
+  //   GeckoSession session,
+  //   String uri,
+  //   WebRequestError error,
+  // )?
+  // onLoadError;
+
+  /// A request to open an URI.
+  // late GeckoResult<AllowOrDeny> Function(
+  //   GeckoSession session,
+  //   GeckoSessionNavigationDelegateLoadRequest request,
+  // )?
+  // onLoadRequest;
+
+  /// A view has started loading content from the network.
+  // late void Function(
+  //   GeckoSession session,
+  //   String url,
+  //   List<GeckoSessionPermissionDelegateContentPermission> perms,
+  //   bool hasUserGesture,
+  // )?
+  // onLocationChange;
+
+  /// A request has been made to open a new session.
+  // late GeckoResult<GeckoSession> Function(GeckoSession session, String uri)?
+  // onNewSession;
+
+  /// A request to load a URI in a non-top-level context.
+  // late GeckoResult<AllowOrDeny> Function(
+  //   GeckoSession session,
+  //   GeckoSessionNavigationDelegateLoadRequest request,
+  // )?
+  // onSubframeLoadRequest;
 }
 
 /// A View that displays web pages.

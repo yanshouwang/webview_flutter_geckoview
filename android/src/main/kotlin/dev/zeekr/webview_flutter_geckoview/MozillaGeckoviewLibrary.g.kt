@@ -427,6 +427,12 @@ abstract class MozillaGeckoviewLibraryPigeonProxyApiRegistrar(val binaryMessenge
   abstract fun getPigeonApiGeckoSessionProgressDelegate(): PigeonApiGeckoSessionProgressDelegate
 
   /**
+   * An implementation of [PigeonApiGeckoSessionNavigationDelegate] used to add a new Dart instance of
+   * `GeckoSessionNavigationDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionNavigationDelegate(): PigeonApiGeckoSessionNavigationDelegate
+
+  /**
    * An implementation of [PigeonApiGeckoView] used to add a new Dart instance of
    * `GeckoView` to the Dart `InstanceManager`.
    */
@@ -445,6 +451,7 @@ abstract class MozillaGeckoviewLibraryPigeonProxyApiRegistrar(val binaryMessenge
     PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionSettings())
     PigeonApiGeckoSessionContentDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionContentDelegate())
     PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionProgressDelegate())
+    PigeonApiGeckoSessionNavigationDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionNavigationDelegate())
     PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoView())
     PigeonApiView.setUpMessageHandlers(binaryMessenger, getPigeonApiView())
   }
@@ -455,6 +462,7 @@ abstract class MozillaGeckoviewLibraryPigeonProxyApiRegistrar(val binaryMessenge
     PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoSessionContentDelegate.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionNavigationDelegate.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiView.setUpMessageHandlers(binaryMessenger, null)
   }
@@ -522,6 +530,13 @@ private class MozillaGeckoviewLibraryPigeonProxyApiBaseCodec(val registrar: Mozi
       registrar.getPigeonApiGeckoSessionProgressDelegate().pigeon_newInstance(value) {
         if (it.isFailure) {
           logNewInstanceFailure("GeckoSessionProgressDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.NavigationDelegate) {
+      registrar.getPigeonApiGeckoSessionNavigationDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionNavigationDelegate", value, it.exceptionOrNull())
         }
       }
     }
@@ -630,6 +645,8 @@ abstract class PigeonApiGeckoSession(open val pigeonRegistrar: MozillaGeckoviewL
 
   abstract fun setProgressDelegate(pigeon_instance: org.mozilla.geckoview.GeckoSession, delegate: org.mozilla.geckoview.GeckoSession.ProgressDelegate)
 
+  abstract fun setNavigationDelegate(pigeon_instance: org.mozilla.geckoview.GeckoSession, delegate: org.mozilla.geckoview.GeckoSession.NavigationDelegate)
+
   abstract fun loadUri(pigeon_instance: org.mozilla.geckoview.GeckoSession, uri: String)
 
   abstract fun goBack(pigeon_instance: org.mozilla.geckoview.GeckoSession)
@@ -728,6 +745,25 @@ abstract class PigeonApiGeckoSession(open val pigeonRegistrar: MozillaGeckoviewL
             val delegateArg = args[1] as org.mozilla.geckoview.GeckoSession.ProgressDelegate
             val wrapped: List<Any?> = try {
               api.setProgressDelegate(pigeon_instanceArg, delegateArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSession.setNavigationDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession
+            val delegateArg = args[1] as org.mozilla.geckoview.GeckoSession.NavigationDelegate
+            val wrapped: List<Any?> = try {
+              api.setNavigationDelegate(pigeon_instanceArg, delegateArg)
               listOf(null)
             } catch (exception: Throwable) {
               MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
@@ -867,12 +903,274 @@ abstract class PigeonApiGeckoSession(open val pigeonRegistrar: MozillaGeckoviewL
 }
 @Suppress("UNCHECKED_CAST")
 abstract class PigeonApiGeckoSessionSettings(open val pigeonRegistrar: MozillaGeckoviewLibraryPigeonProxyApiRegistrar) {
+  /** Whether javascript execution is allowed. */
+  abstract fun getAllowJavascript(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Boolean
+
+  /** Set the chrome window URI. */
+  abstract fun getChromeUri(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): String?
+
+  /** The context ID for this session. */
+  abstract fun getContextId(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): String?
+
+  /** The current display mode. */
+  abstract fun getDisplayMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Long
+
+  /** Whether entire accessible tree is exposed with no caching. */
+  abstract fun getFullAccessibilityTree(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Boolean
+
+  /** Set the window screen ID. */
+  abstract fun getScreenId(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Long
+
+  /** Whether media will be suspended when the session is inactice. */
+  abstract fun getSuspendMediaWhenInactive(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Boolean
+
+  /** Whether private mode is enabled. */
+  abstract fun getUsePrivateMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Boolean
+
+  /** The current user agent Mode */
+  abstract fun getUserAgentMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Long
+
+  /** The user agent override string. */
+  abstract fun getUserAgentOverride(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): String?
+
+  /** Whether tracking protection is enabled. */
+  abstract fun getUserTrackingProtection(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Boolean
+
+  /** The current viewport Mode */
+  abstract fun getViewportMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings): Long
+
+  /** Set whether JavaScript support should be enabled. */
   abstract fun setAllowJavascript(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Boolean)
+
+  /** Set the display mode. */
+  abstract fun setDisplayMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Long)
+
+  /** Set whether the entire accessible tree should be exposed with no caching. */
+  abstract fun setFullAccessibilityTree(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Boolean)
+
+  /** Set whether to suspend the playing of media when the session is inactive. */
+  abstract fun setSuspendMediaWhenInactive(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Boolean)
+
+  /** Specify which user agent mode we should use */
+  abstract fun setUserAgentMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Long)
+
+  /** Specify the user agent override string. */
+  abstract fun setUserAgentOverride(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: String?)
+
+  /** Set whether tracking protection should be enabled. */
+  abstract fun setUseTrackingProtection(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Boolean)
+
+  /** Specify which viewport mode we should use */
+  abstract fun setViewportMode(pigeon_instance: org.mozilla.geckoview.GeckoSessionSettings, value: Long)
 
   companion object {
     @Suppress("LocalVariableName")
     fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoSessionSettings?) {
       val codec = api?.pigeonRegistrar?.codec ?: MozillaGeckoviewLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getAllowJavascript", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getAllowJavascript(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getChromeUri", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getChromeUri(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getContextId", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getContextId(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getDisplayMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getDisplayMode(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getFullAccessibilityTree", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getFullAccessibilityTree(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getScreenId", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getScreenId(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getSuspendMediaWhenInactive", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getSuspendMediaWhenInactive(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getUsePrivateMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getUsePrivateMode(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getUserAgentMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getUserAgentMode(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getUserAgentOverride", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getUserAgentOverride(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getUserTrackingProtection", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getUserTrackingProtection(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.getViewportMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val wrapped: List<Any?> = try {
+              listOf(api.getViewportMode(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
       run {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setAllowJavascript", codec)
         if (api != null) {
@@ -882,6 +1180,139 @@ abstract class PigeonApiGeckoSessionSettings(open val pigeonRegistrar: MozillaGe
             val valueArg = args[1] as Boolean
             val wrapped: List<Any?> = try {
               api.setAllowJavascript(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setDisplayMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.setDisplayMode(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setFullAccessibilityTree", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setFullAccessibilityTree(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setSuspendMediaWhenInactive", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setSuspendMediaWhenInactive(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setUserAgentMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.setUserAgentMode(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setUserAgentOverride", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as String?
+            val wrapped: List<Any?> = try {
+              api.setUserAgentOverride(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setUseTrackingProtection", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setUseTrackingProtection(pigeon_instanceArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionSettings.setViewportMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSessionSettings
+            val valueArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.setViewportMode(pigeon_instanceArg, valueArg)
               listOf(null)
             } catch (exception: Throwable) {
               MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
@@ -1126,6 +1557,128 @@ abstract class PigeonApiGeckoSessionProgressDelegate(open val pigeonRegistrar: M
     val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionProgressDelegate.onProgressChange"
     val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
     channel.send(listOf(pigeon_instanceArg, sessionArg, progressArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(MozillaGeckoviewError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(MozillaGeckoviewLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionNavigationDelegate(open val pigeonRegistrar: MozillaGeckoviewLibraryPigeonProxyApiRegistrar) {
+  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoSession.NavigationDelegate
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoSessionNavigationDelegate?) {
+      val codec = api?.pigeonRegistrar?.codec ?: MozillaGeckoviewLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.pigeon_defaultConstructor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionNavigationDelegate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              MozillaGeckoviewError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(MozillaGeckoviewError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(MozillaGeckoviewLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  /** The view's ability to go back has changed. */
+  fun onCanGoBack(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, canGoBackArg: Boolean, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              MozillaGeckoviewError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              MozillaGeckoviewError("missing-instance-error", "Callback to `GeckoSessionNavigationDelegate.onCanGoBack` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.onCanGoBack"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, canGoBackArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(MozillaGeckoviewError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(MozillaGeckoviewLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** The view's ability to go forward has changed. */
+  fun onCanGoForward(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, canGoForwardArg: Boolean, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              MozillaGeckoviewError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              MozillaGeckoviewError("missing-instance-error", "Callback to `GeckoSessionNavigationDelegate.onCanGoForward` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.onCanGoForward"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, canGoForwardArg)) {
       if (it is List<*>) {
         if (it.size > 1) {
           callback(Result.failure(MozillaGeckoviewError(it[0] as String, it[1] as String, it[2] as String?)))
