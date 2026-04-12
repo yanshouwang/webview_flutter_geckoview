@@ -84,20 +84,10 @@ abstract class WebExtensionPort {
   void disconnect();
 
   /// Post a message to the WebExtension connected to this WebExtension.Port instance.
-  void postMessage(JSONObject message);
+  void postMessage(String message);
 
   /// Set a delegate for incoming messages through this WebExtension.Port.
   void setDelegate(WebExtensionPortDelegate delegate);
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(fullClassName: 'org.json.JSONObject'),
-)
-abstract class JSONObject {
-  JSONObject();
-  JSONObject.fromJSONString(String json);
-
-  String toJSONString();
 }
 
 @ProxyApi(
@@ -109,7 +99,7 @@ abstract class WebExtensionPortDelegate {
   WebExtensionPortDelegate();
 
   late void Function(WebExtensionPort port)? onDisconnect;
-  late void Function(Object message, WebExtensionPort port)? onPortMessage;
+  late void Function(String message, WebExtensionPort port)? onPortMessage;
 }
 
 @ProxyApi(

@@ -427,12 +427,6 @@ abstract class MozillaGeckoviewLibraryPigeonProxyApiRegistrar(val binaryMessenge
   abstract fun getPigeonApiWebExtensionPort(): PigeonApiWebExtensionPort
 
   /**
-   * An implementation of [PigeonApiJSONObject] used to add a new Dart instance of
-   * `JSONObject` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiJSONObject(): PigeonApiJSONObject
-
-  /**
    * An implementation of [PigeonApiWebExtensionPortDelegate] used to add a new Dart instance of
    * `WebExtensionPortDelegate` to the Dart `InstanceManager`.
    */
@@ -487,7 +481,6 @@ abstract class MozillaGeckoviewLibraryPigeonProxyApiRegistrar(val binaryMessenge
     PigeonApiWebExtension.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtension())
     PigeonApiWebExtensionMessageDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionMessageDelegate())
     PigeonApiWebExtensionPort.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionPort())
-    PigeonApiJSONObject.setUpMessageHandlers(binaryMessenger, getPigeonApiJSONObject())
     PigeonApiWebExtensionPortDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionPortDelegate())
     PigeonApiGeckoSession.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSession())
     PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionSettings())
@@ -504,7 +497,6 @@ abstract class MozillaGeckoviewLibraryPigeonProxyApiRegistrar(val binaryMessenge
     PigeonApiWebExtension.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionMessageDelegate.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionPort.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiJSONObject.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionPortDelegate.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoSession.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, null)
@@ -578,13 +570,6 @@ private class MozillaGeckoviewLibraryPigeonProxyApiBaseCodec(val registrar: Mozi
       registrar.getPigeonApiWebExtensionPort().pigeon_newInstance(value) {
         if (it.isFailure) {
           logNewInstanceFailure("WebExtensionPort", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.json.JSONObject) {
-      registrar.getPigeonApiJSONObject().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("JSONObject", value, it.exceptionOrNull())
         }
       }
     }
@@ -993,7 +978,7 @@ abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: MozillaGeckov
   abstract fun disconnect(pigeon_instance: org.mozilla.geckoview.WebExtension.Port)
 
   /** Post a message to the WebExtension connected to this WebExtension.Port instance. */
-  abstract fun postMessage(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, message: org.json.JSONObject)
+  abstract fun postMessage(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, message: String)
 
   /** Set a delegate for incoming messages through this WebExtension.Port. */
   abstract fun setDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, delegate: org.mozilla.geckoview.WebExtension.PortDelegate)
@@ -1026,7 +1011,7 @@ abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: MozillaGeckov
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
-            val messageArg = args[1] as org.json.JSONObject
+            val messageArg = args[1] as String
             val wrapped: List<Any?> = try {
               api.postMessage(pigeon_instanceArg, messageArg)
               listOf(null)
@@ -1076,106 +1061,6 @@ abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: MozillaGeckov
       val binaryMessenger = pigeonRegistrar.binaryMessenger
       val codec = pigeonRegistrar.codec
       val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(MozillaGeckoviewError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(MozillaGeckoviewLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiJSONObject(open val pigeonRegistrar: MozillaGeckoviewLibraryPigeonProxyApiRegistrar) {
-  abstract fun pigeon_defaultConstructor(): org.json.JSONObject
-
-  abstract fun fromJSONString(json: String): org.json.JSONObject
-
-  abstract fun toJSONString(pigeon_instance: org.json.JSONObject): String
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiJSONObject?) {
-      val codec = api?.pigeonRegistrar?.codec ?: MozillaGeckoviewLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.pigeon_defaultConstructor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.fromJSONString", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val jsonArg = args[1] as String
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromJSONString(jsonArg), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.toJSONString", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.json.JSONObject
-            val wrapped: List<Any?> = try {
-              listOf(api.toJSONString(pigeon_instanceArg))
-            } catch (exception: Throwable) {
-              MozillaGeckoviewLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of JSONObject and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.json.JSONObject, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              MozillaGeckoviewError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.pigeon_newInstance"
       val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
       channel.send(listOf(pigeon_identifierArg)) {
         if (it is List<*>) {
@@ -1281,7 +1166,7 @@ abstract class PigeonApiWebExtensionPortDelegate(open val pigeonRegistrar: Mozil
     }
   }
 
-  fun onPortMessage(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, messageArg: Any, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
+  fun onPortMessage(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, messageArg: String, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
 {
     if (pigeonRegistrar.ignoreCallsToDart) {
       callback(

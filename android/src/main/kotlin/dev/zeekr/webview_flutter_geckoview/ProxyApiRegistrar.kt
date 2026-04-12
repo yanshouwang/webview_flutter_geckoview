@@ -25,10 +25,6 @@ class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) 
         return WebExtensionPortProxyApi(this)
     }
 
-    override fun getPigeonApiJSONObject(): PigeonApiJSONObject {
-        return JSONObjectProxyApi(this)
-    }
-
     override fun getPigeonApiWebExtensionPortDelegate(): PigeonApiWebExtensionPortDelegate {
         return WebExtensionPortDelegateProxyApi(this)
     }

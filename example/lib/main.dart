@@ -225,16 +225,16 @@ class _WebViewExampleState extends State<WebViewExample> {
         //             error.cancel();
         //           }),
       )
-      //       ..addJavaScriptChannel(
-      //         JavaScriptChannelParams(
-      //           name: 'Toaster',
-      //           onMessageReceived: (JavaScriptMessage message) {
-      //             ScaffoldMessenger.of(
-      //               context,
-      //             ).showSnackBar(SnackBar(content: Text(message.message)));
-      //           },
-      //         ),
-      //       )
+      ..addJavaScriptChannel(
+        JavaScriptChannelParams(
+          name: 'Toaster',
+          onMessageReceived: (JavaScriptMessage message) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message.message)));
+          },
+        ),
+      )
       //       ..setOnPlatformPermissionRequest((
       //         PlatformWebViewPermissionRequest request,
       //       ) {

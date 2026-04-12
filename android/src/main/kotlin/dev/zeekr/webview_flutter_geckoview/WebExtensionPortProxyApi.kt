@@ -9,8 +9,8 @@ class WebExtensionPortProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         pigeon_instance.disconnect()
     }
 
-    override fun postMessage(pigeon_instance: WebExtension.Port, message: JSONObject) {
-        pigeon_instance.postMessage(message)
+    override fun postMessage(pigeon_instance: WebExtension.Port, message: String) {
+        pigeon_instance.postMessage(JSONObject(message))
     }
 
     override fun setDelegate(pigeon_instance: WebExtension.Port, delegate: WebExtension.PortDelegate) {

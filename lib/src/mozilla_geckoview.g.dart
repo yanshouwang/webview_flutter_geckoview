@@ -62,12 +62,6 @@ class PigeonOverrides {
         WebExtensionPort port,
       )? onConnect})? webExtensionMessageDelegate_new;
 
-  /// Overrides [JSONObject.new].
-  static JSONObject Function()? jSONObject_new;
-
-  /// Overrides [JSONObject.fromJSONString].
-  static JSONObject Function({required String json})? jSONObject_fromJSONString;
-
   /// Overrides [WebExtensionPortDelegate.new].
   static WebExtensionPortDelegate Function({
     void Function(
@@ -76,7 +70,7 @@ class PigeonOverrides {
     )? onDisconnect,
     void Function(
       WebExtensionPortDelegate pigeon_instance,
-      Object message,
+      String message,
       WebExtensionPort port,
     )? onPortMessage,
   })? webExtensionPortDelegate_new;
@@ -131,8 +125,6 @@ class PigeonOverrides {
   static void pigeon_reset() {
     geckoRuntime_instance = null;
     webExtensionMessageDelegate_new = null;
-    jSONObject_new = null;
-    jSONObject_fromJSONString = null;
     webExtensionPortDelegate_new = null;
     geckoSession_new = null;
     geckoSessionContentDelegate_new = null;
@@ -253,7 +245,6 @@ class PigeonInstanceManager {
     WebExtension.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionMessageDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionPort.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
-    JSONObject.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionPortDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSession.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSessionSettings.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
@@ -1124,7 +1115,7 @@ class WebExtensionPort extends PigeonInternalProxyApiBaseClass {
   }
 
   /// Post a message to the WebExtension connected to this WebExtension.Port instance.
-  Future<void> postMessage(JSONObject message) async {
+  Future<void> postMessage(String message) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecWebExtensionPort;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -1178,184 +1169,6 @@ class WebExtensionPort extends PigeonInternalProxyApiBaseClass {
   }
 }
 
-class JSONObject extends PigeonInternalProxyApiBaseClass {
-  factory JSONObject({
-    BinaryMessenger? pigeon_binaryMessenger,
-    PigeonInstanceManager? pigeon_instanceManager,
-  }) {
-    if (PigeonOverrides.jSONObject_new != null) {
-      return PigeonOverrides.jSONObject_new!();
-    }
-    return JSONObject.pigeon_new(
-      pigeon_binaryMessenger: pigeon_binaryMessenger,
-      pigeon_instanceManager: pigeon_instanceManager,
-    );
-  }
-
-  @protected
-  JSONObject.pigeon_new({
-    super.pigeon_binaryMessenger,
-    super.pigeon_instanceManager,
-  }) {
-    final int pigeonVar_instanceIdentifier =
-        pigeon_instanceManager.addDartCreatedInstance(this);
-    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
-        _pigeonVar_codecJSONObject;
-    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
-    const pigeonVar_channelName =
-        'dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.pigeon_defaultConstructor';
-    final pigeonVar_channel = BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[pigeonVar_instanceIdentifier]);
-    () async {
-      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
-
-      _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-      );
-    }();
-  }
-
-  factory JSONObject.fromJSONString({
-    BinaryMessenger? pigeon_binaryMessenger,
-    PigeonInstanceManager? pigeon_instanceManager,
-    required String json,
-  }) {
-    if (PigeonOverrides.jSONObject_fromJSONString != null) {
-      return PigeonOverrides.jSONObject_fromJSONString!(json: json);
-    }
-    return JSONObject.pigeon_fromJSONString(
-      pigeon_binaryMessenger: pigeon_binaryMessenger,
-      pigeon_instanceManager: pigeon_instanceManager,
-      json: json,
-    );
-  }
-
-  @protected
-  JSONObject.pigeon_fromJSONString({
-    super.pigeon_binaryMessenger,
-    super.pigeon_instanceManager,
-    required String json,
-  }) {
-    final int pigeonVar_instanceIdentifier =
-        pigeon_instanceManager.addDartCreatedInstance(this);
-    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
-        _pigeonVar_codecJSONObject;
-    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
-    const pigeonVar_channelName =
-        'dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.fromJSONString';
-    final pigeonVar_channel = BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[pigeonVar_instanceIdentifier, json]);
-    () async {
-      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
-
-      _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-      );
-    }();
-  }
-
-  /// Constructs [JSONObject] without creating the associated native object.
-  ///
-  /// This should only be used by subclasses created by this library or to
-  /// create copies for an [PigeonInstanceManager].
-  @protected
-  JSONObject.pigeon_detached({
-    super.pigeon_binaryMessenger,
-    super.pigeon_instanceManager,
-  });
-
-  late final _PigeonInternalProxyApiBaseCodec _pigeonVar_codecJSONObject =
-      _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
-
-  static void pigeon_setUpMessageHandlers({
-    bool pigeon_clearHandlers = false,
-    BinaryMessenger? pigeon_binaryMessenger,
-    PigeonInstanceManager? pigeon_instanceManager,
-    JSONObject Function()? pigeon_newInstance,
-  }) {
-    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
-        _PigeonInternalProxyApiBaseCodec(
-            pigeon_instanceManager ?? PigeonInstanceManager.instance);
-    final BinaryMessenger? binaryMessenger = pigeon_binaryMessenger;
-    {
-      final pigeonVar_channel = BasicMessageChannel<Object?>(
-          'dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.pigeon_newInstance',
-          pigeonChannelCodec,
-          binaryMessenger: binaryMessenger);
-      if (pigeon_clearHandlers) {
-        pigeonVar_channel.setMessageHandler(null);
-      } else {
-        pigeonVar_channel.setMessageHandler((Object? message) async {
-          final List<Object?> args = message! as List<Object?>;
-          final int arg_pigeon_instanceIdentifier = args[0]! as int;
-          try {
-            (pigeon_instanceManager ?? PigeonInstanceManager.instance)
-                .addHostCreatedInstance(
-              pigeon_newInstance?.call() ??
-                  JSONObject.pigeon_detached(
-                    pigeon_binaryMessenger: pigeon_binaryMessenger,
-                    pigeon_instanceManager: pigeon_instanceManager,
-                  ),
-              arg_pigeon_instanceIdentifier,
-            );
-            return wrapResponse(empty: true);
-          } on PlatformException catch (e) {
-            return wrapResponse(error: e);
-          } catch (e) {
-            return wrapResponse(
-                error: PlatformException(code: 'error', message: e.toString()));
-          }
-        });
-      }
-    }
-  }
-
-  Future<String> toJSONString() async {
-    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
-        _pigeonVar_codecJSONObject;
-    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
-    const pigeonVar_channelName =
-        'dev.flutter.pigeon.webview_flutter_geckoview.JSONObject.toJSONString';
-    final pigeonVar_channel = BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[this]);
-    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
-
-    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
-    return pigeonVar_replyValue! as String;
-  }
-
-  @override
-  JSONObject pigeon_copy() {
-    return JSONObject.pigeon_detached(
-      pigeon_binaryMessenger: pigeon_binaryMessenger,
-      pigeon_instanceManager: pigeon_instanceManager,
-    );
-  }
-}
-
 class WebExtensionPortDelegate extends PigeonInternalProxyApiBaseClass {
   factory WebExtensionPortDelegate({
     BinaryMessenger? pigeon_binaryMessenger,
@@ -1366,7 +1179,7 @@ class WebExtensionPortDelegate extends PigeonInternalProxyApiBaseClass {
     )? onDisconnect,
     void Function(
       WebExtensionPortDelegate pigeon_instance,
-      Object message,
+      String message,
       WebExtensionPort port,
     )? onPortMessage,
   }) {
@@ -1477,7 +1290,7 @@ class WebExtensionPortDelegate extends PigeonInternalProxyApiBaseClass {
   /// release the associated Native object manually.
   final void Function(
     WebExtensionPortDelegate pigeon_instance,
-    Object message,
+    String message,
     WebExtensionPort port,
   )? onPortMessage;
 
@@ -1492,7 +1305,7 @@ class WebExtensionPortDelegate extends PigeonInternalProxyApiBaseClass {
     )? onDisconnect,
     void Function(
       WebExtensionPortDelegate pigeon_instance,
-      Object message,
+      String message,
       WebExtensionPort port,
     )? onPortMessage,
   }) {
@@ -1571,7 +1384,7 @@ class WebExtensionPortDelegate extends PigeonInternalProxyApiBaseClass {
           final List<Object?> args = message! as List<Object?>;
           final WebExtensionPortDelegate arg_pigeon_instance =
               args[0]! as WebExtensionPortDelegate;
-          final Object arg_message = args[1]!;
+          final String arg_message = args[1]! as String;
           final WebExtensionPort arg_port = args[2]! as WebExtensionPort;
           try {
             (onPortMessage ?? arg_pigeon_instance.onPortMessage)

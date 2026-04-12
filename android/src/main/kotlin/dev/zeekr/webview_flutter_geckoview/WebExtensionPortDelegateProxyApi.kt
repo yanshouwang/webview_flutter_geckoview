@@ -1,5 +1,6 @@
 package dev.zeekr.webview_flutter_geckoview
 
+import org.json.JSONObject
 import org.mozilla.geckoview.WebExtension
 
 class WebExtensionPortDelegateProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
@@ -13,7 +14,7 @@ class WebExtensionPortDelegateProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
 
             override fun onPortMessage(message: Any, port: WebExtension.Port) {
                 super.onPortMessage(message, port)
-                this@WebExtensionPortDelegateProxyApi.onPortMessage(this, message, port) {}
+                this@WebExtensionPortDelegateProxyApi.onPortMessage(this, message.toString(), port) {}
             }
         }
     }
