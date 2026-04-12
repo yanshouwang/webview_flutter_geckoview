@@ -37,6 +37,9 @@ class GeckoWebViewController extends PlatformWebViewController {
   /// The native [GeckoView] being controlled.
   final geckoview.GeckoView _geckoView;
 
+  late final geckoview.GeckoSessionContentDelegate _geckoContentDelegate =
+      geckoview.GeckoSessionContentDelegate();
+
   late final geckoview.GeckoSessionNavigationDelegate _geckoNavigationDelegate =
       geckoview.GeckoSessionNavigationDelegate(
         onCanGoBack: withWeakReferenceTo(
@@ -54,6 +57,32 @@ class GeckoWebViewController extends PlatformWebViewController {
           },
         ),
       );
+
+  late final geckoview.WebExtensionMessageDelegate _geckoMessageDelegate =
+      geckoview.WebExtensionMessageDelegate(
+        onConnect: withWeakReferenceTo(
+          this,
+          (weakReference) => (_, port) {
+            _webExtensionPort = port;
+            port.setDelegate(_geckoPortDelegate);
+          },
+        ),
+      );
+
+  late final geckoview.WebExtensionPortDelegate _geckoPortDelegate =
+      geckoview.WebExtensionPortDelegate(
+        onDisconnect: withWeakReferenceTo(
+          this,
+          (weakReference) => (_, port) {},
+        ),
+        onPortMessage: withWeakReferenceTo(
+          this,
+          (weakReference) => (_, message, port) {},
+        ),
+      );
+
+  geckoview.WebExtension? _webExtension;
+  geckoview.WebExtensionPort? _webExtensionPort;
 
   var _canGoBack = false;
   var _canGoForward = false;
@@ -80,15 +109,27 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
-    // GeckoRuntime can only be initialized once per process
+    _geckoRuntime.webExtensionController
+        .ensureBuiltIn(
+          'resource://android/assets/messaging/',
+          'messaging@zeekr.dev',
+        )
+        .then((extension) {
+          _webExtension = extension;
+          extension?.setMessageDelegate(_geckoMessageDelegate, 'browser');
+        }, onError: (error) => debugPrint('ensureBuiltIn failed: $error'));
+
     // Workaround for Bug 1758212
-    _geckoSession.setContentDelegate(geckoview.GeckoSessionContentDelegate());
+    _geckoSession.setContentDelegate(_geckoContentDelegate);
     _geckoSession.open(_geckoRuntime);
     _geckoSession.settings.setAllowJavascript(true);
     _geckoView.setSession(_geckoSession);
 
     _geckoSession.setNavigationDelegate(_geckoNavigationDelegate);
   }
+
+  geckoview.WebExtensionPort get webExtensionPort =>
+      ArgumentError.checkNotNull(_webExtensionPort, 'webExtensionPort');
 
   @override
   Future<void> loadFile(String absoluteFilePath) {
@@ -187,10 +228,9 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   @override
-  Future<void> runJavaScript(String javaScript) {
-    // TODO: implement runJavaScript
-    return super.runJavaScript(javaScript);
-  }
+  Future<void> runJavaScript(String javaScript) => webExtensionPort.postMessage(
+    geckoview.JSONObject.fromJSONString(json: '{javaScript: "$javaScript"}'),
+  );
 
   @override
   Future<Object> runJavaScriptReturningResult(String javaScript) {

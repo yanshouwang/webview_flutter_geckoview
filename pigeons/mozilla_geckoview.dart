@@ -20,6 +20,96 @@ import 'package:pigeon/pigeon.dart';
 abstract class GeckoRuntime {
   @static
   late GeckoRuntime instance;
+
+  /// Returns a WebExtensionController for this GeckoRuntime.
+  @attached
+  late WebExtensionController webExtensionController;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtensionController',
+  ),
+)
+abstract class WebExtensionController {
+  /// Ensure that a built-in extension is installed.
+  @async
+  WebExtension? ensureBuiltIn(String uri, String? id);
+
+  /// List installed extensions for this GeckoRuntime.
+  @async
+  List<WebExtension>? list();
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension',
+  ),
+)
+abstract class WebExtension {
+  /// Defines the message delegate for a Native App.
+  void setMessageDelegate(
+    WebExtensionMessageDelegate delegate,
+    String nativeApp,
+  );
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.MessageDelegate',
+  ),
+)
+abstract class WebExtensionMessageDelegate {
+  WebExtensionMessageDelegate();
+
+  /// Called whenever the WebExtension connects to an app using runtime.connectNative.
+  late void Function(WebExtensionPort port)? onConnect;
+
+  /// Called whenever the WebExtension sends a message to an app using runtime.sendNativeMessage.
+  // late GeckoResult<Object> Function(
+  //   String nativeApp,
+  //   Object message,
+  //   WebExtensionMessageSender sender,
+  // )?
+  // onMessage;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.Port',
+  ),
+)
+abstract class WebExtensionPort {
+  /// Disconnects this port and notifies the other end.
+  void disconnect();
+
+  /// Post a message to the WebExtension connected to this WebExtension.Port instance.
+  void postMessage(JSONObject message);
+
+  /// Set a delegate for incoming messages through this WebExtension.Port.
+  void setDelegate(WebExtensionPortDelegate delegate);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(fullClassName: 'org.json.JSONObject'),
+)
+abstract class JSONObject {
+  JSONObject();
+  JSONObject.fromJSONString(String json);
+
+  String toJSONString();
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.PortDelegate',
+  ),
+)
+abstract class WebExtensionPortDelegate {
+  WebExtensionPortDelegate();
+
+  late void Function(WebExtensionPort port)? onDisconnect;
+  late void Function(Object message, WebExtensionPort port)? onPortMessage;
 }
 
 @ProxyApi(

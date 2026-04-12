@@ -9,6 +9,30 @@ class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) 
         return GeckoRuntimeProxyApi(this)
     }
 
+    override fun getPigeonApiWebExtensionController(): PigeonApiWebExtensionController {
+        return WebExtensionControllerProxyApi(this)
+    }
+
+    override fun getPigeonApiWebExtension(): PigeonApiWebExtension {
+        return WebExtensionProxyApi(this)
+    }
+
+    override fun getPigeonApiWebExtensionMessageDelegate(): PigeonApiWebExtensionMessageDelegate {
+        return WebExtensionMessageDelegateProxyApi(this)
+    }
+
+    override fun getPigeonApiWebExtensionPort(): PigeonApiWebExtensionPort {
+        return WebExtensionPortProxyApi(this)
+    }
+
+    override fun getPigeonApiJSONObject(): PigeonApiJSONObject {
+        return JSONObjectProxyApi(this)
+    }
+
+    override fun getPigeonApiWebExtensionPortDelegate(): PigeonApiWebExtensionPortDelegate {
+        return WebExtensionPortDelegateProxyApi(this)
+    }
+
     override fun getPigeonApiGeckoSession(): PigeonApiGeckoSession {
         return GeckoSessionProxyApi(this)
     }

@@ -4,7 +4,8 @@ import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoSessionSettings
 
-class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) : PigeonApiGeckoSession(pigeonRegistrar) {
+class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
+    PigeonApiGeckoSession(pigeonRegistrar) {
     override fun pigeon_defaultConstructor(): GeckoSession {
         return GeckoSession()
     }
@@ -46,6 +47,11 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) : PigeonApiGeckoS
     }
 
     override fun getUserAgent(pigeon_instance: GeckoSession, callback: (Result<String?>) -> Unit) {
-        pigeon_instance.userAgent.accept { value -> callback(Result.success(value)) }
+        pigeon_instance.userAgent.accept({
+            ResultCompat.success(it, callback)
+        }, {
+            val exception = it ?: return@accept
+            ResultCompat.failure(exception, callback)
+        })
     }
 }

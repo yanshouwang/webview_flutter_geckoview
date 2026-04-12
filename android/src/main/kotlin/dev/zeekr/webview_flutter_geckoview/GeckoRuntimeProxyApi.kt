@@ -1,6 +1,7 @@
 package dev.zeekr.webview_flutter_geckoview
 
 import org.mozilla.geckoview.GeckoRuntime
+import org.mozilla.geckoview.WebExtensionController
 
 class GeckoRuntimeProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiGeckoRuntime(pigeonRegistrar) {
@@ -10,5 +11,9 @@ class GeckoRuntimeProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
 
     override fun instance(): GeckoRuntime {
         return instance ?: GeckoRuntime.create(pigeonRegistrar.context).also { instance = it }
+    }
+
+    override fun webExtensionController(pigeon_instance: GeckoRuntime): WebExtensionController {
+        return pigeon_instance.webExtensionController
     }
 }
