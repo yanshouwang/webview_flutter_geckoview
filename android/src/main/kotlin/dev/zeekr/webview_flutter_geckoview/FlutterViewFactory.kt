@@ -6,7 +6,7 @@ import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
-class FlutterViewFactory(val instanceManager: MozillaGeckoviewLibraryPigeonInstanceManager) :
+class FlutterViewFactory(val instanceManager: GeckoLibraryPigeonInstanceManager) :
     PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         val identifier = if (args is Int) args.toLong()

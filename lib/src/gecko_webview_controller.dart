@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
-import 'mozilla_geckoview.g.dart' as geckoview;
+import 'gecko.g.dart' as gecko;
 import 'platform_views_service_proxy.dart';
 import 'weak_reference_utils.dart';
 
@@ -33,20 +33,20 @@ class GeckoWebViewControllerCreationParams
 
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
-  final geckoview.GeckoRuntime _geckoRuntime;
+  final gecko.GeckoRuntime _geckoRuntime;
 
-  final geckoview.GeckoSession _geckoSession;
+  final gecko.GeckoSession _geckoSession;
 
   /// The native [GeckoView] being controlled.
-  final geckoview.GeckoView _geckoView;
+  final gecko.GeckoView _geckoView;
 
-  final _webExtensionPortCompleter = Completer<geckoview.WebExtensionPort>();
+  final _webExtensionPortCompleter = Completer<gecko.WebExtensionPort>();
 
-  late final geckoview.GeckoSessionContentDelegate _geckoContentDelegate =
-      geckoview.GeckoSessionContentDelegate();
+  late final gecko.GeckoSessionContentDelegate _geckoContentDelegate =
+      gecko.GeckoSessionContentDelegate();
 
-  late final geckoview.GeckoSessionNavigationDelegate _geckoNavigationDelegate =
-      geckoview.GeckoSessionNavigationDelegate(
+  late final gecko.GeckoSessionNavigationDelegate _geckoNavigationDelegate =
+      gecko.GeckoSessionNavigationDelegate(
         onCanGoBack: withWeakReferenceTo(
           this,
           (weakReference) => (_, session, canGoBack) {
@@ -63,8 +63,8 @@ class GeckoWebViewController extends PlatformWebViewController {
         ),
       );
 
-  late final geckoview.WebExtensionMessageDelegate _geckoMessageDelegate =
-      geckoview.WebExtensionMessageDelegate(
+  late final gecko.WebExtensionMessageDelegate _geckoMessageDelegate =
+      gecko.WebExtensionMessageDelegate(
         onConnect: withWeakReferenceTo(
           this,
           (weakReference) => (_, port) {
@@ -74,8 +74,8 @@ class GeckoWebViewController extends PlatformWebViewController {
         ),
       );
 
-  late final geckoview.WebExtensionPortDelegate
-  _geckoPortDelegate = geckoview.WebExtensionPortDelegate(
+  late final gecko.WebExtensionPortDelegate
+  _geckoPortDelegate = gecko.WebExtensionPortDelegate(
     onDisconnect: withWeakReferenceTo(this, (weakReference) => (_, port) {}),
     onPortMessage: withWeakReferenceTo(
       this,
@@ -94,8 +94,6 @@ class GeckoWebViewController extends PlatformWebViewController {
     ),
   );
 
-  geckoview.WebExtension? _webExtension;
-
   final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
 
   var _canGoBack = false;
@@ -103,9 +101,9 @@ class GeckoWebViewController extends PlatformWebViewController {
   GeckoNavigationDelegate? _currentNavigationDelegate;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
-    : _geckoRuntime = geckoview.GeckoRuntime.instance,
-      _geckoSession = geckoview.GeckoSession(),
-      _geckoView = geckoview.GeckoView(
+    : _geckoRuntime = gecko.GeckoRuntime.instance,
+      _geckoSession = gecko.GeckoSession(),
+      _geckoView = gecko.GeckoView(
         // onScrollChanged: withWeakReferenceTo(this, (
         //   WeakReference<AndroidWebViewController> weakReference,
         // ) {
@@ -123,14 +121,22 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
+    _geckoRuntime.settings.setConsoleOutputEnabled(true);
     _geckoRuntime.webExtensionController
         .ensureBuiltIn(
           'resource://android/assets/messaging/',
           'messaging@zeekr.dev',
         )
         .then((extension) {
-          _webExtension = extension;
-          extension?.setMessageDelegate(_geckoMessageDelegate, 'browser');
+          if (extension == null) {
+            debugPrint('ensureBuiltIn failed: extension is null');
+            return;
+          }
+          _geckoSession.webExtensionController.setMessageDelegate(
+            extension,
+            _geckoMessageDelegate,
+            'webview_flutter',
+          );
         }, onError: (error) => debugPrint('ensureBuiltIn failed: $error'));
 
     // Workaround for Bug 1758212
@@ -142,7 +148,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     _geckoSession.setNavigationDelegate(_geckoNavigationDelegate);
   }
 
-  Future<geckoview.WebExtensionPort> get _webExtensionPort =>
+  Future<gecko.WebExtensionPort> get _webExtensionPort =>
       _webExtensionPortCompleter.future;
 
   @override
@@ -165,8 +171,11 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<void> loadHtmlString(String html, {String? baseUrl}) {
-    // TODO: implement loadHtmlString
-    return super.loadHtmlString(html, baseUrl: baseUrl);
+    final request = gecko.GeckoSessionLoader()..string(html, 'text/html');
+    if (baseUrl != null) {
+      request.uri(baseUrl);
+    }
+    return _geckoSession.load(request);
   }
 
   @override
@@ -174,16 +183,16 @@ class GeckoWebViewController extends PlatformWebViewController {
     if (!params.uri.hasScheme) {
       throw ArgumentError('WebViewRequest#uri is required to have a scheme.');
     }
-    // TODO: implement loadRequest
     switch (params.method) {
       case LoadRequestMethod.get:
-        // return _geckoView.loadUrl(params.uri.toString(), params.headers);
-        return _geckoSession.loadUri(params.uri.toString());
+        final request = gecko.GeckoSessionLoader()
+          ..uri(params.uri.toString())
+          ..additionalHeaders(params.headers);
+        return _geckoSession.load(request);
       case LoadRequestMethod.post:
-      // return _geckoView.postUrl(
-      //   params.uri.toString(),
-      //   params.body ?? Uint8List(0),
-      // );
+        throw UnsupportedError(
+          'GeckoView does not support POST method in loadRequest yet.',
+        );
     }
     // The enum comes from a different package, which could get a new value at
     // any time, so a fallback case is necessary. Since there is no reasonable
@@ -600,7 +609,7 @@ class GeckoNavigationDelegateCreationParams
 }
 
 /// A place to register callback methods responsible to handle navigation events
-/// triggered by the [geckoview.GeckoView].
+/// triggered by the [gecko.GeckoView].
 class GeckoNavigationDelegate extends PlatformNavigationDelegate {
   /// Creates a new [GeckoNavigationDelegate].
   GeckoNavigationDelegate(PlatformNavigationDelegateCreationParams params)
@@ -612,7 +621,7 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
               ),
       ) {
     final weakThis = WeakReference<GeckoNavigationDelegate>(this);
-    _progressDelegate = geckoview.GeckoSessionProgressDelegate(
+    _progressDelegate = gecko.GeckoSessionProgressDelegate(
       onPageStart: (_, session, url) {
         final callback = weakThis.target?._onPageStarted;
         if (callback != null) callback(url);
@@ -629,12 +638,12 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
     );
   }
 
-  late final geckoview.GeckoSessionProgressDelegate _progressDelegate;
+  late final gecko.GeckoSessionProgressDelegate _progressDelegate;
 
-  /// Gets the native [geckoview.GeckoSessionProgressDelegate] that is bridged by this [GeckoNavigationDelegate].
+  /// Gets the native [gecko.GeckoSessionProgressDelegate] that is bridged by this [GeckoNavigationDelegate].
   ///
   /// Used by the [GeckoWebViewController] to set the `geckoview.GeckoSession.setProgressDelegate`.
-  geckoview.GeckoSessionProgressDelegate get geckoProgressDelegate =>
+  gecko.GeckoSessionProgressDelegate get geckoProgressDelegate =>
       _progressDelegate;
 
   PageEventCallback? _onPageStarted;
@@ -661,10 +670,10 @@ AndroidViewController _initAndroidView(
   PlatformViewCreationParams params, {
   required bool displayWithHybridComposition,
   required PlatformViewsServiceProxy platformViewsServiceProxy,
-  required geckoview.View view,
+  required gecko.View view,
   TextDirection layoutDirection = TextDirection.ltr,
 }) {
-  final int identifier = geckoview.PigeonInstanceManager.instance.getIdentifier(
+  final int identifier = gecko.PigeonInstanceManager.instance.getIdentifier(
     view,
   )!;
 

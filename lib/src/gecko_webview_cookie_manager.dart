@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
-import 'mozilla_geckoview.g.dart';
+import 'gecko.g.dart';
 
 /// Object specifying creation parameters for creating a [GeckoWebViewCookieManager].
 ///

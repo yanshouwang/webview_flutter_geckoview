@@ -4,9 +4,13 @@ import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
 
 class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) :
-    MozillaGeckoviewLibraryPigeonProxyApiRegistrar(binaryMessenger) {
+    GeckoLibraryPigeonProxyApiRegistrar(binaryMessenger) {
     override fun getPigeonApiGeckoRuntime(): PigeonApiGeckoRuntime {
         return GeckoRuntimeProxyApi(this)
+    }
+
+    override fun getPigeonApiGeckoRuntimeSettings(): PigeonApiGeckoRuntimeSettings {
+        return GeckoRuntimeSettingsProxyApi(this)
     }
 
     override fun getPigeonApiWebExtensionController(): PigeonApiWebExtensionController {
@@ -29,8 +33,16 @@ class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) 
         return WebExtensionPortDelegateProxyApi(this)
     }
 
+    override fun getPigeonApiWebExtensionSessionController(): PigeonApiWebExtensionSessionController {
+        return WebExtensionSessionControllerProxyApi(this)
+    }
+
     override fun getPigeonApiGeckoSession(): PigeonApiGeckoSession {
         return GeckoSessionProxyApi(this)
+    }
+
+    override fun getPigeonApiGeckoSessionLoader(): PigeonApiGeckoSessionLoader {
+        return GeckoSessionLoaderProxyApi(this)
     }
 
     override fun getPigeonApiGeckoSessionSettings(): PigeonApiGeckoSessionSettings {
@@ -47,6 +59,18 @@ class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) 
 
     override fun getPigeonApiGeckoSessionNavigationDelegate(): PigeonApiGeckoSessionNavigationDelegate {
         return GeckoSessionNavigationDelegateProxyApi(this)
+    }
+
+    override fun getPigeonApiGeckoSessionPermissionDelegate(): PigeonApiGeckoSessionPermissionDelegate {
+        return GeckoSessionPermissionDelegateProxyApi(this)
+    }
+
+    override fun getPigeonApiGeckoSessionPermissionDelegateCallback(): PigeonApiGeckoSessionPermissionDelegateCallback {
+        return GeckoSessionPermissionDelegateCallbackProxyApi(this)
+    }
+
+    override fun getPigeonApiGeckoSessionPromptDelegate(): PigeonApiGeckoSessionPromptDelegate {
+        return GeckoSessionPromptDelegateProxyApi(this)
     }
 
     override fun getPigeonApiGeckoView(): PigeonApiGeckoView {
