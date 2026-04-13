@@ -10,6 +10,41 @@ import 'gecko.g.dart' as gecko;
 import 'platform_views_service_proxy.dart';
 import 'weak_reference_utils.dart';
 
+/// Object specifying parameters for loading a local file in a
+/// [GeckoWebViewController].
+@immutable
+base class GeckoLoadFileParams extends LoadFileParams {
+  /// Constructs a [GeckoLoadFileParams], the subclass of a [LoadFileParams].
+  GeckoLoadFileParams({
+    required String absoluteFilePath,
+    this.headers = const <String, String>{},
+  }) : super(
+         absoluteFilePath: absoluteFilePath.startsWith('file://')
+             ? absoluteFilePath
+             : Uri.file(absoluteFilePath).toString(),
+       );
+
+  /// Constructs a [GeckoLoadFileParams] using a [LoadFileParams].
+  factory GeckoLoadFileParams.fromLoadFileParams(
+    LoadFileParams params, {
+    Map<String, String> headers = const <String, String>{},
+  }) {
+    return GeckoLoadFileParams(
+      absoluteFilePath: params.absoluteFilePath,
+      headers: headers,
+    );
+  }
+
+  /// Additional HTTP headers to be included when loading the local file.
+  ///
+  /// If not provided at initialization time, doesn't add any additional headers.
+  ///
+  /// On Gecko, WebView supports adding headers when loading local or remote
+  /// content. This can be useful for scenarios like authentication,
+  /// content-type overrides, or custom request context.
+  final Map<String, String> headers;
+}
+
 /// Object specifying creation parameters for creating a [GeckoWebViewController].
 ///
 /// When adding additional fields make sure they can be null or have a default
@@ -94,6 +129,10 @@ class GeckoWebViewController extends PlatformWebViewController {
     ),
   );
 
+  /// The native [gecko.FlutterAssetManager] allows managing assets.
+  late final gecko.FlutterAssetManager _flutterAssetManager =
+      gecko.FlutterAssetManager.instance;
+
   final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
 
   var _canGoBack = false;
@@ -153,20 +192,41 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<void> loadFile(String absoluteFilePath) {
-    // TODO: implement loadFile
-    return super.loadFile(absoluteFilePath);
+    return loadFileWithParams(
+      GeckoLoadFileParams(absoluteFilePath: absoluteFilePath),
+    );
   }
 
   @override
-  Future<void> loadFileWithParams(LoadFileParams params) {
-    // TODO: implement loadFileWithParams
-    return super.loadFileWithParams(params);
+  Future<void> loadFileWithParams(LoadFileParams params) async {
+    switch (params) {
+      case final GeckoLoadFileParams params:
+        final request = gecko.GeckoSessionLoader()
+          ..uri(params.absoluteFilePath)
+          ..additionalHeaders(params.headers);
+        await _geckoSession.load(request);
+        break;
+      default:
+        await loadFileWithParams(
+          GeckoLoadFileParams.fromLoadFileParams(params),
+        );
+    }
   }
 
   @override
-  Future<void> loadFlutterAsset(String key) {
-    // TODO: implement loadFlutterAsset
-    return super.loadFlutterAsset(key);
+  Future<void> loadFlutterAsset(String key) async {
+    final assetFilePath = await _flutterAssetManager.getAssetFilePathByName(
+      key,
+    );
+    final pathElements = assetFilePath.split('/');
+    final fileName = pathElements.removeLast();
+    final paths = await _flutterAssetManager.list(pathElements.join('/'));
+
+    if (!paths.contains(fileName)) {
+      throw ArgumentError('Asset for key "$key" not found.', 'key');
+    }
+
+    return _geckoSession.loadUri('resource://android/assets/$assetFilePath');
   }
 
   @override
@@ -190,9 +250,8 @@ class GeckoWebViewController extends PlatformWebViewController {
           ..additionalHeaders(params.headers);
         return _geckoSession.load(request);
       case LoadRequestMethod.post:
-        throw UnsupportedError(
-          'GeckoView does not support POST method in loadRequest yet.',
-        );
+        // TODO
+        break;
     }
     // The enum comes from a different package, which could get a new value at
     // any time, so a fallback case is necessary. Since there is no reasonable

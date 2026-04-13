@@ -11,10 +11,15 @@ class WebviewFlutterPlugin : FlutterPlugin {
     lateinit var proxyApiRegistrar: ProxyApiRegistrar
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        proxyApiRegistrar = ProxyApiRegistrar(binding.binaryMessenger, binding.applicationContext)
+        proxyApiRegistrar = ProxyApiRegistrar(
+            binding.binaryMessenger,
+            binding.applicationContext,
+            FlutterAssetManager.PluginBindingFlutterAssetManager(
+                binding.applicationContext.assets, binding.flutterAssets
+            )
+        )
         binding.platformViewRegistry.registerViewFactory(
-            "plugins.flutter.io/webview",
-            FlutterViewFactory(proxyApiRegistrar.instanceManager)
+            "plugins.flutter.io/webview", FlutterViewFactory(proxyApiRegistrar.instanceManager)
         )
         proxyApiRegistrar.setUp()
     }

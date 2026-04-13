@@ -5,18 +5,11 @@
 const BRIDGE_EVENT = "__gv_bridge__";
 const webExtensionPort = browser.runtime.connectNative("webview_flutter");
 
-function injectScript(text) {
-	const script = document.createElement("script");
-	script.textContent = text;
-	(document.documentElement || document.head).appendChild(script);
-	script.remove();
-}
-
 function addJavascriptChannel(channelName) {
 	const safeChannelName = JSON.stringify(channelName);
 	const safeBridgeEvent = JSON.stringify(BRIDGE_EVENT);
 
-	injectScript(`
+	runJavascript(`
 		window[${safeChannelName}] = {
 			postMessage: function(message) {
 				window.dispatchEvent(new CustomEvent(${safeBridgeEvent}, {
@@ -32,11 +25,18 @@ function addJavascriptChannel(channelName) {
 
 function removeJavascriptChannel(channelName) {
 	const safeChannelName = JSON.stringify(channelName);
-	injectScript(`
+	runJavascript(`
 		try {
 			delete window[${safeChannelName}];
 		} catch (_) {}
 	`);
+}
+
+function runJavascript(text) {
+	const script = document.createElement("script");
+	script.textContent = text;
+	(document.documentElement || document.head).appendChild(script);
+	script.remove();
 }
 
 window.addEventListener(BRIDGE_EVENT, event => {
@@ -49,6 +49,10 @@ window.addEventListener(BRIDGE_EVENT, event => {
 		channelName: detail.channelName,
 		message: detail.message,
 	});
+});
+
+webExtensionPort.onDisconnect.addListener(() => {
+	console.warn("Disconnected from native messaging port");
 });
 
 webExtensionPort.onMessage.addListener(message => {
@@ -68,13 +72,9 @@ webExtensionPort.onMessage.addListener(message => {
 			}
 			break;
 		case 2: // Run javascript
-			injectScript(String(message.javascript || ""));
+			runJavascript(String(message.javascript || ""));
 			break;
 		default:
 			break;
 	}
-});
-
-webExtensionPort.onDisconnect.addListener(() => {
-	console.warn("Disconnected from native messaging port");
 });

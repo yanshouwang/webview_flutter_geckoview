@@ -136,6 +136,9 @@ class PigeonOverrides {
   /// Overrides [GeckoRuntime.instance].
   static GeckoRuntime? geckoRuntime_instance;
 
+  /// Overrides [FlutterAssetManager.instance].
+  static FlutterAssetManager? flutterAssetManager_instance;
+
   /// Overrides [GeckoSession.getDefaultUserAgent].
   static Future<String> Function()? geckoSession_getDefaultUserAgent;
 
@@ -153,6 +156,7 @@ class PigeonOverrides {
     geckoSessionPromptDelegate_new = null;
     geckoSessionProgressDelegate_new = null;
     geckoView_new = null;
+    flutterAssetManager_instance = null;
   }
 }
 
@@ -281,6 +285,7 @@ class PigeonInstanceManager {
     GeckoSessionProgressDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoView.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     View.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
+    FlutterAssetManager.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     return instanceManager;
   }
 
@@ -4949,6 +4954,169 @@ class View extends PigeonInternalProxyApiBaseClass {
   @override
   View pigeon_copy() {
     return View.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+    );
+  }
+}
+
+/// Provides access to the assets registered as part of the App bundle.
+///
+/// Convenience class for accessing Flutter asset resources.
+class FlutterAssetManager extends PigeonInternalProxyApiBaseClass {
+  /// Constructs [FlutterAssetManager] without creating the associated native object.
+  ///
+  /// This should only be used by subclasses created by this library or to
+  /// create copies for an [PigeonInstanceManager].
+  @protected
+  FlutterAssetManager.pigeon_detached({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+  });
+
+  late final _PigeonInternalProxyApiBaseCodec
+      _pigeonVar_codecFlutterAssetManager =
+      _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
+
+  /// The global instance of the `FlutterAssetManager`.
+  static final FlutterAssetManager _instance = pigeonVar_instance();
+
+  /// The global instance of the `FlutterAssetManager`.
+  static FlutterAssetManager get instance =>
+      PigeonOverrides.flutterAssetManager_instance ?? _instance;
+
+  static void pigeon_setUpMessageHandlers({
+    bool pigeon_clearHandlers = false,
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    FlutterAssetManager Function()? pigeon_newInstance,
+  }) {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(
+            pigeon_instanceManager ?? PigeonInstanceManager.instance);
+    final BinaryMessenger? binaryMessenger = pigeon_binaryMessenger;
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.pigeon_newInstance',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final int arg_pigeon_instanceIdentifier = args[0]! as int;
+          try {
+            (pigeon_instanceManager ?? PigeonInstanceManager.instance)
+                .addHostCreatedInstance(
+              pigeon_newInstance?.call() ??
+                  FlutterAssetManager.pigeon_detached(
+                    pigeon_binaryMessenger: pigeon_binaryMessenger,
+                    pigeon_instanceManager: pigeon_instanceManager,
+                  ),
+              arg_pigeon_instanceIdentifier,
+            );
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+  }
+
+  static FlutterAssetManager pigeonVar_instance() {
+    final FlutterAssetManager pigeonVar_instance =
+        FlutterAssetManager.pigeon_detached();
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(PigeonInstanceManager.instance);
+    final BinaryMessenger pigeonVar_binaryMessenger =
+        ServicesBinding.instance.defaultBinaryMessenger;
+    final int pigeonVar_instanceIdentifier = PigeonInstanceManager.instance
+        .addDartCreatedInstance(pigeonVar_instance);
+    () async {
+      const pigeonVar_channelName =
+          'dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.instance';
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+        pigeonVar_channelName,
+        pigeonChannelCodec,
+        binaryMessenger: pigeonVar_binaryMessenger,
+      );
+      final Future<Object?> pigeonVar_sendFuture =
+          pigeonVar_channel.send(<Object?>[pigeonVar_instanceIdentifier]);
+      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+      _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+      );
+    }();
+    return pigeonVar_instance;
+  }
+
+  /// Returns a String array of all the assets at the given path.
+  ///
+  /// Throws an IOException in case I/O operations were interrupted.
+  Future<List<String>> list(String path) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecFlutterAssetManager;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.list';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, path]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
+    return (pigeonVar_replyValue! as List<Object?>).cast<String>();
+  }
+
+  /// Gets the relative file path to the Flutter asset with the given name, including the file's
+  /// extension, e.g., "myImage.jpg".
+  ///
+  /// The returned file path is relative to the Android app's standard asset's
+  /// directory. Therefore, the returned path is appropriate to pass to
+  /// Android's AssetManager, but the path is not appropriate to load as an
+  /// absolute path.
+  Future<String> getAssetFilePathByName(String name) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecFlutterAssetManager;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.getAssetFilePathByName';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, name]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
+    return pigeonVar_replyValue! as String;
+  }
+
+  @override
+  FlutterAssetManager pigeon_copy() {
+    return FlutterAssetManager.pigeon_detached(
       pigeon_binaryMessenger: pigeon_binaryMessenger,
       pigeon_instanceManager: pigeon_instanceManager,
     );

@@ -3,8 +3,11 @@ package dev.zeekr.webview_flutter_geckoview
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
 
-class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) :
-    GeckoLibraryPigeonProxyApiRegistrar(binaryMessenger) {
+class ProxyApiRegistrar(
+    binaryMessenger: BinaryMessenger,
+    val context: Context,
+    val flutterAssetManager: FlutterAssetManager
+) : GeckoLibraryPigeonProxyApiRegistrar(binaryMessenger) {
     override fun getPigeonApiGeckoRuntime(): PigeonApiGeckoRuntime {
         return GeckoRuntimeProxyApi(this)
     }
@@ -79,5 +82,9 @@ class ProxyApiRegistrar(binaryMessenger: BinaryMessenger, val context: Context) 
 
     override fun getPigeonApiView(): PigeonApiView {
         return ViewProxyApi(this)
+    }
+
+    override fun getPigeonApiFlutterAssetManager(): PigeonApiFlutterAssetManager {
+        return FlutterAssetManagerProxyApi(this)
     }
 }

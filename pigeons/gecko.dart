@@ -826,3 +826,31 @@ abstract class View {
   /// Set the over-scroll mode for this view.
   // void setOverScrollMode(OverScrollMode mode);
 }
+
+/// Provides access to the assets registered as part of the App bundle.
+///
+/// Convenience class for accessing Flutter asset resources.
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'dev.zeekr.webview_flutter_geckoview.FlutterAssetManager',
+  ),
+)
+abstract class FlutterAssetManager {
+  /// The global instance of the `FlutterAssetManager`.
+  @static
+  late FlutterAssetManager instance;
+
+  /// Returns a String array of all the assets at the given path.
+  ///
+  /// Throws an IOException in case I/O operations were interrupted.
+  List<String> list(String path);
+
+  /// Gets the relative file path to the Flutter asset with the given name, including the file's
+  /// extension, e.g., "myImage.jpg".
+  ///
+  /// The returned file path is relative to the Android app's standard asset's
+  /// directory. Therefore, the returned path is appropriate to pass to
+  /// Android's AssetManager, but the path is not appropriate to load as an
+  /// absolute path.
+  String getAssetFilePathByName(String name);
+}

@@ -510,6 +510,12 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
    */
   abstract fun getPigeonApiView(): PigeonApiView
 
+  /**
+   * An implementation of [PigeonApiFlutterAssetManager] used to add a new Dart instance of
+   * `FlutterAssetManager` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiFlutterAssetManager(): PigeonApiFlutterAssetManager
+
   fun setUp() {
     GeckoLibraryPigeonInstanceManagerApi.setUpMessageHandlers(binaryMessenger, instanceManager)
     PigeonApiGeckoRuntime.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoRuntime())
@@ -531,6 +537,7 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
     PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionProgressDelegate())
     PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoView())
     PigeonApiView.setUpMessageHandlers(binaryMessenger, getPigeonApiView())
+    PigeonApiFlutterAssetManager.setUpMessageHandlers(binaryMessenger, getPigeonApiFlutterAssetManager())
   }
   fun tearDown() {
     GeckoLibraryPigeonInstanceManagerApi.setUpMessageHandlers(binaryMessenger, null)
@@ -553,6 +560,7 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
     PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiView.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiFlutterAssetManager.setUpMessageHandlers(binaryMessenger, null)
   }
 }
 private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPigeonProxyApiRegistrar) : GeckoLibraryPigeonCodec() {
@@ -716,6 +724,13 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
       registrar.getPigeonApiView().pigeon_newInstance(value) {
         if (it.isFailure) {
           logNewInstanceFailure("View", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is dev.zeekr.webview_flutter_geckoview.FlutterAssetManager) {
+      registrar.getPigeonApiFlutterAssetManager().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("FlutterAssetManager", value, it.exceptionOrNull())
         }
       }
     }
@@ -3845,6 +3860,126 @@ abstract class PigeonApiView(open val pigeonRegistrar: GeckoLibraryPigeonProxyAp
       val binaryMessenger = pigeonRegistrar.binaryMessenger
       val codec = pigeonRegistrar.codec
       val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.View.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+/**
+ * Provides access to the assets registered as part of the App bundle.
+ *
+ * Convenience class for accessing Flutter asset resources.
+ */
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiFlutterAssetManager(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The global instance of the `FlutterAssetManager`. */
+  abstract fun instance(): dev.zeekr.webview_flutter_geckoview.FlutterAssetManager
+
+  /**
+   * Returns a String array of all the assets at the given path.
+   *
+   * Throws an IOException in case I/O operations were interrupted.
+   */
+  abstract fun list(pigeon_instance: dev.zeekr.webview_flutter_geckoview.FlutterAssetManager, path: String): List<String>
+
+  /**
+   * Gets the relative file path to the Flutter asset with the given name, including the file's
+   * extension, e.g., "myImage.jpg".
+   *
+   * The returned file path is relative to the Android app's standard asset's
+   * directory. Therefore, the returned path is appropriate to pass to
+   * Android's AssetManager, but the path is not appropriate to load as an
+   * absolute path.
+   */
+  abstract fun getAssetFilePathByName(pigeon_instance: dev.zeekr.webview_flutter_geckoview.FlutterAssetManager, name: String): String
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiFlutterAssetManager?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.instance", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.instance(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.list", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as dev.zeekr.webview_flutter_geckoview.FlutterAssetManager
+            val pathArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.list(pigeon_instanceArg, pathArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.getAssetFilePathByName", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as dev.zeekr.webview_flutter_geckoview.FlutterAssetManager
+            val nameArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.getAssetFilePathByName(pigeon_instanceArg, nameArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of FlutterAssetManager and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: dev.zeekr.webview_flutter_geckoview.FlutterAssetManager, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.pigeon_newInstance"
       val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
       channel.send(listOf(pigeon_identifierArg)) {
         if (it is List<*>) {
