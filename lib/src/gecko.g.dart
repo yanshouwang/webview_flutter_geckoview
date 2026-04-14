@@ -1274,6 +1274,31 @@ class WebExtensionPort extends PigeonInternalProxyApiBaseClass {
     }
   }
 
+  /// WebExtension.MessageSender corresponding to this port.
+  /// The application identifier of the MessageDelegate that opened this port.
+  Future<String> getName() async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecWebExtensionPort;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.getName';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: false,
+    );
+    return pigeonVar_replyValue! as String;
+  }
+
   /// Disconnects this port and notifies the other end.
   Future<void> disconnect() async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =

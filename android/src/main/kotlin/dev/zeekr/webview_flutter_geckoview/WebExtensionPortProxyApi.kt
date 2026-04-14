@@ -5,6 +5,10 @@ import org.mozilla.geckoview.WebExtension
 
 class WebExtensionPortProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiWebExtensionPort(pigeonRegistrar) {
+    override fun getName(pigeon_instance: WebExtension.Port): String {
+        return pigeon_instance.name
+    }
+
     override fun disconnect(pigeon_instance: WebExtension.Port) {
         pigeon_instance.disconnect()
     }
@@ -13,7 +17,9 @@ class WebExtensionPortProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         pigeon_instance.postMessage(JSONObject(message))
     }
 
-    override fun setDelegate(pigeon_instance: WebExtension.Port, delegate: WebExtension.PortDelegate) {
+    override fun setDelegate(
+        pigeon_instance: WebExtension.Port, delegate: WebExtension.PortDelegate
+    ) {
         pigeon_instance.setDelegate(delegate)
     }
 }

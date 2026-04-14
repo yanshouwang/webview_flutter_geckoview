@@ -97,6 +97,13 @@ abstract class WebExtensionMessageDelegate {
   ),
 )
 abstract class WebExtensionPort {
+  /// WebExtension.MessageSender corresponding to this port.
+  // @attached
+  // late WebExtensionMessageSender sender;
+
+  /// The application identifier of the MessageDelegate that opened this port.
+  String getName();
+
   /// Disconnects this port and notifies the other end.
   void disconnect();
 

@@ -52,14 +52,14 @@ window.addEventListener(BRIDGE_EVENT, event => {
 });
 
 webExtensionPort.onDisconnect.addListener(() => {
-	console.warn("Disconnected from native messaging port");
+	console.info("webExtensionPort disconnected");
 });
 
 webExtensionPort.onMessage.addListener(message => {
+	console.info(`webExtensionPort received message: ${JSON.stringify(message)}`);
 	if (!message || typeof message.action !== "number") {
 		return;
 	}
-
 	switch (message.action) {
 		case 0: // Add javascript channel
 			if (typeof message.channelName === "string" && message.channelName.length > 0) {

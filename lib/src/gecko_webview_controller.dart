@@ -69,53 +69,78 @@ class GeckoWebViewControllerCreationParams
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
   final gecko.GeckoRuntime _geckoRuntime;
-
   final gecko.GeckoSession _geckoSession;
-
-  /// The native [GeckoView] being controlled.
   final gecko.GeckoView _geckoView;
+  final gecko.FlutterAssetManager _flutterAssetManager;
 
   final _webExtensionPortCompleter = Completer<gecko.WebExtensionPort>();
+  final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
 
-  late final gecko.GeckoSessionContentDelegate _geckoContentDelegate =
-      gecko.GeckoSessionContentDelegate();
+  late final _geckoSessionContentDelegate = gecko.GeckoSessionContentDelegate();
 
-  late final gecko.GeckoSessionNavigationDelegate _geckoNavigationDelegate =
+  late final _geckoSessionNavigationDelegate =
       gecko.GeckoSessionNavigationDelegate(
         onCanGoBack: withWeakReferenceTo(
           this,
-          (weakReference) => (_, session, canGoBack) {
-            debugPrint('onCanGoBack: $canGoBack ');
-            weakReference.target?._canGoBack = canGoBack;
+          (weakThis) => (_, session, canGoBack) {
+            weakThis.target?._canGoBack = canGoBack;
           },
         ),
         onCanGoForward: withWeakReferenceTo(
           this,
-          (weakReference) => (_, session, canGoForward) {
-            debugPrint('onCanGoForward: $canGoForward ');
-            weakReference.target?._canGoForward = canGoForward;
+          (weakThis) => (_, session, canGoForward) {
+            weakThis.target?._canGoForward = canGoForward;
           },
         ),
       );
 
-  late final gecko.WebExtensionMessageDelegate _geckoMessageDelegate =
-      gecko.WebExtensionMessageDelegate(
-        onConnect: withWeakReferenceTo(
-          this,
-          (weakReference) => (_, port) {
-            weakReference.target?._webExtensionPortCompleter.complete(port);
-            port.setDelegate(_geckoPortDelegate);
-          },
-        ),
-      );
+  late final _geckoSessionProgressDelegate = gecko.GeckoSessionProgressDelegate(
+    onPageStart: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, url) {
+        _currentUrl = url;
+        weakThis.target?._currentNavigationDelegate?._onPageStarted?.call(url);
+      },
+    ),
+    onPageStop: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, success) {
+        weakThis.target?._currentNavigationDelegate?._onPageFinished?.call(
+          _currentUrl ?? '',
+        );
+      },
+    ),
+    onProgressChange: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, progress) {
+        weakThis.target?._currentNavigationDelegate?._onProgress?.call(
+          progress,
+        );
+      },
+    ),
+  );
 
-  late final gecko.WebExtensionPortDelegate
-  _geckoPortDelegate = gecko.WebExtensionPortDelegate(
-    onDisconnect: withWeakReferenceTo(this, (weakReference) => (_, port) {}),
+  late final _webExtensionMessageDelegate = gecko.WebExtensionMessageDelegate(
+    onConnect: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, port) {
+        weakThis.target?._webExtensionPortCompleter.complete(port);
+        port.setDelegate(_webExtensioinPortDelegate);
+      },
+    ),
+  );
+
+  late final _webExtensioinPortDelegate = gecko.WebExtensionPortDelegate(
+    onDisconnect: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, port) {
+        debugPrint('webExtensionPort disconnected');
+      },
+    ),
     onPortMessage: withWeakReferenceTo(
       this,
-      (weakReference) => (_, message, port) {
-        final controller = weakReference.target;
+      (weakThis) => (_, message, port) {
+        final controller = weakThis.target;
         if (controller == null) return;
         final items = json.decode(message) as Map<String, dynamic>;
         final channelName = items['channelName'] as String?;
@@ -129,14 +154,9 @@ class GeckoWebViewController extends PlatformWebViewController {
     ),
   );
 
-  /// The native [gecko.FlutterAssetManager] allows managing assets.
-  late final gecko.FlutterAssetManager _flutterAssetManager =
-      gecko.FlutterAssetManager.instance;
-
-  final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
-
   var _canGoBack = false;
   var _canGoForward = false;
+  String? _currentUrl;
   GeckoNavigationDelegate? _currentNavigationDelegate;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
@@ -153,6 +173,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         //   };
         // }),
       ),
+      _flutterAssetManager = gecko.FlutterAssetManager.instance,
       super.implementation(
         params is GeckoWebViewControllerCreationParams
             ? params
@@ -171,20 +192,25 @@ class GeckoWebViewController extends PlatformWebViewController {
             debugPrint('ensureBuiltIn failed: extension is null');
             return;
           }
+          // extension.setMessageDelegate(
+          //   _geckoMessageDelegate,
+          //   'webview_flutter',
+          // );
           _geckoSession.webExtensionController.setMessageDelegate(
             extension,
-            _geckoMessageDelegate,
+            _webExtensionMessageDelegate,
             'webview_flutter',
           );
         }, onError: (error) => debugPrint('ensureBuiltIn failed: $error'));
 
     // Workaround for Bug 1758212
-    _geckoSession.setContentDelegate(_geckoContentDelegate);
+    _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
     _geckoSession.open(_geckoRuntime);
     _geckoSession.settings.setAllowJavascript(true);
     _geckoView.setSession(_geckoSession);
 
-    _geckoSession.setNavigationDelegate(_geckoNavigationDelegate);
+    _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
+    _geckoSession.setProgressDelegate(_geckoSessionProgressDelegate);
   }
 
   Future<gecko.WebExtensionPort> get _webExtensionPort =>
@@ -267,10 +293,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   @override
-  Future<String?> currentUrl() {
-    // TODO: implement currentUrl
-    return super.currentUrl();
-  }
+  Future<String?> currentUrl() => Future.value(_currentUrl);
 
   @override
   Future<bool> canGoBack() => Future.value(_canGoBack);
@@ -304,9 +327,6 @@ class GeckoWebViewController extends PlatformWebViewController {
     covariant GeckoNavigationDelegate handler,
   ) async {
     _currentNavigationDelegate = handler;
-    await Future.wait([
-      _geckoSession.setProgressDelegate(handler.geckoProgressDelegate),
-    ]);
   }
 
   @override
@@ -678,32 +698,7 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
             : GeckoNavigationDelegateCreationParams.fromPlatformNavigationDelegateCreationParams(
                 params,
               ),
-      ) {
-    final weakThis = WeakReference<GeckoNavigationDelegate>(this);
-    _progressDelegate = gecko.GeckoSessionProgressDelegate(
-      onPageStart: (_, session, url) {
-        final callback = weakThis.target?._onPageStarted;
-        if (callback != null) callback(url);
-      },
-      onPageStop: (_, session, success) {
-        final callback = weakThis.target?._onPageFinished;
-        // TODO: Pass the actual URL instead of an empty string when the callback is triggered.
-        if (callback != null) callback('');
-      },
-      onProgressChange: (_, session, progress) {
-        final callback = weakThis.target?._onProgress;
-        if (callback != null) callback(progress);
-      },
-    );
-  }
-
-  late final gecko.GeckoSessionProgressDelegate _progressDelegate;
-
-  /// Gets the native [gecko.GeckoSessionProgressDelegate] that is bridged by this [GeckoNavigationDelegate].
-  ///
-  /// Used by the [GeckoWebViewController] to set the `geckoview.GeckoSession.setProgressDelegate`.
-  gecko.GeckoSessionProgressDelegate get geckoProgressDelegate =>
-      _progressDelegate;
+      );
 
   PageEventCallback? _onPageStarted;
   PageEventCallback? _onPageFinished;

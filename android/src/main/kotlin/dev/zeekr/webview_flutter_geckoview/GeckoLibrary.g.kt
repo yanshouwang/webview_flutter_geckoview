@@ -1182,6 +1182,12 @@ abstract class PigeonApiWebExtensionMessageDelegate(open val pigeonRegistrar: Ge
 }
 @Suppress("UNCHECKED_CAST")
 abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /**
+   * WebExtension.MessageSender corresponding to this port.
+   * The application identifier of the MessageDelegate that opened this port.
+   */
+  abstract fun getName(pigeon_instance: org.mozilla.geckoview.WebExtension.Port): String
+
   /** Disconnects this port and notifies the other end. */
   abstract fun disconnect(pigeon_instance: org.mozilla.geckoview.WebExtension.Port)
 
@@ -1195,6 +1201,23 @@ abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: GeckoLibraryP
     @Suppress("LocalVariableName")
     fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionPort?) {
       val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.getName", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
+            val wrapped: List<Any?> = try {
+              listOf(api.getName(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
       run {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.disconnect", codec)
         if (api != null) {
