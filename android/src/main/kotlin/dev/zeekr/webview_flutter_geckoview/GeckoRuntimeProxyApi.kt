@@ -6,12 +6,8 @@ import org.mozilla.geckoview.WebExtensionController
 
 class GeckoRuntimeProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiGeckoRuntime(pigeonRegistrar) {
-    companion object {
-        var instance: GeckoRuntime? = null
-    }
-
     override fun instance(): GeckoRuntime {
-        return instance ?: GeckoRuntime.create(pigeonRegistrar.context).also { instance = it }
+        return pigeonRegistrar.geckoRuntime
     }
 
     override fun settings(pigeon_instance: GeckoRuntime): GeckoRuntimeSettings {

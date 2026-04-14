@@ -1,6 +1,7 @@
 package dev.zeekr.webview_flutter_geckoview
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import org.mozilla.geckoview.GeckoRuntime
 
 /**
  * Java platform implementation of the webview_flutter plugin.
@@ -8,12 +9,18 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
  * <p>Register this in an add to app scenario to gracefully handle activity and context changes.
  */
 class WebviewFlutterPlugin : FlutterPlugin {
+    companion object {
+        var geckoRuntime: GeckoRuntime? = null
+    }
+
     lateinit var proxyApiRegistrar: ProxyApiRegistrar
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         proxyApiRegistrar = ProxyApiRegistrar(
             binding.binaryMessenger,
             binding.applicationContext,
+            geckoRuntime ?: GeckoRuntime.create(binding.applicationContext)
+                .also { geckoRuntime = it },
             FlutterAssetManager.PluginBindingFlutterAssetManager(
                 binding.applicationContext.assets, binding.flutterAssets
             )

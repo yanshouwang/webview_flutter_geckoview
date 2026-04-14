@@ -3745,9 +3745,10 @@ abstract class PigeonApiGeckoSessionProgressDelegate(open val pigeonRegistrar: G
  */
 @Suppress("UNCHECKED_CAST")
 abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Construct a new GeckoView instance. */
   abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoView
 
-  abstract fun setSession(pigeon_instance: org.mozilla.geckoview.GeckoView, session: org.mozilla.geckoview.GeckoSession)
+  abstract fun session(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.GeckoSession
 
   companion object {
     @Suppress("LocalVariableName")
@@ -3772,14 +3773,14 @@ abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonPr
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.setSession", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.session", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
-            val sessionArg = args[1] as org.mozilla.geckoview.GeckoSession
+            val pigeon_identifierArg = args[1] as Long
             val wrapped: List<Any?> = try {
-              api.setSession(pigeon_instanceArg, sessionArg)
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.session(pigeon_instanceArg), pigeon_identifierArg)
               listOf(null)
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)

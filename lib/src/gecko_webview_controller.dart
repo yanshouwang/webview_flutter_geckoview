@@ -69,7 +69,6 @@ class GeckoWebViewControllerCreationParams
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
   final gecko.GeckoRuntime _geckoRuntime;
-  final gecko.GeckoSession _geckoSession;
   final gecko.GeckoView _geckoView;
   final gecko.FlutterAssetManager _flutterAssetManager;
 
@@ -124,6 +123,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     onConnect: withWeakReferenceTo(
       this,
       (weakThis) => (_, port) {
+        debugPrint('webExtensionPort connected');
         weakThis.target?._webExtensionPortCompleter.complete(port);
         port.setDelegate(_webExtensioinPortDelegate);
       },
@@ -161,7 +161,6 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
     : _geckoRuntime = gecko.GeckoRuntime.instance,
-      _geckoSession = gecko.GeckoSession(),
       _geckoView = gecko.GeckoView(
         // onScrollChanged: withWeakReferenceTo(this, (
         //   WeakReference<AndroidWebViewController> weakReference,
@@ -205,13 +204,12 @@ class GeckoWebViewController extends PlatformWebViewController {
 
     // Workaround for Bug 1758212
     _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
-    _geckoSession.open(_geckoRuntime);
-    _geckoSession.settings.setAllowJavascript(true);
-    _geckoView.setSession(_geckoSession);
-
     _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
     _geckoSession.setProgressDelegate(_geckoSessionProgressDelegate);
+    _geckoSession.settings.setAllowJavascript(true);
   }
+
+  gecko.GeckoSession get _geckoSession => _geckoView.session;
 
   Future<gecko.WebExtensionPort> get _webExtensionPort =>
       _webExtensionPortCompleter.future;

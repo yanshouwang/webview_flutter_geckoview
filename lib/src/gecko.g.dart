@@ -4762,6 +4762,7 @@ class GeckoSessionProgressDelegate extends PigeonInternalProxyApiBaseClass {
 ///
 /// See https://developer.android.com/reference/android/webkit/WebView.
 class GeckoView extends View {
+  /// Construct a new GeckoView instance.
   factory GeckoView({
     BinaryMessenger? pigeon_binaryMessenger,
     PigeonInstanceManager? pigeon_instanceManager,
@@ -4775,6 +4776,7 @@ class GeckoView extends View {
     );
   }
 
+  /// Construct a new GeckoView instance.
   @protected
   GeckoView.pigeon_new({
     super.pigeon_binaryMessenger,
@@ -4817,6 +4819,8 @@ class GeckoView extends View {
 
   late final _PigeonInternalProxyApiBaseCodec _pigeonVar_codecGeckoView =
       _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
+
+  late final GeckoSession session = pigeonVar_session();
 
   static void pigeon_setUpMessageHandlers({
     bool pigeon_clearHandlers = false,
@@ -4861,26 +4865,35 @@ class GeckoView extends View {
     }
   }
 
-  Future<void> setSession(GeckoSession session) async {
+  GeckoSession pigeonVar_session() {
+    final GeckoSession pigeonVar_instance = GeckoSession.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+    );
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecGeckoView;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
-    const pigeonVar_channelName =
-        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.setSession';
-    final pigeonVar_channel = BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
-    final Future<Object?> pigeonVar_sendFuture =
-        pigeonVar_channel.send(<Object?>[this, session]);
-    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    final int pigeonVar_instanceIdentifier =
+        pigeon_instanceManager.addDartCreatedInstance(pigeonVar_instance);
+    () async {
+      const pigeonVar_channelName =
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.session';
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+        pigeonVar_channelName,
+        pigeonChannelCodec,
+        binaryMessenger: pigeonVar_binaryMessenger,
+      );
+      final Future<Object?> pigeonVar_sendFuture =
+          pigeonVar_channel.send(<Object?>[this, pigeonVar_instanceIdentifier]);
+      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+      _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+      );
+    }();
+    return pigeonVar_instance;
   }
 
   @override

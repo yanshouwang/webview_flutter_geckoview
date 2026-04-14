@@ -713,91 +713,20 @@ abstract class GeckoSessionProgressDelegate {
   ),
 )
 abstract class GeckoView extends View {
+  /// Construct a new GeckoView instance.
   GeckoView();
 
-  void setSession(GeckoSession session);
+  @attached
+  late GeckoSession session;
 
-  /// This is called in response to an internal scroll in this view (i.e., the
-  /// view scrolled its own contents).
-  // late void Function(int left, int top, int oldLeft, int oldTop)?
-  // onScrollChanged;
+  /// Returns the current GeckoSession attached to this view.
+  // GeckoSession? getSession();
 
-  /// The WebSettings object used to control the settings for this WebView.
-  // @attached
-  // late WebSettings settings;
+  /// Unsets the current session from this instance and returns it, if any.
+  // GeckoSession? releaseSession();
 
-  /// Loads the given data into this WebView using a 'data' scheme URL.
-  // void loadData(String data, String? mimeType, String? encoding);
-
-  /// Loads the given data into this WebView, using baseUrl as the base URL for
-  /// the content.
-  // void loadDataWithBaseUrl(
-  //   String? baseUrl,
-  //   String data,
-  //   String? mimeType,
-  //   String? encoding,
-  //   String? historyUrl,
-  // );
-
-  /// Loads the given URL.
-  // void loadUrl(String url, Map<String, String> headers);
-
-  /// Loads the URL with postData using "POST" method into this WebView.
-  // void postUrl(String url, Uint8List data);
-
-  /// Gets the URL for the current page.
-  // String? getUrl();
-
-  /// Gets whether this WebView has a back history item.
-  // bool canGoBack();
-
-  /// Gets whether this WebView has a forward history item.
-  // bool canGoForward();
-
-  /// Goes back in the history of this WebView.
-  // void goBack();
-
-  /// Goes forward in the history of this WebView.
-  // void goForward();
-
-  /// Reloads the current URL.
-  // void reload();
-
-  /// Clears the resource cache.
-  // void clearCache(bool includeDiskFiles);
-
-  /// Asynchronously evaluates JavaScript in the context of the currently
-  /// displayed page.
-  // @async
-  // String? evaluateJavascript(String javascriptString);
-
-  /// Gets the title for the current page.
-  // String? getTitle();
-
-  /// Enables debugging of web contents (HTML / CSS / JavaScript) loaded into
-  /// any WebViews of this application.
-  // @static
-  // void setWebContentsDebuggingEnabled(bool enabled);
-
-  /// Sets the WebViewClient that will receive various notifications and
-  /// requests.
-  // void setWebViewClient(WebViewClient? client);
-
-  /// Injects the supplied Java object into this WebView.
-  // void addJavaScriptChannel(JavaScriptChannel channel);
-
-  /// Removes a previously injected Java object from this WebView.
-  // void removeJavaScriptChannel(String name);
-
-  /// Registers the interface to be used when content can not be handled by the
-  /// rendering engine, and should be downloaded instead.
-  // void setDownloadListener(DownloadListener? listener);
-
-  /// Sets the chrome handler.
-  // void setWebChromeClient(WebChromeClient? client);
-
-  /// Destroys the internal state of this WebView.
-  // void destroy();
+  /// Attach a session to this view.
+  // void setSession(GeckoSession session);
 }
 
 /// This class represents the basic building block for user interface
