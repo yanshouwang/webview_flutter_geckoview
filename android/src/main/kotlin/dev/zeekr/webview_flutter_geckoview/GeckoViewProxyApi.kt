@@ -10,9 +10,13 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     override fun pigeon_defaultConstructor(): GeckoView {
         return object : GeckoView(pigeonRegistrar.context), PlatformView {
             init {
+                val runtime = pigeonRegistrar.geckoRuntime
                 val session = GeckoSession().apply {
-                    this.open(pigeonRegistrar.geckoRuntime)
+                    this.open(runtime)
+                    this.setActive(true)
+                    this.setFocused(true)
                 }
+                runtime.webExtensionController.setTabActive(session, true)
                 this.setSession(session)
             }
 

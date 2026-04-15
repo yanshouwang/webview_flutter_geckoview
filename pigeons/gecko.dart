@@ -64,11 +64,32 @@ abstract class WebExtensionController {
   ),
 )
 abstract class WebExtension {
+  /// Returns the delegate handling browsing-data operations for this extension.
+  // WebExtensionBrowsingDataDelegate getBrowsingDataDelegate();
+
+  /// Get the download delegate for this extension.
+  // WebExtensionDownloadDelegate getDownloadDelegate();
+
+  /// Get the tab delegate for this extension.
+  WebExtensionTabDelegate? getTabDelegate();
+
+  /// Set the Action delegate for this WebExtension.
+  // void setActionDelegate(WebExtensionActionDelegate delegate);
+
+  /// Sets the delegate to handle browsing-data operations (clear, remove, get settings).
+  // void setBrowsingDataDelegate(WebExtensionBrowsingDataDelegate delegate);
+
+  /// Set the download delegate for this extension.
+  // void setDownloadDelegate(WebExtensionDownloadDelegate delegate);
+
   /// Defines the message delegate for a Native App.
   void setMessageDelegate(
     WebExtensionMessageDelegate delegate,
     String nativeApp,
   );
+
+  /// Set the tab delegate for this extension.
+  void setTabDelegate(WebExtensionTabDelegate delegate);
 }
 
 @ProxyApi(
@@ -93,6 +114,41 @@ abstract class WebExtensionMessageDelegate {
 
 @ProxyApi(
   kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.TabDelegate',
+  ),
+)
+abstract class WebExtensionTabDelegate {
+  WebExtensionTabDelegate();
+
+  /// Called when tabs.create is invoked, this method returns a *newly-created* session that GeckoView will use to load the requested page on.
+  @async
+  late GeckoSession Function(
+    WebExtension source,
+    WebExtensionCreateTabDetails createDetails,
+  )
+  onNewTab;
+
+  /// Called when runtime.openOptionsPage is invoked with options_ui.open_in_tab = false.
+  late void Function(WebExtension source) onOpenOptionsPage;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.CreateTabDetails',
+  ),
+)
+abstract class WebExtensionCreateTabDetails {
+  late final bool? active;
+  late final String? cookieStoreId;
+  late final bool? discarded;
+  late final int? index;
+  late final bool? openInReaderMode;
+  late final bool? pinned;
+  late final String? url;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
     fullClassName: 'org.mozilla.geckoview.WebExtension.Port',
   ),
 )
@@ -102,7 +158,7 @@ abstract class WebExtensionPort {
   // late WebExtensionMessageSender sender;
 
   /// The application identifier of the MessageDelegate that opened this port.
-  String getName();
+  late final String name;
 
   /// Disconnects this port and notifies the other end.
   void disconnect();
@@ -171,6 +227,12 @@ abstract class WebExtensionSessionController {
 )
 abstract class GeckoSession {
   GeckoSession();
+
+  /// This provides the native `GeckoSession()` constructor
+  /// as an async method to ensure the class is added to the InstanceManager.
+  /// See https://github.com/flutter/flutter/issues/162437.
+  @static
+  GeckoSession createAsync();
 
   /// Get the default user agent for this GeckoView build.
   @static

@@ -30,6 +30,14 @@ class ProxyApiRegistrar(
         return WebExtensionMessageDelegateProxyApi(this)
     }
 
+    override fun getPigeonApiWebExtensionTabDelegate(): PigeonApiWebExtensionTabDelegate {
+        return WebExtensionTabDelegateProxyApi(this)
+    }
+
+    override fun getPigeonApiWebExtensionCreateTabDetails(): PigeonApiWebExtensionCreateTabDetails {
+        return WebExtensionCreateTabDetailsProxyApi(this)
+    }
+
     override fun getPigeonApiWebExtensionPort(): PigeonApiWebExtensionPort {
         return WebExtensionPortProxyApi(this)
     }

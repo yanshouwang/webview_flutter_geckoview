@@ -122,10 +122,11 @@ class GeckoWebViewController extends PlatformWebViewController {
   late final _webExtensionMessageDelegate = gecko.WebExtensionMessageDelegate(
     onConnect: withWeakReferenceTo(
       this,
-      (weakThis) => (_, port) {
-        debugPrint('webExtensionPort connected');
-        weakThis.target?._webExtensionPortCompleter.complete(port);
-        port.setDelegate(_webExtensioinPortDelegate);
+      (weakThis) => (_, webExtensionPort) {
+        final target = weakThis.target;
+        if (target == null) return;
+        target._webExtensionPortCompleter.complete(webExtensionPort);
+        webExtensionPort.setDelegate(target._webExtensioinPortDelegate);
       },
     ),
   );
@@ -133,13 +134,13 @@ class GeckoWebViewController extends PlatformWebViewController {
   late final _webExtensioinPortDelegate = gecko.WebExtensionPortDelegate(
     onDisconnect: withWeakReferenceTo(
       this,
-      (weakThis) => (_, port) {
-        debugPrint('webExtensionPort disconnected');
+      (weakThis) => (_, webExtensionPort) {
+        debugPrint('webExtensionPort disconnected: ${webExtensionPort.name}');
       },
     ),
     onPortMessage: withWeakReferenceTo(
       this,
-      (weakThis) => (_, message, port) {
+      (weakThis) => (_, message, webExtensionPort) {
         final controller = weakThis.target;
         if (controller == null) return;
         final items = json.decode(message) as Map<String, dynamic>;
@@ -156,8 +157,12 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   var _canGoBack = false;
   var _canGoForward = false;
+
   String? _currentUrl;
   GeckoNavigationDelegate? _currentNavigationDelegate;
+
+  Future<gecko.WebExtensionPort> get _webExtensionPort =>
+      _webExtensionPortCompleter.future;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
     : _geckoRuntime = gecko.GeckoRuntime.instance,
@@ -191,15 +196,15 @@ class GeckoWebViewController extends PlatformWebViewController {
             debugPrint('ensureBuiltIn failed: extension is null');
             return;
           }
-          // extension.setMessageDelegate(
-          //   _geckoMessageDelegate,
-          //   'webview_flutter',
-          // );
-          _geckoSession.webExtensionController.setMessageDelegate(
-            extension,
+          extension.setMessageDelegate(
             _webExtensionMessageDelegate,
             'webview_flutter',
           );
+          // _geckoSession.webExtensionController.setMessageDelegate(
+          //   extension,
+          //   _webExtensionMessageDelegate,
+          //   'webview_flutter',
+          // );
         }, onError: (error) => debugPrint('ensureBuiltIn failed: $error'));
 
     // Workaround for Bug 1758212
@@ -210,9 +215,6 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   gecko.GeckoSession get _geckoSession => _geckoView.session;
-
-  Future<gecko.WebExtensionPort> get _webExtensionPort =>
-      _webExtensionPortCompleter.future;
 
   @override
   Future<void> loadFile(String absoluteFilePath) {

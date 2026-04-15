@@ -20,6 +20,10 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         return pigeon_instance.webExtensionController
     }
 
+    override fun createAsync(): GeckoSession {
+        return GeckoSession()
+    }
+
     override fun getDefaultUserAgent(): String {
         return GeckoSession.getDefaultUserAgent()
     }
