@@ -14,9 +14,9 @@
     ]
   },
   "permissions": [
-    "tabs",
     "nativeMessaging",
     "geckoViewAddons",
+    "tabs",
     "<all_urls>"
   ]
 }
