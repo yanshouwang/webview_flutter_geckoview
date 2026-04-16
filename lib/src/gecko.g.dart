@@ -95,8 +95,77 @@ class PigeonOverrides {
   static GeckoSessionLoader Function()? geckoSessionLoader_new;
 
   /// Overrides [GeckoSessionContentDelegate.new].
-  static GeckoSessionContentDelegate Function()?
-      geckoSessionContentDelegate_new;
+  static GeckoSessionContentDelegate Function({
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCloseRequest,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCookieBannerDetected,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCookieBannerHandled,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCrash,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFirstComposite,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFirstContentfulPaint,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFocusRequest,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      bool fullScreen,
+    )? onFullScreen,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession geckoSession,
+    )? onHideDynamicToolbar,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onKill,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String viewportFit,
+    )? onMetaViewportFitChange,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onPaintStatusReset,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String previewImageUrl,
+    )? onPreviewImage,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession geckoSession,
+    )? onShowDynamicToolbar,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String? title,
+    )? onTitleChange,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String manifest,
+    )? onWebAppManifest,
+  })? geckoSessionContentDelegate_new;
 
   /// Overrides [GeckoSessionNavigationDelegate.new].
   static GeckoSessionNavigationDelegate Function({
@@ -4132,13 +4201,115 @@ class GeckoSessionContentDelegate extends PigeonInternalProxyApiBaseClass {
   factory GeckoSessionContentDelegate({
     BinaryMessenger? pigeon_binaryMessenger,
     PigeonInstanceManager? pigeon_instanceManager,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCloseRequest,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCookieBannerDetected,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCookieBannerHandled,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCrash,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFirstComposite,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFirstContentfulPaint,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFocusRequest,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      bool fullScreen,
+    )? onFullScreen,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession geckoSession,
+    )? onHideDynamicToolbar,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onKill,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String viewportFit,
+    )? onMetaViewportFitChange,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onPaintStatusReset,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String previewImageUrl,
+    )? onPreviewImage,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession geckoSession,
+    )? onShowDynamicToolbar,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String? title,
+    )? onTitleChange,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String manifest,
+    )? onWebAppManifest,
   }) {
     if (PigeonOverrides.geckoSessionContentDelegate_new != null) {
-      return PigeonOverrides.geckoSessionContentDelegate_new!();
+      return PigeonOverrides.geckoSessionContentDelegate_new!(
+        onCloseRequest: onCloseRequest,
+        onCookieBannerDetected: onCookieBannerDetected,
+        onCookieBannerHandled: onCookieBannerHandled,
+        onCrash: onCrash,
+        onFirstComposite: onFirstComposite,
+        onFirstContentfulPaint: onFirstContentfulPaint,
+        onFocusRequest: onFocusRequest,
+        onFullScreen: onFullScreen,
+        onHideDynamicToolbar: onHideDynamicToolbar,
+        onKill: onKill,
+        onMetaViewportFitChange: onMetaViewportFitChange,
+        onPaintStatusReset: onPaintStatusReset,
+        onPreviewImage: onPreviewImage,
+        onShowDynamicToolbar: onShowDynamicToolbar,
+        onTitleChange: onTitleChange,
+        onWebAppManifest: onWebAppManifest,
+      );
     }
     return GeckoSessionContentDelegate.pigeon_new(
       pigeon_binaryMessenger: pigeon_binaryMessenger,
       pigeon_instanceManager: pigeon_instanceManager,
+      onCloseRequest: onCloseRequest,
+      onCookieBannerDetected: onCookieBannerDetected,
+      onCookieBannerHandled: onCookieBannerHandled,
+      onCrash: onCrash,
+      onFirstComposite: onFirstComposite,
+      onFirstContentfulPaint: onFirstContentfulPaint,
+      onFocusRequest: onFocusRequest,
+      onFullScreen: onFullScreen,
+      onHideDynamicToolbar: onHideDynamicToolbar,
+      onKill: onKill,
+      onMetaViewportFitChange: onMetaViewportFitChange,
+      onPaintStatusReset: onPaintStatusReset,
+      onPreviewImage: onPreviewImage,
+      onShowDynamicToolbar: onShowDynamicToolbar,
+      onTitleChange: onTitleChange,
+      onWebAppManifest: onWebAppManifest,
     );
   }
 
@@ -4146,6 +4317,22 @@ class GeckoSessionContentDelegate extends PigeonInternalProxyApiBaseClass {
   GeckoSessionContentDelegate.pigeon_new({
     super.pigeon_binaryMessenger,
     super.pigeon_instanceManager,
+    this.onCloseRequest,
+    this.onCookieBannerDetected,
+    this.onCookieBannerHandled,
+    this.onCrash,
+    this.onFirstComposite,
+    this.onFirstContentfulPaint,
+    this.onFocusRequest,
+    this.onFullScreen,
+    this.onHideDynamicToolbar,
+    this.onKill,
+    this.onMetaViewportFitChange,
+    this.onPaintStatusReset,
+    this.onPreviewImage,
+    this.onShowDynamicToolbar,
+    this.onTitleChange,
+    this.onWebAppManifest,
   }) {
     final int pigeonVar_instanceIdentifier =
         pigeon_instanceManager.addDartCreatedInstance(this);
@@ -4180,17 +4367,495 @@ class GeckoSessionContentDelegate extends PigeonInternalProxyApiBaseClass {
   GeckoSessionContentDelegate.pigeon_detached({
     super.pigeon_binaryMessenger,
     super.pigeon_instanceManager,
+    this.onCloseRequest,
+    this.onCookieBannerDetected,
+    this.onCookieBannerHandled,
+    this.onCrash,
+    this.onFirstComposite,
+    this.onFirstContentfulPaint,
+    this.onFocusRequest,
+    this.onFullScreen,
+    this.onHideDynamicToolbar,
+    this.onKill,
+    this.onMetaViewportFitChange,
+    this.onPaintStatusReset,
+    this.onPreviewImage,
+    this.onShowDynamicToolbar,
+    this.onTitleChange,
+    this.onWebAppManifest,
   });
 
   late final _PigeonInternalProxyApiBaseCodec
       _pigeonVar_codecGeckoSessionContentDelegate =
       _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
 
+  /// A page has requested to close
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onCloseRequest: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onCloseRequest;
+
+  /// A user has initiated the context menu via long-press.
+  /// This method is called when a cookie banner was detected.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onCookieBannerDetected: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onCookieBannerDetected;
+
+  /// This method is called when a cookie banner was handled.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onCookieBannerHandled: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onCookieBannerHandled;
+
+  /// The content process hosting this GeckoSession has crashed.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onCrash: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onCrash;
+
+  /// This is fired when there is a response that cannot be handled by Gecko (e.g., a download).
+  /// Notification that the first content composition has occurred.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onFirstComposite: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onFirstComposite;
+
+  /// Notification that the first content paint has occurred.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onFirstContentfulPaint: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onFirstContentfulPaint;
+
+  /// A page has requested focus.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onFocusRequest: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onFocusRequest;
+
+  /// A page has entered or exited full screen mode.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onFullScreen: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+    bool fullScreen,
+  )? onFullScreen;
+
+  /// The app should hide its dynamic toolbar.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onHideDynamicToolbar: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession geckoSession,
+  )? onHideDynamicToolbar;
+
+  /// The content process hosting this GeckoSession has been killed.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onKill: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onKill;
+
+  /// A viewport-fit was discovered in the content or updated after the content.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onMetaViewportFitChange: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+    String viewportFit,
+  )? onMetaViewportFitChange;
+
+  /// Notification that the paint status has been reset.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onPaintStatusReset: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+  )? onPaintStatusReset;
+
+  /// A page has requested to change pointer icon.
+  /// A preview image was discovered in the content after the content loaded.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onPreviewImage: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+    String previewImageUrl,
+  )? onPreviewImage;
+
+  /// The app should display its dynamic toolbar, fully expanded to the height that was previously specified via GeckoView.setDynamicToolbarMaxHeight(int).
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onShowDynamicToolbar: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession geckoSession,
+  )? onShowDynamicToolbar;
+
+  /// A script has exceeded its execution timeout value
+  /// A page title was discovered in the content or updated after the content loaded.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onTitleChange: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+    String? title,
+  )? onTitleChange;
+
+  /// This is fired when the loaded document has a valid Web App Manifest present.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionContentDelegate instance = GeckoSessionContentDelegate(
+  ///  onWebAppManifest: (GeckoSessionContentDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionContentDelegate pigeon_instance,
+    GeckoSession session,
+    String manifest,
+  )? onWebAppManifest;
+
   static void pigeon_setUpMessageHandlers({
     bool pigeon_clearHandlers = false,
     BinaryMessenger? pigeon_binaryMessenger,
     PigeonInstanceManager? pigeon_instanceManager,
     GeckoSessionContentDelegate Function()? pigeon_newInstance,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCloseRequest,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCookieBannerDetected,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCookieBannerHandled,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onCrash,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFirstComposite,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFirstContentfulPaint,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onFocusRequest,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      bool fullScreen,
+    )? onFullScreen,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession geckoSession,
+    )? onHideDynamicToolbar,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onKill,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String viewportFit,
+    )? onMetaViewportFitChange,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+    )? onPaintStatusReset,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String previewImageUrl,
+    )? onPreviewImage,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession geckoSession,
+    )? onShowDynamicToolbar,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String? title,
+    )? onTitleChange,
+    void Function(
+      GeckoSessionContentDelegate pigeon_instance,
+      GeckoSession session,
+      String manifest,
+    )? onWebAppManifest,
   }) {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _PigeonInternalProxyApiBaseCodec(
@@ -4227,6 +4892,446 @@ class GeckoSessionContentDelegate extends PigeonInternalProxyApiBaseClass {
         });
       }
     }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCloseRequest',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onCloseRequest ?? arg_pigeon_instance.onCloseRequest)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCookieBannerDetected',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onCookieBannerDetected ??
+                    arg_pigeon_instance.onCookieBannerDetected)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCookieBannerHandled',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onCookieBannerHandled ?? arg_pigeon_instance.onCookieBannerHandled)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCrash',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onCrash ?? arg_pigeon_instance.onCrash)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFirstComposite',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onFirstComposite ?? arg_pigeon_instance.onFirstComposite)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFirstContentfulPaint',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onFirstContentfulPaint ??
+                    arg_pigeon_instance.onFirstContentfulPaint)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFocusRequest',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onFocusRequest ?? arg_pigeon_instance.onFocusRequest)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFullScreen',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          final bool arg_fullScreen = args[2]! as bool;
+          try {
+            (onFullScreen ?? arg_pigeon_instance.onFullScreen)
+                ?.call(arg_pigeon_instance, arg_session, arg_fullScreen);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onHideDynamicToolbar',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_geckoSession = args[1]! as GeckoSession;
+          try {
+            (onHideDynamicToolbar ?? arg_pigeon_instance.onHideDynamicToolbar)
+                ?.call(arg_pigeon_instance, arg_geckoSession);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onKill',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onKill ?? arg_pigeon_instance.onKill)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onMetaViewportFitChange',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          final String arg_viewportFit = args[2]! as String;
+          try {
+            (onMetaViewportFitChange ??
+                    arg_pigeon_instance.onMetaViewportFitChange)
+                ?.call(arg_pigeon_instance, arg_session, arg_viewportFit);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onPaintStatusReset',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          try {
+            (onPaintStatusReset ?? arg_pigeon_instance.onPaintStatusReset)
+                ?.call(arg_pigeon_instance, arg_session);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onPreviewImage',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          final String arg_previewImageUrl = args[2]! as String;
+          try {
+            (onPreviewImage ?? arg_pigeon_instance.onPreviewImage)
+                ?.call(arg_pigeon_instance, arg_session, arg_previewImageUrl);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onShowDynamicToolbar',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_geckoSession = args[1]! as GeckoSession;
+          try {
+            (onShowDynamicToolbar ?? arg_pigeon_instance.onShowDynamicToolbar)
+                ?.call(arg_pigeon_instance, arg_geckoSession);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onTitleChange',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          final String? arg_title = args[2] as String?;
+          try {
+            (onTitleChange ?? arg_pigeon_instance.onTitleChange)
+                ?.call(arg_pigeon_instance, arg_session, arg_title);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onWebAppManifest',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionContentDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionContentDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          final String arg_manifest = args[2]! as String;
+          try {
+            (onWebAppManifest ?? arg_pigeon_instance.onWebAppManifest)
+                ?.call(arg_pigeon_instance, arg_session, arg_manifest);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
   }
 
   @override
@@ -4234,6 +5339,22 @@ class GeckoSessionContentDelegate extends PigeonInternalProxyApiBaseClass {
     return GeckoSessionContentDelegate.pigeon_detached(
       pigeon_binaryMessenger: pigeon_binaryMessenger,
       pigeon_instanceManager: pigeon_instanceManager,
+      onCloseRequest: onCloseRequest,
+      onCookieBannerDetected: onCookieBannerDetected,
+      onCookieBannerHandled: onCookieBannerHandled,
+      onCrash: onCrash,
+      onFirstComposite: onFirstComposite,
+      onFirstContentfulPaint: onFirstContentfulPaint,
+      onFocusRequest: onFocusRequest,
+      onFullScreen: onFullScreen,
+      onHideDynamicToolbar: onHideDynamicToolbar,
+      onKill: onKill,
+      onMetaViewportFitChange: onMetaViewportFitChange,
+      onPaintStatusReset: onPaintStatusReset,
+      onPreviewImage: onPreviewImage,
+      onShowDynamicToolbar: onShowDynamicToolbar,
+      onTitleChange: onTitleChange,
+      onWebAppManifest: onWebAppManifest,
     );
   }
 }

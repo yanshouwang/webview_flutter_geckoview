@@ -630,6 +630,80 @@ abstract class GeckoSessionSettings {
 )
 abstract class GeckoSessionContentDelegate {
   GeckoSessionContentDelegate();
+
+  /// A page has requested to close
+  late void Function(GeckoSession session)? onCloseRequest;
+
+  /// A user has initiated the context menu via long-press.
+  // late void Function(
+  //   GeckoSession session,
+  //   int screenX,
+  //   int screenY,
+  //   GeckoSessionContentDelegateContextElement element,
+  // )?
+  // onContextMenu;
+
+  /// This method is called when a cookie banner was detected.
+  late void Function(GeckoSession session)? onCookieBannerDetected;
+
+  /// This method is called when a cookie banner was handled.
+  late void Function(GeckoSession session)? onCookieBannerHandled;
+
+  /// The content process hosting this GeckoSession has crashed.
+  late void Function(GeckoSession session)? onCrash;
+
+  /// This is fired when there is a response that cannot be handled by Gecko (e.g., a download).
+  // late void Function(GeckoSession session, WebResponse response)?
+  // onExternalResponse;
+
+  /// Notification that the first content composition has occurred.
+  late void Function(GeckoSession session)? onFirstComposite;
+
+  /// Notification that the first content paint has occurred.
+  late void Function(GeckoSession session)? onFirstContentfulPaint;
+
+  /// A page has requested focus.
+  late void Function(GeckoSession session)? onFocusRequest;
+
+  /// A page has entered or exited full screen mode.
+  late void Function(GeckoSession session, bool fullScreen)? onFullScreen;
+
+  /// The app should hide its dynamic toolbar.
+  late void Function(GeckoSession geckoSession)? onHideDynamicToolbar;
+
+  /// The content process hosting this GeckoSession has been killed.
+  late void Function(GeckoSession session)? onKill;
+
+  /// A viewport-fit was discovered in the content or updated after the content.
+  late void Function(GeckoSession session, String viewportFit)?
+  onMetaViewportFitChange;
+
+  /// Notification that the paint status has been reset.
+  late void Function(GeckoSession session)? onPaintStatusReset;
+
+  /// A page has requested to change pointer icon.
+  // late void Function(GeckoSession session, PointerIcon icon)?
+  // onPointerIconChange;
+
+  /// A preview image was discovered in the content after the content loaded.
+  late void Function(GeckoSession session, String previewImageUrl)?
+  onPreviewImage;
+
+  /// The app should display its dynamic toolbar, fully expanded to the height that was previously specified via GeckoView.setDynamicToolbarMaxHeight(int).
+  late void Function(GeckoSession geckoSession)? onShowDynamicToolbar;
+
+  /// A script has exceeded its execution timeout value
+  // late GeckoResult<SlowScriptResponse> Function(
+  //   GeckoSession geckoSession,
+  //   String scriptFileName,
+  // )?
+  // onSlowScript;
+
+  /// A page title was discovered in the content or updated after the content loaded.
+  late void Function(GeckoSession session, String? title)? onTitleChange;
+
+  /// This is fired when the loaded document has a valid Web App Manifest present.
+  late void Function(GeckoSession session, String manifest)? onWebAppManifest;
 }
 
 @ProxyApi(

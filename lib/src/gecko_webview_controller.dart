@@ -77,6 +77,15 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
 
+  late final _geckoSessionContentDelegate = gecko.GeckoSessionContentDelegate(
+    onTitleChange: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, title) {
+        weakThis.target?._title = title;
+      },
+    ),
+  );
+
   late final _geckoSessionNavigationDelegate =
       gecko.GeckoSessionNavigationDelegate(
         onCanGoBack: withWeakReferenceTo(
@@ -97,7 +106,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     onPageStart: withWeakReferenceTo(
       this,
       (weakThis) => (_, session, url) {
-        _currentUrl = url;
+        weakThis.target?._currentUrl = url;
         weakThis.target?._currentNavigationDelegate?._onPageStarted?.call(url);
       },
     ),
@@ -174,6 +183,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   var _canGoForward = false;
 
   String? _currentUrl;
+  String? _title;
   GeckoNavigationDelegate? _currentNavigationDelegate;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
@@ -217,6 +227,7 @@ class GeckoWebViewController extends PlatformWebViewController {
           ),
         );
 
+    _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
     _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
     _geckoSession.setProgressDelegate(_geckoSessionProgressDelegate);
     _geckoSession.settings.setAllowJavascript(true);
@@ -400,10 +411,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   @override
-  Future<String?> getTitle() {
-    // TODO: implement getTitle
-    return super.getTitle();
-  }
+  Future<String?> getTitle() => Future.value(_title);
 
   @override
   Future<void> scrollTo(int x, int y) {

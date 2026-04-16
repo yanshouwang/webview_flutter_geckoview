@@ -3500,6 +3500,514 @@ abstract class PigeonApiGeckoSessionContentDelegate(open val pigeonRegistrar: Ge
     }
   }
 
+  /** A page has requested to close */
+  fun onCloseRequest(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onCloseRequest` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCloseRequest"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * A user has initiated the context menu via long-press.
+   * This method is called when a cookie banner was detected.
+   */
+  fun onCookieBannerDetected(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onCookieBannerDetected` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCookieBannerDetected"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** This method is called when a cookie banner was handled. */
+  fun onCookieBannerHandled(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onCookieBannerHandled` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCookieBannerHandled"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** The content process hosting this GeckoSession has crashed. */
+  fun onCrash(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onCrash` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onCrash"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * This is fired when there is a response that cannot be handled by Gecko (e.g., a download).
+   * Notification that the first content composition has occurred.
+   */
+  fun onFirstComposite(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onFirstComposite` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFirstComposite"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** Notification that the first content paint has occurred. */
+  fun onFirstContentfulPaint(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onFirstContentfulPaint` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFirstContentfulPaint"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** A page has requested focus. */
+  fun onFocusRequest(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onFocusRequest` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFocusRequest"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** A page has entered or exited full screen mode. */
+  fun onFullScreen(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, fullScreenArg: Boolean, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onFullScreen` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onFullScreen"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, fullScreenArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** The app should hide its dynamic toolbar. */
+  fun onHideDynamicToolbar(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, geckoSessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onHideDynamicToolbar` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onHideDynamicToolbar"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, geckoSessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** The content process hosting this GeckoSession has been killed. */
+  fun onKill(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onKill` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onKill"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** A viewport-fit was discovered in the content or updated after the content. */
+  fun onMetaViewportFitChange(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, viewportFitArg: String, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onMetaViewportFitChange` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onMetaViewportFitChange"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, viewportFitArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** Notification that the paint status has been reset. */
+  fun onPaintStatusReset(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onPaintStatusReset` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onPaintStatusReset"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * A page has requested to change pointer icon.
+   * A preview image was discovered in the content after the content loaded.
+   */
+  fun onPreviewImage(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, previewImageUrlArg: String, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onPreviewImage` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onPreviewImage"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, previewImageUrlArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** The app should display its dynamic toolbar, fully expanded to the height that was previously specified via GeckoView.setDynamicToolbarMaxHeight(int). */
+  fun onShowDynamicToolbar(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, geckoSessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onShowDynamicToolbar` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onShowDynamicToolbar"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, geckoSessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * A script has exceeded its execution timeout value
+   * A page title was discovered in the content or updated after the content loaded.
+   */
+  fun onTitleChange(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, titleArg: String?, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onTitleChange` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onTitleChange"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, titleArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** This is fired when the loaded document has a valid Web App Manifest present. */
+  fun onWebAppManifest(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.ContentDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, manifestArg: String, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionContentDelegate.onWebAppManifest` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionContentDelegate.onWebAppManifest"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, manifestArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
 }
 @Suppress("UNCHECKED_CAST")
 abstract class PigeonApiGeckoSessionNavigationDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
