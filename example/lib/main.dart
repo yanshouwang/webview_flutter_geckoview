@@ -235,15 +235,16 @@ class _WebViewExampleState extends State<WebViewExample> {
           },
         ),
       )
-      //       ..setOnPlatformPermissionRequest((
-      //         PlatformWebViewPermissionRequest request,
-      //       ) {
-      //         debugPrint(
-      //           'requesting permissions for ${request.types.map((WebViewPermissionResourceType type) => type.name)}',
-      //         );
-      //         request.grant();
-      //       })
+      ..setOnPlatformPermissionRequest((
+        PlatformWebViewPermissionRequest request,
+      ) {
+        debugPrint(
+          'requesting permissions for ${request.types.map((WebViewPermissionResourceType type) => type.name)}',
+        );
+        request.grant();
+      })
       ..loadRequest(LoadRequestParams(uri: Uri.parse('https://flutter.dev')));
+    // ..loadRequest(LoadRequestParams(uri: Uri.parse('https://permission.site')));
   }
 
   @override

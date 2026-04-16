@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 import 'gecko.g.dart' as gecko;
+import 'gecko_constants.dart';
 import 'platform_views_service_proxy.dart';
 import 'weak_reference_utils.dart';
 
@@ -102,6 +103,49 @@ class GeckoWebViewController extends PlatformWebViewController {
         ),
       );
 
+  late final _geckoSessionPermissionDelegate =
+      gecko.GeckoSessionPermissionDelegate(
+        onAndroidPermissionsRequest: withWeakReferenceTo(
+          this,
+          (weakThis) => (_, session, permissioins, callback) async {
+            debugPrint('onAndroidPermissionsRequest: $permissioins');
+            final onPermissionRequestCallback =
+                weakThis.target?._onPermissionRequestCallback;
+            if (onPermissionRequestCallback == null) {
+              return callback.reject();
+            } else {
+              final types = permissioins
+                  .map<WebViewPermissionResourceType?>((String type) {
+                    switch (type) {
+                      case PermissionRequestConstants.camera:
+                        return WebViewPermissionResourceType.camera;
+                      case PermissionRequestConstants.recordAudio:
+                        return WebViewPermissionResourceType.microphone;
+                    }
+
+                    // Type not supported.
+                    return null;
+                  })
+                  .whereType<WebViewPermissionResourceType>()
+                  .toSet();
+
+              // If the request didn't contain any permissions recognized by the
+              // implementation, deny by default.
+              if (types.isEmpty) {
+                return callback.reject();
+              }
+
+              onPermissionRequestCallback(
+                GeckoWebViewPermissionRequest._(
+                  types: types,
+                  callback: callback,
+                ),
+              );
+            }
+          },
+        ),
+      );
+
   late final _geckoSessionProgressDelegate = gecko.GeckoSessionProgressDelegate(
     onPageStart: withWeakReferenceTo(
       this,
@@ -185,6 +229,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   String? _currentUrl;
   String? _title;
   GeckoNavigationDelegate? _currentNavigationDelegate;
+  void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
     : _webExtensionPort = Completer(),
@@ -229,6 +274,7 @@ class GeckoWebViewController extends PlatformWebViewController {
 
     _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
     _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
+    _geckoSession.setPermissionDelegate(_geckoSessionPermissionDelegate);
     _geckoSession.setProgressDelegate(_geckoSessionProgressDelegate);
     _geckoSession.settings.setAllowJavascript(true);
   }
@@ -465,9 +511,8 @@ class GeckoWebViewController extends PlatformWebViewController {
   @override
   Future<void> setOnPlatformPermissionRequest(
     void Function(PlatformWebViewPermissionRequest request) onPermissionRequest,
-  ) {
-    // TODO: implement setOnPlatformPermissionRequest
-    return super.setOnPlatformPermissionRequest(onPermissionRequest);
+  ) async {
+    _onPermissionRequestCallback = onPermissionRequest;
   }
 
   @override
@@ -746,6 +791,26 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
   @override
   Future<void> setOnProgress(ProgressCallback onProgress) async {
     _onProgress = onProgress;
+  }
+}
+
+/// Gecko implementation of [PlatformWebViewPermissionRequest].
+class GeckoWebViewPermissionRequest extends PlatformWebViewPermissionRequest {
+  const GeckoWebViewPermissionRequest._({
+    required super.types,
+    required gecko.GeckoSessionPermissionDelegateCallback callback,
+  }) : _callback = callback;
+
+  final gecko.GeckoSessionPermissionDelegateCallback _callback;
+
+  @override
+  Future<void> grant() {
+    return _callback.grant();
+  }
+
+  @override
+  Future<void> deny() {
+    return _callback.reject();
   }
 }
 
