@@ -10,6 +10,9 @@ import 'gecko.g.dart' as gecko;
 import 'platform_views_service_proxy.dart';
 import 'weak_reference_utils.dart';
 
+var _id = 0;
+final _completers = <int, Completer>{};
+
 /// Object specifying parameters for loading a local file in a
 /// [GeckoWebViewController].
 @immutable
@@ -68,14 +71,11 @@ class GeckoWebViewControllerCreationParams
 
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
-  final gecko.GeckoRuntime _geckoRuntime;
-  final gecko.GeckoView _geckoView;
+  final Completer<gecko.WebExtensionPort> _webExtensionPort;
   final gecko.FlutterAssetManager _flutterAssetManager;
+  final gecko.GeckoView _geckoView;
 
-  final _webExtensionPortCompleter = Completer<gecko.WebExtensionPort>();
   final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
-
-  late final _geckoSessionContentDelegate = gecko.GeckoSessionContentDelegate();
 
   late final _geckoSessionNavigationDelegate =
       gecko.GeckoSessionNavigationDelegate(
@@ -119,38 +119,53 @@ class GeckoWebViewController extends PlatformWebViewController {
     ),
   );
 
-  late final _webExtensionMessageDelegate = gecko.WebExtensionMessageDelegate(
-    onConnect: withWeakReferenceTo(
-      this,
-      (weakThis) => (_, webExtensionPort) {
-        final target = weakThis.target;
-        if (target == null) return;
-        target._webExtensionPortCompleter.complete(webExtensionPort);
-        webExtensionPort.setDelegate(target._webExtensioinPortDelegate);
-      },
-    ),
-  );
-
   late final _webExtensioinPortDelegate = gecko.WebExtensionPortDelegate(
     onDisconnect: withWeakReferenceTo(
       this,
       (weakThis) => (_, webExtensionPort) {
-        debugPrint('webExtensionPort disconnected: ${webExtensionPort.name}');
+        debugPrint('webExtensionPort disconnected');
       },
     ),
     onPortMessage: withWeakReferenceTo(
       this,
       (weakThis) => (_, message, webExtensionPort) {
-        final controller = weakThis.target;
-        if (controller == null) return;
-        final items = json.decode(message) as Map<String, dynamic>;
-        final channelName = items['channelName'] as String?;
-        if (channelName == null) return;
-        final channelParams = controller._javaScriptChannelParams[channelName];
-        if (channelParams == null) return;
-        channelParams.onMessageReceived(
-          JavaScriptMessage(message: items['message'] as String),
-        );
+        debugPrint('webExtensionPort received: $message');
+        final target = weakThis.target;
+        if (target == null) return;
+        final object = json.decode(message) as Map<String, dynamic>;
+        final type = object['type'] as int?;
+        if (type == null) return;
+        switch (type) {
+          case 0: // addJavaScriptChannel reply
+          case 1: // removeJavaScriptChannel reply
+          case 2: // runJavaScript reply
+            final id = object['id'] as int?;
+            if (id == null) return;
+            final completer = _completers.remove(id);
+            if (completer == null) return;
+            final error = object['error'];
+            if (error == null) {
+              final result = object['result'];
+              completer.complete(result);
+            } else {
+              completer.completeError(error);
+            }
+            break;
+          case 3: // javaScriptChannel event
+            final javaScriptChannelName = object['name'] as String?;
+            if (javaScriptChannelName == null) return;
+            final javaScriptChannelMessage = object['message'] as String?;
+            if (javaScriptChannelMessage == null) return;
+            final javaScriptChannelParams =
+                target._javaScriptChannelParams[javaScriptChannelName];
+            if (javaScriptChannelParams == null) return;
+            javaScriptChannelParams.onMessageReceived(
+              JavaScriptMessage(message: javaScriptChannelMessage),
+            );
+            break;
+          default:
+            throw ArgumentError.value(type, 'type');
+        }
       },
     ),
   );
@@ -161,11 +176,9 @@ class GeckoWebViewController extends PlatformWebViewController {
   String? _currentUrl;
   GeckoNavigationDelegate? _currentNavigationDelegate;
 
-  Future<gecko.WebExtensionPort> get _webExtensionPort =>
-      _webExtensionPortCompleter.future;
-
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
-    : _geckoRuntime = gecko.GeckoRuntime.instance,
+    : _webExtensionPort = Completer(),
+      _flutterAssetManager = gecko.FlutterAssetManager.instance,
       _geckoView = gecko.GeckoView(
         // onScrollChanged: withWeakReferenceTo(this, (
         //   WeakReference<AndroidWebViewController> weakReference,
@@ -177,7 +190,6 @@ class GeckoWebViewController extends PlatformWebViewController {
         //   };
         // }),
       ),
-      _flutterAssetManager = gecko.FlutterAssetManager.instance,
       super.implementation(
         params is GeckoWebViewControllerCreationParams
             ? params
@@ -185,30 +197,26 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
-    _geckoRuntime.settings.setConsoleOutputEnabled(true);
-    _geckoRuntime.webExtensionController
-        .ensureBuiltIn(
-          'resource://android/assets/messaging/',
-          'messaging@zeekr.dev',
-        )
-        .then((extension) {
-          if (extension == null) {
-            debugPrint('ensureBuiltIn failed: extension is null');
-            return;
-          }
-          extension.setMessageDelegate(
-            _webExtensionMessageDelegate,
-            'webview_flutter',
-          );
-          // _geckoSession.webExtensionController.setMessageDelegate(
-          //   extension,
-          //   _webExtensionMessageDelegate,
-          //   'webview_flutter',
-          // );
-        }, onError: (error) => debugPrint('ensureBuiltIn failed: $error'));
+    gecko.WebExtensionPort.getAsync()
+        .then((e) => ArgumentError.checkNotNull(e))
+        .then(
+          withWeakReferenceTo(
+            this,
+            (weakThis) => (webExtensionPort) {
+              final target = weakThis.target;
+              if (target == null) return;
+              webExtensionPort.setDelegate(target._webExtensioinPortDelegate);
+              target._webExtensionPort.complete(webExtensionPort);
+            },
+          ),
+          onError: withWeakReferenceTo(
+            this,
+            (weakThis) => (error) {
+              weakThis.target?._webExtensionPort.completeError(error);
+            },
+          ),
+        );
 
-    // Workaround for Bug 1758212
-    _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
     _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
     _geckoSession.setProgressDelegate(_geckoSessionProgressDelegate);
     _geckoSession.settings.setAllowJavascript(true);
@@ -333,22 +341,28 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<void> addJavaScriptChannel(
     JavaScriptChannelParams javaScriptChannelParams,
   ) async {
-    final geckoParams = javaScriptChannelParams is GeckoJavaScriptChannelParams
+    final geckoJavaScriptChannelParams =
+        javaScriptChannelParams is GeckoJavaScriptChannelParams
         ? javaScriptChannelParams
         : GeckoJavaScriptChannelParams.fromJavaScriptChannelParams(
             javaScriptChannelParams,
           );
-    final String channelName = geckoParams.name;
-    if (_javaScriptChannelParams.containsKey(channelName)) {
+    final javaScriptChannelName = geckoJavaScriptChannelParams.name;
+    if (_javaScriptChannelParams.containsKey(javaScriptChannelName)) {
       throw ArgumentError(
-        'A JavaScriptChannel with name `$channelName` already exists.',
+        'A JavaScriptChannel with name `$javaScriptChannelName` already exists.',
       );
     }
-    _javaScriptChannelParams[channelName] = geckoParams;
-    final webExtensionPort = await _webExtensionPort;
+    _javaScriptChannelParams[javaScriptChannelName] =
+        geckoJavaScriptChannelParams;
+    final webExtensionPort = await _webExtensionPort.future;
+    final int id = _id++;
     await webExtensionPort.postMessage(
-      json.encode({'action': 0, 'channelName': channelName}),
+      json.encode({'type': 0, 'id': id, 'name': javaScriptChannelName}),
     );
+    final completer = Completer<void>();
+    _completers[id] = completer;
+    await completer.future;
   }
 
   @override
@@ -357,25 +371,32 @@ class GeckoWebViewController extends PlatformWebViewController {
     if (!_javaScriptChannelParams.containsKey(javaScriptChannelName)) {
       return;
     }
-    final webExtensionPort = await _webExtensionPort;
+    final webExtensionPort = await _webExtensionPort.future;
+    final int id = _id++;
     await webExtensionPort.postMessage(
-      json.encode({'action': 1, 'channelName': javaScriptChannelName}),
+      json.encode({'type': 1, 'id': id, 'name': javaScriptChannelName}),
     );
+    final completer = Completer<void>();
+    _completers[id] = completer;
+    await completer.future;
     _javaScriptChannelParams.remove(javaScriptChannelName);
   }
 
   @override
-  Future<void> runJavaScript(String javaScript) async {
-    final webExtensionPort = await _webExtensionPort;
-    await webExtensionPort.postMessage(
-      json.encode({'action': 2, 'javascript': javaScript}),
-    );
-  }
+  Future<void> runJavaScript(String javaScript) =>
+      runJavaScriptReturningResult(javaScript);
 
   @override
-  Future<Object> runJavaScriptReturningResult(String javaScript) {
-    // TODO: implement runJavaScriptReturningResult
-    return super.runJavaScriptReturningResult(javaScript);
+  Future<Object> runJavaScriptReturningResult(String javaScript) async {
+    final webExtensionPort = await _webExtensionPort.future;
+    final int id = _id++;
+    await webExtensionPort.postMessage(
+      json.encode({'type': 2, 'id': id, 'javascript': javaScript}),
+    );
+    final completer = Completer<Object>();
+    _completers[id] = completer;
+    final result = await completer.future;
+    return result;
   }
 
   @override

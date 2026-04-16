@@ -12,6 +12,8 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
             init {
                 val runtime = pigeonRegistrar.geckoRuntime
                 val session = GeckoSession().apply {
+                    // Workaround for Bug 1758212
+                    this.contentDelegate = object : GeckoSession.ContentDelegate {}
                     this.open(runtime)
                     this.setActive(true)
                     this.setFocused(true)

@@ -1433,6 +1433,8 @@ abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: GeckoLibraryP
    */
   abstract fun name(pigeon_instance: org.mozilla.geckoview.WebExtension.Port): String
 
+  abstract fun getAsync(callback: (Result<org.mozilla.geckoview.WebExtension.Port?>) -> Unit)
+
   /** Disconnects this port and notifies the other end. */
   abstract fun disconnect(pigeon_instance: org.mozilla.geckoview.WebExtension.Port)
 
@@ -1446,6 +1448,24 @@ abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: GeckoLibraryP
     @Suppress("LocalVariableName")
     fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionPort?) {
       val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.getAsync", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            api.getAsync{ result: Result<org.mozilla.geckoview.WebExtension.Port?> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
       run {
         val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.disconnect", codec)
         if (api != null) {
@@ -1761,7 +1781,7 @@ abstract class PigeonApiGeckoSession(open val pigeonRegistrar: GeckoLibraryPigeo
   abstract fun webExtensionController(pigeon_instance: org.mozilla.geckoview.GeckoSession): org.mozilla.geckoview.WebExtension.SessionController
 
   /**
-   * This provides the native `AuthenticationChallengeResponse()` constructor
+   * This provides the native `GeckoSession()` constructor
    * as an async method to ensure the class is added to the InstanceManager.
    * See https://github.com/flutter/flutter/issues/162437.
    */

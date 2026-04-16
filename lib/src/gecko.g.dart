@@ -152,6 +152,9 @@ class PigeonOverrides {
   /// Overrides [FlutterAssetManager.instance].
   static FlutterAssetManager? flutterAssetManager_instance;
 
+  /// Overrides [WebExtensionPort.getAsync].
+  static Future<WebExtensionPort?> Function()? webExtensionPort_getAsync;
+
   /// Overrides [GeckoSession.createAsync].
   static Future<GeckoSession> Function()? geckoSession_createAsync;
 
@@ -163,6 +166,7 @@ class PigeonOverrides {
     geckoRuntime_instance = null;
     webExtensionMessageDelegate_new = null;
     webExtensionTabDelegate_new = null;
+    webExtensionPort_getAsync = null;
     webExtensionPortDelegate_new = null;
     geckoSession_new = null;
     geckoSession_createAsync = null;
@@ -1685,6 +1689,35 @@ class WebExtensionPort extends PigeonInternalProxyApiBaseClass {
     }
   }
 
+  static Future<WebExtensionPort?> getAsync({
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+  }) async {
+    if (PigeonOverrides.webExtensionPort_getAsync != null) {
+      return PigeonOverrides.webExtensionPort_getAsync!();
+    }
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(
+            pigeon_instanceManager ?? PigeonInstanceManager.instance);
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.getAsync';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+    return pigeonVar_replyValue as WebExtensionPort?;
+  }
+
   /// Disconnects this port and notifies the other end.
   Future<void> disconnect() async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
@@ -2302,7 +2335,7 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
     return pigeonVar_instance;
   }
 
-  /// This provides the native `AuthenticationChallengeResponse()` constructor
+  /// This provides the native `GeckoSession()` constructor
   /// as an async method to ensure the class is added to the InstanceManager.
   /// See https://github.com/flutter/flutter/issues/162437.
   static Future<GeckoSession> createAsync({

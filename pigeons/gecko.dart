@@ -153,6 +153,10 @@ abstract class WebExtensionCreateTabDetails {
   ),
 )
 abstract class WebExtensionPort {
+  @async
+  @static
+  WebExtensionPort? getAsync();
+
   /// WebExtension.MessageSender corresponding to this port.
   // @attached
   // late WebExtensionMessageSender sender;
