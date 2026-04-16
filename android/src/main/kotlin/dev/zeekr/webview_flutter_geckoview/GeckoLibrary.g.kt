@@ -409,6 +409,12 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
   abstract fun getPigeonApiGeckoRuntimeSettings(): PigeonApiGeckoRuntimeSettings
 
   /**
+   * An implementation of [PigeonApiStorageController] used to add a new Dart instance of
+   * `StorageController` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiStorageController(): PigeonApiStorageController
+
+  /**
    * An implementation of [PigeonApiWebExtensionController] used to add a new Dart instance of
    * `WebExtensionController` to the Dart `InstanceManager`.
    */
@@ -532,6 +538,7 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
     GeckoLibraryPigeonInstanceManagerApi.setUpMessageHandlers(binaryMessenger, instanceManager)
     PigeonApiGeckoRuntime.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoRuntime())
     PigeonApiGeckoRuntimeSettings.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoRuntimeSettings())
+    PigeonApiStorageController.setUpMessageHandlers(binaryMessenger, getPigeonApiStorageController())
     PigeonApiWebExtensionController.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionController())
     PigeonApiWebExtension.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtension())
     PigeonApiWebExtensionMessageDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionMessageDelegate())
@@ -556,6 +563,7 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
     GeckoLibraryPigeonInstanceManagerApi.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoRuntime.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoRuntimeSettings.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiStorageController.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionController.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtension.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionMessageDelegate.setUpMessageHandlers(binaryMessenger, null)
@@ -619,6 +627,13 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
       registrar.getPigeonApiGeckoRuntimeSettings().pigeon_newInstance(value) {
         if (it.isFailure) {
           logNewInstanceFailure("GeckoRuntimeSettings", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.StorageController) {
+      registrar.getPigeonApiStorageController().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("StorageController", value, it.exceptionOrNull())
         }
       }
     }
@@ -788,6 +803,9 @@ abstract class PigeonApiGeckoRuntime(open val pigeonRegistrar: GeckoLibraryPigeo
   /** Get the runtime settings. */
   abstract fun settings(pigeon_instance: org.mozilla.geckoview.GeckoRuntime): org.mozilla.geckoview.GeckoRuntimeSettings
 
+  /** Get the storage controller for this runtime. */
+  abstract fun storageController(pigeon_instance: org.mozilla.geckoview.GeckoRuntime): org.mozilla.geckoview.StorageController
+
   /** Returns a WebExtensionController for this GeckoRuntime. */
   abstract fun webExtensionController(pigeon_instance: org.mozilla.geckoview.GeckoRuntime): org.mozilla.geckoview.WebExtensionController
 
@@ -822,6 +840,25 @@ abstract class PigeonApiGeckoRuntime(open val pigeonRegistrar: GeckoLibraryPigeo
             val pigeon_identifierArg = args[1] as Long
             val wrapped: List<Any?> = try {
               api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.settings(pigeon_instanceArg), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoRuntime.storageController", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoRuntime
+            val pigeon_identifierArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.storageController(pigeon_instanceArg), pigeon_identifierArg)
               listOf(null)
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)
@@ -950,6 +987,245 @@ abstract class PigeonApiGeckoRuntimeSettings(open val pigeonRegistrar: GeckoLibr
       val binaryMessenger = pigeonRegistrar.binaryMessenger
       val codec = pigeonRegistrar.codec
       val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoRuntimeSettings.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiStorageController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Clear data for all hosts. */
+  abstract fun clearData(pigeon_instance: org.mozilla.geckoview.StorageController, flags: Long, callback: (Result<Unit>) -> Unit)
+
+  /** Clear data for the given context ID. */
+  abstract fun clearDataForSessionContext(pigeon_instance: org.mozilla.geckoview.StorageController, contextId: String)
+
+  /** Clear data owned by the given base domain (eTLD+1). */
+  abstract fun clearDataFromBaseDomain(pigeon_instance: org.mozilla.geckoview.StorageController, baseDomain: String, flags: Long, callback: (Result<Unit>) -> Unit)
+
+  /** Clear data owned by the given host. */
+  abstract fun clearDataFromHost(pigeon_instance: org.mozilla.geckoview.StorageController, host: String, flags: Long, callback: (Result<Unit>) -> Unit)
+
+  /**
+   * Get all currently stored permissions.
+   * Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+   */
+  abstract fun getCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, isPrivateBrowsing: Boolean, callback: (Result<Long?>) -> Unit)
+
+  /**
+   * Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
+   * Get all currently stored permissions for a given URI and default (unset) context ID.
+   * Get all currently stored permissions for a given URI and context ID.
+   * Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
+   */
+  abstract fun removeCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, isPrivateBrowsing: Boolean, callback: (Result<Unit>) -> Unit)
+
+  /** Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode. */
+  abstract fun setCookieBannerModeAndPersistInPrivateBrowsingForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, mode: Long, callback: (Result<Unit>) -> Unit)
+
+  /** Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode. */
+  abstract fun setCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, mode: Long, isPrivateBrowsing: Boolean, callback: (Result<Unit>) -> Unit)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiStorageController?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearData", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val flagsArg = args[1] as Long
+            api.clearData(pigeon_instanceArg, flagsArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataForSessionContext", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val contextIdArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              api.clearDataForSessionContext(pigeon_instanceArg, contextIdArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromBaseDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val baseDomainArg = args[1] as String
+            val flagsArg = args[2] as Long
+            api.clearDataFromBaseDomain(pigeon_instanceArg, baseDomainArg, flagsArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromHost", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val hostArg = args[1] as String
+            val flagsArg = args[2] as Long
+            api.clearDataFromHost(pigeon_instanceArg, hostArg, flagsArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.getCookieBannerModeForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val isPrivateBrowsingArg = args[2] as Boolean
+            api.getCookieBannerModeForDomain(pigeon_instanceArg, uriArg, isPrivateBrowsingArg) { result: Result<Long?> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.removeCookieBannerModeForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val isPrivateBrowsingArg = args[2] as Boolean
+            api.removeCookieBannerModeForDomain(pigeon_instanceArg, uriArg, isPrivateBrowsingArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeAndPersistInPrivateBrowsingForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val modeArg = args[2] as Long
+            api.setCookieBannerModeAndPersistInPrivateBrowsingForDomain(pigeon_instanceArg, uriArg, modeArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val modeArg = args[2] as Long
+            val isPrivateBrowsingArg = args[3] as Boolean
+            api.setCookieBannerModeForDomain(pigeon_instanceArg, uriArg, modeArg, isPrivateBrowsingArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of StorageController and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.StorageController, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.pigeon_newInstance"
       val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
       channel.send(listOf(pigeon_identifierArg)) {
         if (it is List<*>) {

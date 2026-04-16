@@ -25,6 +25,10 @@ abstract class GeckoRuntime {
   @attached
   late GeckoRuntimeSettings settings;
 
+  /// Get the storage controller for this runtime.
+  @attached
+  late StorageController storageController;
+
   /// Returns a WebExtensionController for this GeckoRuntime.
   @attached
   late WebExtensionController webExtensionController;
@@ -41,6 +45,88 @@ abstract class GeckoRuntimeSettings {
 
   /// Set whether or not web console messages should go to logcat.
   GeckoRuntimeSettings setConsoleOutputEnabled(bool value);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.StorageController',
+  ),
+)
+abstract class StorageController {
+  /// Clear data for all hosts.
+  @async
+  void clearData(int flags);
+
+  /// Clear data for the given context ID.
+  void clearDataForSessionContext(String contextId);
+
+  /// Clear data owned by the given base domain (eTLD+1).
+  @async
+  void clearDataFromBaseDomain(String baseDomain, int flags);
+
+  /// Clear data owned by the given host.
+  @async
+  void clearDataFromHost(String host, int flags);
+
+  /// Get all currently stored permissions.
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getAllPermissions();
+
+  /// Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+  @async
+  int? getCookieBannerModeForDomain(String uri, bool isPrivateBrowsing);
+
+  /// Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
+  //   String uri,
+  // );
+
+  /// Get all currently stored permissions for a given URI and default (unset) context ID.
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
+  //   String uri,
+  //   bool privateMode,
+  // );
+
+  /// Get all currently stored permissions for a given URI and context ID.
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
+  //   String uri,
+  //   String contextId,
+  //   bool privateMode,
+  // );
+
+  /// Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
+  @async
+  void removeCookieBannerModeForDomain(String uri, bool isPrivateBrowsing);
+
+  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode.
+  @async
+  void setCookieBannerModeAndPersistInPrivateBrowsingForDomain(
+    String uri,
+    int mode,
+  );
+
+  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+  @async
+  void setCookieBannerModeForDomain(
+    String uri,
+    int mode,
+    bool isPrivateBrowsing,
+  );
+
+  /// Set a new value for an existing permission.
+  // void setPermission(
+  //   GeckoSessionPermissionDelegateContentPermission perm,
+  //   int value,
+  // );
+
+  /// Set a permanent value for a permission in a private browsing session.
+  // void setPrivateBrowsingPermanentPermission(
+  //   GeckoSessionPermissionDelegateContentPermission perm,
+  //   int value,
+  // );
 }
 
 @ProxyApi(
@@ -413,7 +499,7 @@ abstract class GeckoSession {
   /// Prints the currently displayed page.
   void printPageContent();
 
-  /// Handle back key pressed on Web content to dismiss some HTML elements such as <dialog>.
+  /// Handle back key pressed on Web content to dismiss some HTML elements such as &lt;dialog&gt;.
   // @async
   // bool? processBackPressed();
 

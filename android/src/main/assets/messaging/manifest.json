@@ -17,6 +17,7 @@
     "nativeMessaging",
     "geckoViewAddons",
     "tabs",
+    "cookies",
     "<all_urls>"
   ]
 }

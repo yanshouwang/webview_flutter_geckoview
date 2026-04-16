@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -8,11 +7,9 @@ import 'package:webview_flutter_platform_interface/webview_flutter_platform_inte
 
 import 'gecko.g.dart' as gecko;
 import 'gecko_constants.dart';
+import 'gecko_web_extension.dart';
 import 'platform_views_service_proxy.dart';
 import 'weak_reference_utils.dart';
-
-var _id = 0;
-final _completers = <int, Completer>{};
 
 /// Object specifying parameters for loading a local file in a
 /// [GeckoWebViewController].
@@ -72,11 +69,10 @@ class GeckoWebViewControllerCreationParams
 
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
-  final Completer<gecko.WebExtensionPort> _webExtensionPort;
+  final gecko.GeckoView _webView;
+  final GeckoWebExtensionPort _webExtensionPort;
   final gecko.FlutterAssetManager _flutterAssetManager;
-  final gecko.GeckoView _geckoView;
-
-  final _javaScriptChannelParams = <String, GeckoJavaScriptChannelParams>{};
+  final Map<String, GeckoJavaScriptChannelParams> _javaScriptChannelParams;
 
   late final _geckoSessionContentDelegate = gecko.GeckoSessionContentDelegate(
     onTitleChange: withWeakReferenceTo(
@@ -172,57 +168,6 @@ class GeckoWebViewController extends PlatformWebViewController {
     ),
   );
 
-  late final _webExtensioinPortDelegate = gecko.WebExtensionPortDelegate(
-    onDisconnect: withWeakReferenceTo(
-      this,
-      (weakThis) => (_, webExtensionPort) {
-        debugPrint('webExtensionPort disconnected');
-      },
-    ),
-    onPortMessage: withWeakReferenceTo(
-      this,
-      (weakThis) => (_, message, webExtensionPort) {
-        debugPrint('webExtensionPort received: $message');
-        final target = weakThis.target;
-        if (target == null) return;
-        final object = json.decode(message) as Map<String, dynamic>;
-        final type = object['type'] as int?;
-        if (type == null) return;
-        switch (type) {
-          case 0: // addJavaScriptChannel reply
-          case 1: // removeJavaScriptChannel reply
-          case 2: // runJavaScript reply
-            final id = object['id'] as int?;
-            if (id == null) return;
-            final completer = _completers.remove(id);
-            if (completer == null) return;
-            final error = object['error'];
-            if (error == null) {
-              final result = object['result'];
-              completer.complete(result);
-            } else {
-              completer.completeError(error);
-            }
-            break;
-          case 3: // javaScriptChannel event
-            final javaScriptChannelName = object['name'] as String?;
-            if (javaScriptChannelName == null) return;
-            final javaScriptChannelMessage = object['message'] as String?;
-            if (javaScriptChannelMessage == null) return;
-            final javaScriptChannelParams =
-                target._javaScriptChannelParams[javaScriptChannelName];
-            if (javaScriptChannelParams == null) return;
-            javaScriptChannelParams.onMessageReceived(
-              JavaScriptMessage(message: javaScriptChannelMessage),
-            );
-            break;
-          default:
-            throw ArgumentError.value(type, 'type');
-        }
-      },
-    ),
-  );
-
   var _canGoBack = false;
   var _canGoForward = false;
 
@@ -232,9 +177,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
-    : _webExtensionPort = Completer(),
-      _flutterAssetManager = gecko.FlutterAssetManager.instance,
-      _geckoView = gecko.GeckoView(
+    : _webView = gecko.GeckoView(
         // onScrollChanged: withWeakReferenceTo(this, (
         //   WeakReference<AndroidWebViewController> weakReference,
         // ) {
@@ -245,6 +188,9 @@ class GeckoWebViewController extends PlatformWebViewController {
         //   };
         // }),
       ),
+      _webExtensionPort = GeckoWebExtensionPort(),
+      _flutterAssetManager = gecko.FlutterAssetManager.instance,
+      _javaScriptChannelParams = {},
       super.implementation(
         params is GeckoWebViewControllerCreationParams
             ? params
@@ -252,26 +198,6 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
-    gecko.WebExtensionPort.getAsync()
-        .then((e) => ArgumentError.checkNotNull(e))
-        .then(
-          withWeakReferenceTo(
-            this,
-            (weakThis) => (webExtensionPort) {
-              final target = weakThis.target;
-              if (target == null) return;
-              webExtensionPort.setDelegate(target._webExtensioinPortDelegate);
-              target._webExtensionPort.complete(webExtensionPort);
-            },
-          ),
-          onError: withWeakReferenceTo(
-            this,
-            (weakThis) => (error) {
-              weakThis.target?._webExtensionPort.completeError(error);
-            },
-          ),
-        );
-
     _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
     _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
     _geckoSession.setPermissionDelegate(_geckoSessionPermissionDelegate);
@@ -279,7 +205,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     _geckoSession.settings.setAllowJavascript(true);
   }
 
-  gecko.GeckoSession get _geckoSession => _geckoView.session;
+  gecko.GeckoSession get _geckoSession => _webView.session;
 
   @override
   Future<void> loadFile(String absoluteFilePath) {
@@ -412,14 +338,17 @@ class GeckoWebViewController extends PlatformWebViewController {
     }
     _javaScriptChannelParams[javaScriptChannelName] =
         geckoJavaScriptChannelParams;
-    final webExtensionPort = await _webExtensionPort.future;
-    final int id = _id++;
-    await webExtensionPort.postMessage(
-      json.encode({'type': 0, 'id': id, 'name': javaScriptChannelName}),
+    final javascriptChannel = GeckoJavascriptChannel(
+      name: javaScriptChannelName,
+      onMessageReceived: withWeakReferenceTo(
+        this,
+        (weakThis) => (message) {
+          weakThis.target?._javaScriptChannelParams[javaScriptChannelName]
+              ?.onMessageReceived(JavaScriptMessage(message: message));
+        },
+      ),
     );
-    final completer = Completer<void>();
-    _completers[id] = completer;
-    await completer.future;
+    await _webExtensionPort.addJavascriptChannel(javascriptChannel);
   }
 
   @override
@@ -428,14 +357,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     if (!_javaScriptChannelParams.containsKey(javaScriptChannelName)) {
       return;
     }
-    final webExtensionPort = await _webExtensionPort.future;
-    final int id = _id++;
-    await webExtensionPort.postMessage(
-      json.encode({'type': 1, 'id': id, 'name': javaScriptChannelName}),
-    );
-    final completer = Completer<void>();
-    _completers[id] = completer;
-    await completer.future;
+    await _webExtensionPort.removeJavascriptChannel(javaScriptChannelName);
     _javaScriptChannelParams.remove(javaScriptChannelName);
   }
 
@@ -445,15 +367,8 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<Object> runJavaScriptReturningResult(String javaScript) async {
-    final webExtensionPort = await _webExtensionPort.future;
-    final int id = _id++;
-    await webExtensionPort.postMessage(
-      json.encode({'type': 2, 'id': id, 'javascript': javaScript}),
-    );
-    final completer = Completer<Object>();
-    _completers[id] = completer;
-    final result = await completer.future;
-    return result;
+    final result = await _webExtensionPort.runJavascript(javaScript);
+    return result ?? '';
   }
 
   @override
@@ -485,7 +400,7 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<void> setBackgroundColor(Color color) =>
-      _geckoView.setBackgroundColor(color.toARGB32());
+      _webView.setBackgroundColor(color.toARGB32());
 
   @override
   Future<void> setJavaScriptMode(JavaScriptMode javaScriptMode) => _geckoSession
@@ -573,22 +488,6 @@ class GeckoWebViewController extends PlatformWebViewController {
     // TODO: implement setOverScrollMode
     return super.setOverScrollMode(mode);
   }
-}
-
-/// An implementation of [JavaScriptChannelParams] with the GeckoView API.
-@immutable
-class GeckoJavaScriptChannelParams extends JavaScriptChannelParams {
-  /// Constructs a [GeckoJavaScriptChannelParams].
-  GeckoJavaScriptChannelParams({
-    required super.name,
-    required super.onMessageReceived,
-  }) : assert(name.isNotEmpty);
-
-  /// Constructs a [GeckoJavaScriptChannelParams] using a
-  /// [JavaScriptChannelParams].
-  GeckoJavaScriptChannelParams.fromJavaScriptChannelParams(
-    JavaScriptChannelParams params,
-  ) : this(name: params.name, onMessageReceived: params.onMessageReceived);
 }
 
 /// Object specifying creation parameters for creating a [GeckoWebViewWidget].
@@ -705,8 +604,7 @@ class GeckoWebViewWidget extends PlatformWebViewWidget {
             displayWithHybridComposition:
                 _geckoParams.displayWithHybridComposition,
             platformViewsServiceProxy: _geckoParams.platformViewsServiceProxy,
-            view:
-                (_geckoParams.controller as GeckoWebViewController)._geckoView,
+            view: (_geckoParams.controller as GeckoWebViewController)._webView,
             layoutDirection: _geckoParams.layoutDirection,
           )
           ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
@@ -812,6 +710,22 @@ class GeckoWebViewPermissionRequest extends PlatformWebViewPermissionRequest {
   Future<void> deny() {
     return _callback.reject();
   }
+}
+
+/// An implementation of [JavaScriptChannelParams] with the GeckoView API.
+@immutable
+class GeckoJavaScriptChannelParams extends JavaScriptChannelParams {
+  /// Constructs a [GeckoJavaScriptChannelParams].
+  GeckoJavaScriptChannelParams({
+    required super.name,
+    required super.onMessageReceived,
+  }) : assert(name.isNotEmpty);
+
+  /// Constructs a [GeckoJavaScriptChannelParams] using a
+  /// [JavaScriptChannelParams].
+  GeckoJavaScriptChannelParams.fromJavaScriptChannelParams(
+    JavaScriptChannelParams params,
+  ) : this(name: params.name, onMessageReceived: params.onMessageReceived);
 }
 
 AndroidViewController _initAndroidView(

@@ -9,53 +9,80 @@ webExtensionPort.onDisconnect.addListener(() => {
     console.info("webExtensionPort disconnected");
 });
 
-webExtensionPort.onMessage.addListener(async (command) => {
-    console.info(`webExtensionPort received: ${JSON.stringify(command)}`);
-    if (!command) {
+webExtensionPort.onMessage.addListener(async (message) => {
+    console.info(`webExtensionPort received: ${JSON.stringify(message)}`);
+    if (typeof message !== "object" || Array.isArray(message) || message === null) {
         return;
     }
-    const type = command.type;
-    const id = command.id;
-    if (typeof type !== "number" || typeof id !== "number") {
+    const category = message.category;
+    const type = message.type;
+    if (typeof category !== "number" || typeof type !== "number") {
         return;
     }
-    let reply = {
-        type: type,
-        id: id,
-    };
-    try {
-        switch (type) {
-            case 0: {
-                const javascriptChannelName = command.name;
-                await addJavascriptChannel(javascriptChannelName);
-                break;
+    switch (category) {
+        case 0: {
+            const id = message.id;
+            if (typeof id !== "number") {
+                return;
             }
-            case 1: {
-                const javascriptChannelName = command.name;
-                await removeJavascriptChannel(javascriptChannelName);
-                break;
+            const reply = {
+                category: 1,
+                type: type,
+                id: id,
+            };
+            try {
+                switch (type) {
+                    case 0: {
+                        const javascriptChannelName = message.name;
+                        await addJavascriptChannel(javascriptChannelName);
+                        break;
+                    }
+                    case 1: {
+                        const javascriptChannelName = message.name;
+                        await removeJavascriptChannel(javascriptChannelName);
+                        break;
+                    }
+                    case 2: {
+                        const tab = await getCurrentTab();
+                        const javascript = message.javascript;
+                        reply.result = await runJavascript(tab.id, javascript);
+                        break;
+                    }
+                    case 3: {
+                        const details = message.details;
+                        const tab = await getCurrentTab();
+                        details.url = tab.url;
+                        reply.result = await browser.cookies.set(details);
+                        break;
+                    }
+                    default: {
+                        throw new TypeError(`illegal type: ${type}`);
+                    }
+                }
+            } catch (error) {
+                reply.error = error.toString();
+            } finally {
+                webExtensionPort.postMessage(reply);
             }
-            case 2: {
-                const javascript = command.javascript;
-                reply.result = await runJavascript(javascript);
-                break;
-            }
-            default: {
-                throw new TypeError(`illegal type: ${type}`);
-            }
+            break;
         }
-    } catch (error) {
-        reply.error = error.toString();
-    } finally {
-        webExtensionPort.postMessage(reply);
+        case 1: {
+            break;
+        }
+        case 2: {
+            break;
+        }
+        default: {
+            break;
+        }
     }
 });
 
-browser.runtime.onMessage.addListener((event) => {
-    if (!event) {
+browser.runtime.onMessage.addListener((message) => {
+    if (typeof message !== "object" || Array.isArray(message) || message === null) {
         return;
     }
-    webExtensionPort.postMessage(event);
+    webExtensionPort.postMessage(message);
 });
 
 async function addJavascriptChannel(javascriptChannelName) {
@@ -63,7 +90,8 @@ async function addJavascriptChannel(javascriptChannelName) {
         window["${javascriptChannelName}"] = {
             postMessage: function(message) {
                 browser.runtime.sendMessage({
-                    type: 3,
+                    category: 2,
+                    type: 0,
                     name: "${javascriptChannelName}",
                     message: message
                 });
@@ -72,13 +100,7 @@ async function addJavascriptChannel(javascriptChannelName) {
     `;
     const tabs = await browser.tabs.query({});
     for (const tab of tabs) {
-        await browser.tabs.executeScript(
-            tab.id,
-            {
-                code: javascript,
-                runAt: "document_start"
-            }
-        );
+        await runJavascript(tab.id, javascript);
     }
     const javascriptChannel = await browser.contentScripts.register({
         matches: [
@@ -100,23 +122,23 @@ async function removeJavascriptChannel(javascriptChannelName) {
     const javascript = `delete window["${javascriptChannelName}"];`;
     const tabs = await browser.tabs.query({});
     for (const tab of tabs) {
-        await browser.tabs.executeScript(
-            tab.id,
-            {
-                code: javascript,
-                runAt: "document_start"
-            }
-        );
+        await runJavascript(tab.id, javascript);
     }
     javascriptChannels.delete(javascriptChannelName);
 }
 
-async function runJavascript(javascript) {
+async function runJavascript(tabId, javascript) {
     const result = await browser.tabs.executeScript(
+        tabId,
         {
             code: javascript,
             runAt: "document_start"
         }
     );
-    return result.firstOrNull;
+    return result[0] || null;
+}
+
+async function getCurrentTab() {
+    const tabs = await browser.tabs.query({ active: true });
+    return tabs[0] || null;
 }

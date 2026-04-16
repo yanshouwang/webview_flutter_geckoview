@@ -359,6 +359,7 @@ class PigeonInstanceManager {
     _PigeonInternalInstanceManagerApi.setUpMessageHandlers(instanceManager: instanceManager);
     GeckoRuntime.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoRuntimeSettings.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
+    StorageController.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionController.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtension.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionMessageDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
@@ -659,6 +660,10 @@ class GeckoRuntime extends PigeonInternalProxyApiBaseClass {
   /// Get the runtime settings.
   late final GeckoRuntimeSettings settings = pigeonVar_settings();
 
+  /// Get the storage controller for this runtime.
+  late final StorageController storageController =
+      pigeonVar_storageController();
+
   /// Returns a WebExtensionController for this GeckoRuntime.
   late final WebExtensionController webExtensionController =
       pigeonVar_webExtensionController();
@@ -752,6 +757,38 @@ class GeckoRuntime extends PigeonInternalProxyApiBaseClass {
     () async {
       const pigeonVar_channelName =
           'dev.flutter.pigeon.webview_flutter_geckoview.GeckoRuntime.settings';
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+        pigeonVar_channelName,
+        pigeonChannelCodec,
+        binaryMessenger: pigeonVar_binaryMessenger,
+      );
+      final Future<Object?> pigeonVar_sendFuture =
+          pigeonVar_channel.send(<Object?>[this, pigeonVar_instanceIdentifier]);
+      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+      _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+      );
+    }();
+    return pigeonVar_instance;
+  }
+
+  StorageController pigeonVar_storageController() {
+    final StorageController pigeonVar_instance =
+        StorageController.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+    );
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoRuntime;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    final int pigeonVar_instanceIdentifier =
+        pigeon_instanceManager.addDartCreatedInstance(pigeonVar_instance);
+    () async {
+      const pigeonVar_channelName =
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoRuntime.storageController';
       final pigeonVar_channel = BasicMessageChannel<Object?>(
         pigeonVar_channelName,
         pigeonChannelCodec,
@@ -920,6 +957,281 @@ class GeckoRuntimeSettings extends PigeonInternalProxyApiBaseClass {
   @override
   GeckoRuntimeSettings pigeon_copy() {
     return GeckoRuntimeSettings.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+    );
+  }
+}
+
+class StorageController extends PigeonInternalProxyApiBaseClass {
+  /// Constructs [StorageController] without creating the associated native object.
+  ///
+  /// This should only be used by subclasses created by this library or to
+  /// create copies for an [PigeonInstanceManager].
+  @protected
+  StorageController.pigeon_detached({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+  });
+
+  late final _PigeonInternalProxyApiBaseCodec
+      _pigeonVar_codecStorageController =
+      _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
+
+  static void pigeon_setUpMessageHandlers({
+    bool pigeon_clearHandlers = false,
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    StorageController Function()? pigeon_newInstance,
+  }) {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(
+            pigeon_instanceManager ?? PigeonInstanceManager.instance);
+    final BinaryMessenger? binaryMessenger = pigeon_binaryMessenger;
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.pigeon_newInstance',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final int arg_pigeon_instanceIdentifier = args[0]! as int;
+          try {
+            (pigeon_instanceManager ?? PigeonInstanceManager.instance)
+                .addHostCreatedInstance(
+              pigeon_newInstance?.call() ??
+                  StorageController.pigeon_detached(
+                    pigeon_binaryMessenger: pigeon_binaryMessenger,
+                    pigeon_instanceManager: pigeon_instanceManager,
+                  ),
+              arg_pigeon_instanceIdentifier,
+            );
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+  }
+
+  /// Clear data for all hosts.
+  Future<void> clearData(int flags) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearData';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, flags]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  /// Clear data for the given context ID.
+  Future<void> clearDataForSessionContext(String contextId) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataForSessionContext';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, contextId]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  /// Clear data owned by the given base domain (eTLD+1).
+  Future<void> clearDataFromBaseDomain(
+    String baseDomain,
+    int flags,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromBaseDomain';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, baseDomain, flags]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  /// Clear data owned by the given host.
+  Future<void> clearDataFromHost(
+    String host,
+    int flags,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromHost';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, host, flags]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  /// Get all currently stored permissions.
+  /// Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+  Future<int?> getCookieBannerModeForDomain(
+    String uri,
+    bool isPrivateBrowsing,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.getCookieBannerModeForDomain';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, uri, isPrivateBrowsing]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+    return pigeonVar_replyValue as int?;
+  }
+
+  /// Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
+  /// Get all currently stored permissions for a given URI and default (unset) context ID.
+  /// Get all currently stored permissions for a given URI and context ID.
+  /// Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
+  Future<void> removeCookieBannerModeForDomain(
+    String uri,
+    bool isPrivateBrowsing,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.removeCookieBannerModeForDomain';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, uri, isPrivateBrowsing]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode.
+  Future<void> setCookieBannerModeAndPersistInPrivateBrowsingForDomain(
+    String uri,
+    int mode,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeAndPersistInPrivateBrowsingForDomain';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, uri, mode]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+  Future<void> setCookieBannerModeForDomain(
+    String uri,
+    int mode,
+    bool isPrivateBrowsing,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecStorageController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeForDomain';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, uri, mode, isPrivateBrowsing]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
+  @override
+  StorageController pigeon_copy() {
+    return StorageController.pigeon_detached(
       pigeon_binaryMessenger: pigeon_binaryMessenger,
       pigeon_instanceManager: pigeon_instanceManager,
     );

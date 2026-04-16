@@ -1,7 +1,9 @@
 import 'package:meta/meta.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
-import 'gecko.g.dart';
+import 'gecko.g.dart' as gecko;
+import 'gecko_constants.dart';
+import 'gecko_web_extension.dart';
 
 /// Object specifying creation parameters for creating a [GeckoWebViewCookieManager].
 ///
@@ -28,18 +30,41 @@ class GeckoWebViewCookieManagerCreationParams
 
 /// Handles all cookie operations for the GeckoView.
 class GeckoWebViewCookieManager extends PlatformWebViewCookieManager {
-  final GeckoRuntime _runtime;
+  final gecko.GeckoRuntime _runtime;
+  final GeckoWebExtensionPort _webExtensionPort;
 
   /// Creates a new [GeckoWebViewCookieManager].
-  GeckoWebViewCookieManager(
-    PlatformWebViewCookieManagerCreationParams params, {
-    GeckoRuntime? runtime,
-  }) : _runtime = runtime ?? GeckoRuntime.instance,
-       super.implementation(
-         params is GeckoWebViewCookieManagerCreationParams
-             ? params
-             : GeckoWebViewCookieManagerCreationParams.fromPlatformWebViewCookieManagerCreationParams(
-                 params,
-               ),
-       );
+  GeckoWebViewCookieManager(PlatformWebViewCookieManagerCreationParams params)
+    : _runtime = gecko.GeckoRuntime.instance,
+      _webExtensionPort = GeckoWebExtensionPort(),
+      super.implementation(
+        params is GeckoWebViewCookieManagerCreationParams
+            ? params
+            : GeckoWebViewCookieManagerCreationParams.fromPlatformWebViewCookieManagerCreationParams(
+                params,
+              ),
+      );
+
+  gecko.StorageController get _storageController => _runtime.storageController;
+
+  @override
+  Future<bool> clearCookies() async {
+    try {
+      await _storageController.clearData(StorageControllerClearFlags.cookies);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<void> setCookie(WebViewCookie cookie) async {
+    final details = GeckoCookieDetails(
+      domain: cookie.domain,
+      name: cookie.name,
+      path: cookie.path,
+      value: cookie.value,
+    );
+    await _webExtensionPort.setCookie(details);
+  }
 }

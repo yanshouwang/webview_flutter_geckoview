@@ -21,6 +21,10 @@ class ProxyApiRegistrar(
         return GeckoRuntimeSettingsProxyApi(this)
     }
 
+    override fun getPigeonApiStorageController(): PigeonApiStorageController {
+        return StorageControllerProxyApi(this)
+    }
+
     override fun getPigeonApiWebExtensionController(): PigeonApiWebExtensionController {
         return WebExtensionControllerProxyApi(this)
     }
