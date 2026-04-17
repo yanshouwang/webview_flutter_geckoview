@@ -57,6 +57,14 @@ class ProxyApiRegistrar(
         return WebExtensionSessionControllerProxyApi(this)
     }
 
+    override fun getPigeonApiWebExtensionSessionTabDelegate(): PigeonApiWebExtensionSessionTabDelegate {
+        return WebExtensionSessionTabDelegateProxyApi(this)
+    }
+
+    override fun getPigeonApiWebExtensionUpdateTabDetails(): PigeonApiWebExtensionUpdateTabDetails {
+        return WebExtensionUpdateTabDetailsProxyApi(this)
+    }
+
     override fun getPigeonApiGeckoSession(): PigeonApiGeckoSession {
         return GeckoSessionProxyApi(this)
     }
@@ -75,6 +83,10 @@ class ProxyApiRegistrar(
 
     override fun getPigeonApiGeckoSessionProgressDelegate(): PigeonApiGeckoSessionProgressDelegate {
         return GeckoSessionProgressDelegateProxyApi(this)
+    }
+
+    override fun getPigeonApiGeckoSessionScrollDelegate(): PigeonApiGeckoSessionScrollDelegate {
+        return GeckoSessionScrollDelegateProxyApi(this)
     }
 
     override fun getPigeonApiGeckoSessionNavigationDelegate(): PigeonApiGeckoSessionNavigationDelegate {

@@ -69,10 +69,10 @@ class PigeonOverrides {
       WebExtension source,
       WebExtensionCreateTabDetails createDetails,
     ) onNewTab,
-    required void Function(
+    void Function(
       WebExtensionTabDelegate pigeon_instance,
       WebExtension source,
-    ) onOpenOptionsPage,
+    )? onOpenOptionsPage,
   })? webExtensionTabDelegate_new;
 
   /// Overrides [WebExtensionPortDelegate.new].
@@ -87,6 +87,21 @@ class PigeonOverrides {
       WebExtensionPort port,
     )? onPortMessage,
   })? webExtensionPortDelegate_new;
+
+  /// Overrides [WebExtensionSessionTabDelegate.new].
+  static WebExtensionSessionTabDelegate Function({
+    required bool Function(
+      WebExtensionSessionTabDelegate pigeon_instance,
+      WebExtension? source,
+      GeckoSession session,
+    ) onCloseTab,
+    required bool Function(
+      WebExtensionSessionTabDelegate pigeon_instance,
+      WebExtension extension,
+      GeckoSession session,
+      WebExtensionUpdateTabDetails details,
+    ) onUpdateTab,
+  })? webExtensionSessionTabDelegate_new;
 
   /// Overrides [GeckoSession.new].
   static GeckoSession Function()? geckoSession_new;
@@ -212,6 +227,15 @@ class PigeonOverrides {
     )? onProgressChange,
   })? geckoSessionProgressDelegate_new;
 
+  /// Overrides [GeckoSessionScrollDelegate.new].
+  static GeckoSessionScrollDelegate Function(
+      {void Function(
+        GeckoSessionScrollDelegate pigeon_instance,
+        GeckoSession session,
+        int scrollX,
+        int scrollY,
+      )? onScrollChanged})? geckoSessionScrollDelegate_new;
+
   /// Overrides [GeckoView.new].
   static GeckoView Function()? geckoView_new;
 
@@ -237,6 +261,7 @@ class PigeonOverrides {
     webExtensionTabDelegate_new = null;
     webExtensionPort_getAsync = null;
     webExtensionPortDelegate_new = null;
+    webExtensionSessionTabDelegate_new = null;
     geckoSession_new = null;
     geckoSession_createAsync = null;
     geckoSession_getDefaultUserAgent = null;
@@ -246,6 +271,7 @@ class PigeonOverrides {
     geckoSessionPermissionDelegate_new = null;
     geckoSessionPromptDelegate_new = null;
     geckoSessionProgressDelegate_new = null;
+    geckoSessionScrollDelegate_new = null;
     geckoView_new = null;
     flutterAssetManager_instance = null;
   }
@@ -368,6 +394,8 @@ class PigeonInstanceManager {
     WebExtensionPort.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionPortDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     WebExtensionSessionController.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
+    WebExtensionSessionTabDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
+    WebExtensionUpdateTabDetails.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSession.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSessionLoader.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSessionSettings.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
@@ -377,6 +405,7 @@ class PigeonInstanceManager {
     GeckoSessionPermissionDelegateCallback.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSessionPromptDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoSessionProgressDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
+    GeckoSessionScrollDelegate.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     GeckoView.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     View.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
     FlutterAssetManager.pigeon_setUpMessageHandlers(pigeon_instanceManager: instanceManager);
@@ -1444,7 +1473,7 @@ class WebExtension extends PigeonInternalProxyApiBaseClass {
   /// Set the download delegate for this extension.
   /// Defines the message delegate for a Native App.
   Future<void> setMessageDelegate(
-    WebExtensionMessageDelegate delegate,
+    WebExtensionMessageDelegate? delegate,
     String nativeApp,
   ) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
@@ -1469,7 +1498,7 @@ class WebExtension extends PigeonInternalProxyApiBaseClass {
   }
 
   /// Set the tab delegate for this extension.
-  Future<void> setTabDelegate(WebExtensionTabDelegate delegate) async {
+  Future<void> setTabDelegate(WebExtensionTabDelegate? delegate) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecWebExtension;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -1683,10 +1712,10 @@ class WebExtensionTabDelegate extends PigeonInternalProxyApiBaseClass {
       WebExtension source,
       WebExtensionCreateTabDetails createDetails,
     ) onNewTab,
-    required void Function(
+    void Function(
       WebExtensionTabDelegate pigeon_instance,
       WebExtension source,
-    ) onOpenOptionsPage,
+    )? onOpenOptionsPage,
   }) {
     if (PigeonOverrides.webExtensionTabDelegate_new != null) {
       return PigeonOverrides.webExtensionTabDelegate_new!(
@@ -1707,7 +1736,7 @@ class WebExtensionTabDelegate extends PigeonInternalProxyApiBaseClass {
     super.pigeon_binaryMessenger,
     super.pigeon_instanceManager,
     required this.onNewTab,
-    required this.onOpenOptionsPage,
+    this.onOpenOptionsPage,
   }) {
     final int pigeonVar_instanceIdentifier =
         pigeon_instanceManager.addDartCreatedInstance(this);
@@ -1743,7 +1772,7 @@ class WebExtensionTabDelegate extends PigeonInternalProxyApiBaseClass {
     super.pigeon_binaryMessenger,
     super.pigeon_instanceManager,
     required this.onNewTab,
-    required this.onOpenOptionsPage,
+    this.onOpenOptionsPage,
   });
 
   late final _PigeonInternalProxyApiBaseCodec
@@ -1797,7 +1826,7 @@ class WebExtensionTabDelegate extends PigeonInternalProxyApiBaseClass {
   final void Function(
     WebExtensionTabDelegate pigeon_instance,
     WebExtension source,
-  ) onOpenOptionsPage;
+  )? onOpenOptionsPage;
 
   static void pigeon_setUpMessageHandlers({
     bool pigeon_clearHandlers = false,
@@ -1862,7 +1891,7 @@ class WebExtensionTabDelegate extends PigeonInternalProxyApiBaseClass {
           final WebExtension arg_source = args[1]! as WebExtension;
           try {
             (onOpenOptionsPage ?? arg_pigeon_instance.onOpenOptionsPage)
-                .call(arg_pigeon_instance, arg_source);
+                ?.call(arg_pigeon_instance, arg_source);
             return wrapResponse(empty: true);
           } on PlatformException catch (e) {
             return wrapResponse(error: e);
@@ -2146,7 +2175,7 @@ class WebExtensionPort extends PigeonInternalProxyApiBaseClass {
   }
 
   /// Set a delegate for incoming messages through this WebExtension.Port.
-  Future<void> setDelegate(WebExtensionPortDelegate delegate) async {
+  Future<void> setDelegate(WebExtensionPortDelegate? delegate) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecWebExtensionPort;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -2508,11 +2537,35 @@ class WebExtensionSessionController extends PigeonInternalProxyApiBaseClass {
   }
 
   /// Get the TabDelegate for the given extension.
+  Future<WebExtensionSessionTabDelegate?> getTabDelegate(
+      WebExtension extension) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecWebExtensionSessionController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.getTabDelegate';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, extension]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+    return pigeonVar_replyValue as WebExtensionSessionTabDelegate?;
+  }
+
   /// Set the Action delegate for this session.
   /// Defines a message delegate for a Native App.
   Future<void> setMessageDelegate(
     WebExtension extension,
-    WebExtensionMessageDelegate delegate,
+    WebExtensionMessageDelegate? delegate,
     String nativeApp,
   ) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
@@ -2536,11 +2589,370 @@ class WebExtensionSessionController extends PigeonInternalProxyApiBaseClass {
     );
   }
 
+  /// Set the TabDelegate for this session.
+  Future<void> setTabDelegate(
+    WebExtension extension,
+    WebExtensionSessionTabDelegate? delegate,
+  ) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecWebExtensionSessionController;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.setTabDelegate';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, extension, delegate]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
   @override
   WebExtensionSessionController pigeon_copy() {
     return WebExtensionSessionController.pigeon_detached(
       pigeon_binaryMessenger: pigeon_binaryMessenger,
       pigeon_instanceManager: pigeon_instanceManager,
+    );
+  }
+}
+
+class WebExtensionSessionTabDelegate extends PigeonInternalProxyApiBaseClass {
+  factory WebExtensionSessionTabDelegate({
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    required bool Function(
+      WebExtensionSessionTabDelegate pigeon_instance,
+      WebExtension? source,
+      GeckoSession session,
+    ) onCloseTab,
+    required bool Function(
+      WebExtensionSessionTabDelegate pigeon_instance,
+      WebExtension extension,
+      GeckoSession session,
+      WebExtensionUpdateTabDetails details,
+    ) onUpdateTab,
+  }) {
+    if (PigeonOverrides.webExtensionSessionTabDelegate_new != null) {
+      return PigeonOverrides.webExtensionSessionTabDelegate_new!(
+        onCloseTab: onCloseTab,
+        onUpdateTab: onUpdateTab,
+      );
+    }
+    return WebExtensionSessionTabDelegate.pigeon_new(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+      onCloseTab: onCloseTab,
+      onUpdateTab: onUpdateTab,
+    );
+  }
+
+  @protected
+  WebExtensionSessionTabDelegate.pigeon_new({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+    required this.onCloseTab,
+    required this.onUpdateTab,
+  }) {
+    final int pigeonVar_instanceIdentifier =
+        pigeon_instanceManager.addDartCreatedInstance(this);
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecWebExtensionSessionTabDelegate;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.pigeon_defaultConstructor';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[pigeonVar_instanceIdentifier]);
+    () async {
+      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+      _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+      );
+    }();
+  }
+
+  /// Constructs [WebExtensionSessionTabDelegate] without creating the associated native object.
+  ///
+  /// This should only be used by subclasses created by this library or to
+  /// create copies for an [PigeonInstanceManager].
+  @protected
+  WebExtensionSessionTabDelegate.pigeon_detached({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+    required this.onCloseTab,
+    required this.onUpdateTab,
+  });
+
+  late final _PigeonInternalProxyApiBaseCodec
+      _pigeonVar_codecWebExtensionSessionTabDelegate =
+      _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
+
+  /// Callback method.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final WebExtensionSessionTabDelegate instance = WebExtensionSessionTabDelegate(
+  ///  onCloseTab: (WebExtensionSessionTabDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final bool Function(
+    WebExtensionSessionTabDelegate pigeon_instance,
+    WebExtension? source,
+    GeckoSession session,
+  ) onCloseTab;
+
+  /// Callback method.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final WebExtensionSessionTabDelegate instance = WebExtensionSessionTabDelegate(
+  ///  onUpdateTab: (WebExtensionSessionTabDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final bool Function(
+    WebExtensionSessionTabDelegate pigeon_instance,
+    WebExtension extension,
+    GeckoSession session,
+    WebExtensionUpdateTabDetails details,
+  ) onUpdateTab;
+
+  static void pigeon_setUpMessageHandlers({
+    bool pigeon_clearHandlers = false,
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    bool Function(
+      WebExtensionSessionTabDelegate pigeon_instance,
+      WebExtension? source,
+      GeckoSession session,
+    )? onCloseTab,
+    bool Function(
+      WebExtensionSessionTabDelegate pigeon_instance,
+      WebExtension extension,
+      GeckoSession session,
+      WebExtensionUpdateTabDetails details,
+    )? onUpdateTab,
+  }) {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(
+            pigeon_instanceManager ?? PigeonInstanceManager.instance);
+    final BinaryMessenger? binaryMessenger = pigeon_binaryMessenger;
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.onCloseTab',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final WebExtensionSessionTabDelegate arg_pigeon_instance =
+              args[0]! as WebExtensionSessionTabDelegate;
+          final WebExtension? arg_source = args[1] as WebExtension?;
+          final GeckoSession arg_session = args[2]! as GeckoSession;
+          try {
+            final bool output = (onCloseTab ?? arg_pigeon_instance.onCloseTab)
+                .call(arg_pigeon_instance, arg_source, arg_session);
+            return wrapResponse(result: output);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.onUpdateTab',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final WebExtensionSessionTabDelegate arg_pigeon_instance =
+              args[0]! as WebExtensionSessionTabDelegate;
+          final WebExtension arg_extension = args[1]! as WebExtension;
+          final GeckoSession arg_session = args[2]! as GeckoSession;
+          final WebExtensionUpdateTabDetails arg_details =
+              args[3]! as WebExtensionUpdateTabDetails;
+          try {
+            final bool output = (onUpdateTab ?? arg_pigeon_instance.onUpdateTab)
+                .call(arg_pigeon_instance, arg_extension, arg_session,
+                    arg_details);
+            return wrapResponse(result: output);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+  }
+
+  @override
+  WebExtensionSessionTabDelegate pigeon_copy() {
+    return WebExtensionSessionTabDelegate.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+      onCloseTab: onCloseTab,
+      onUpdateTab: onUpdateTab,
+    );
+  }
+}
+
+class WebExtensionUpdateTabDetails extends PigeonInternalProxyApiBaseClass {
+  /// Constructs [WebExtensionUpdateTabDetails] without creating the associated native object.
+  ///
+  /// This should only be used by subclasses created by this library or to
+  /// create copies for an [PigeonInstanceManager].
+  @protected
+  WebExtensionUpdateTabDetails.pigeon_detached({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+    this.active,
+    this.autoDiscardable,
+    this.highlighted,
+    this.muted,
+    this.pinned,
+    this.url,
+  });
+
+  /// Whether the tab should become active.
+  final bool? active;
+
+  /// Whether the tab should be discarded automatically by the app when resources are low.
+  final bool? autoDiscardable;
+
+  /// If true and the tab is not highlighted, it should become active by default.
+  final bool? highlighted;
+
+  /// Whether the tab should be muted.
+  final bool? muted;
+
+  /// Whether the tab should be pinned.
+  final bool? pinned;
+
+  /// The url that the tab will be navigated to.
+  final String? url;
+
+  static void pigeon_setUpMessageHandlers({
+    bool pigeon_clearHandlers = false,
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    WebExtensionUpdateTabDetails Function(
+      bool? active,
+      bool? autoDiscardable,
+      bool? highlighted,
+      bool? muted,
+      bool? pinned,
+      String? url,
+    )? pigeon_newInstance,
+  }) {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(
+            pigeon_instanceManager ?? PigeonInstanceManager.instance);
+    final BinaryMessenger? binaryMessenger = pigeon_binaryMessenger;
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionUpdateTabDetails.pigeon_newInstance',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final int arg_pigeon_instanceIdentifier = args[0]! as int;
+          final bool? arg_active = args[1] as bool?;
+          final bool? arg_autoDiscardable = args[2] as bool?;
+          final bool? arg_highlighted = args[3] as bool?;
+          final bool? arg_muted = args[4] as bool?;
+          final bool? arg_pinned = args[5] as bool?;
+          final String? arg_url = args[6] as String?;
+          try {
+            (pigeon_instanceManager ?? PigeonInstanceManager.instance)
+                .addHostCreatedInstance(
+              pigeon_newInstance?.call(arg_active, arg_autoDiscardable,
+                      arg_highlighted, arg_muted, arg_pinned, arg_url) ??
+                  WebExtensionUpdateTabDetails.pigeon_detached(
+                    pigeon_binaryMessenger: pigeon_binaryMessenger,
+                    pigeon_instanceManager: pigeon_instanceManager,
+                    active: arg_active,
+                    autoDiscardable: arg_autoDiscardable,
+                    highlighted: arg_highlighted,
+                    muted: arg_muted,
+                    pinned: arg_pinned,
+                    url: arg_url,
+                  ),
+              arg_pigeon_instanceIdentifier,
+            );
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+  }
+
+  @override
+  WebExtensionUpdateTabDetails pigeon_copy() {
+    return WebExtensionUpdateTabDetails.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+      active: active,
+      autoDiscardable: autoDiscardable,
+      highlighted: highlighted,
+      muted: muted,
+      pinned: pinned,
+      url: url,
     );
   }
 }
@@ -3038,6 +3450,29 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
   }
 
   /// Get the current scroll callback handler.
+  Future<GeckoSessionScrollDelegate?> getScrollDelegate() async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoSession;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSession.getScrollDelegate';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+    return pigeonVar_replyValue as GeckoSessionScrollDelegate?;
+  }
+
   /// Get the current selection action delegate for this GeckoSession.
   /// Get the page extractor for this GeckoSession.
   /// The session translation object coordinates receiving and sending session messages with the translations toolkit.
@@ -3327,7 +3762,7 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
     );
   }
 
-  /// Handle back key pressed on Web content to dismiss some HTML elements such as <dialog>.
+  /// Handle back key pressed on Web content to dismiss some HTML elements such as &lt;dialog&gt;.
   /// Purge history for the session.
   Future<void> purgeHistory() async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
@@ -3429,7 +3864,7 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
   /// Set the compositor scroll callback handler.
   /// Set the content blocking callback handler.
   /// Set the content callback handler.
-  Future<void> setContentDelegate(GeckoSessionContentDelegate delegate) async {
+  Future<void> setContentDelegate(GeckoSessionContentDelegate? delegate) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecGeckoSession;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -3480,7 +3915,7 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
   /// Set the media session delegate.
   /// Set the navigation callback handler.
   Future<void> setNavigationDelegate(
-      GeckoSessionNavigationDelegate delegate) async {
+      GeckoSessionNavigationDelegate? delegate) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecGeckoSession;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -3504,7 +3939,7 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
 
   /// Set the current permission delegate for this GeckoSession.
   Future<void> setPermissionDelegate(
-      GeckoSessionPermissionDelegate delegate) async {
+      GeckoSessionPermissionDelegate? delegate) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecGeckoSession;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -3552,7 +3987,7 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
 
   /// Set the progress callback handler.
   Future<void> setProgressDelegate(
-      GeckoSessionProgressDelegate delegate) async {
+      GeckoSessionProgressDelegate? delegate) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
         _pigeonVar_codecGeckoSession;
     final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
@@ -3575,6 +4010,28 @@ class GeckoSession extends PigeonInternalProxyApiBaseClass {
   }
 
   /// Set the content scroll callback handler.
+  Future<void> setScrollDelegate(GeckoSessionScrollDelegate? delegate) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoSession;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSession.setScrollDelegate';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, delegate]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
   /// Set the current selection action delegate for this GeckoSession.
   /// Set the translation delegate, which receives translations events.
   /// Stop loading.
@@ -6639,6 +7096,188 @@ class GeckoSessionProgressDelegate extends PigeonInternalProxyApiBaseClass {
       onPageStart: onPageStart,
       onPageStop: onPageStop,
       onProgressChange: onProgressChange,
+    );
+  }
+}
+
+class GeckoSessionScrollDelegate extends PigeonInternalProxyApiBaseClass {
+  factory GeckoSessionScrollDelegate({
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    void Function(
+      GeckoSessionScrollDelegate pigeon_instance,
+      GeckoSession session,
+      int scrollX,
+      int scrollY,
+    )? onScrollChanged,
+  }) {
+    if (PigeonOverrides.geckoSessionScrollDelegate_new != null) {
+      return PigeonOverrides.geckoSessionScrollDelegate_new!(
+          onScrollChanged: onScrollChanged);
+    }
+    return GeckoSessionScrollDelegate.pigeon_new(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+      onScrollChanged: onScrollChanged,
+    );
+  }
+
+  @protected
+  GeckoSessionScrollDelegate.pigeon_new({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+    this.onScrollChanged,
+  }) {
+    final int pigeonVar_instanceIdentifier =
+        pigeon_instanceManager.addDartCreatedInstance(this);
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoSessionScrollDelegate;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionScrollDelegate.pigeon_defaultConstructor';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[pigeonVar_instanceIdentifier]);
+    () async {
+      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+      _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+      );
+    }();
+  }
+
+  /// Constructs [GeckoSessionScrollDelegate] without creating the associated native object.
+  ///
+  /// This should only be used by subclasses created by this library or to
+  /// create copies for an [PigeonInstanceManager].
+  @protected
+  GeckoSessionScrollDelegate.pigeon_detached({
+    super.pigeon_binaryMessenger,
+    super.pigeon_instanceManager,
+    this.onScrollChanged,
+  });
+
+  late final _PigeonInternalProxyApiBaseCodec
+      _pigeonVar_codecGeckoSessionScrollDelegate =
+      _PigeonInternalProxyApiBaseCodec(pigeon_instanceManager);
+
+  /// Callback method.
+  ///
+  /// For the associated Native object to be automatically garbage collected,
+  /// it is required that the implementation of this `Function` doesn't have a
+  /// strong reference to the encapsulating class instance. When this `Function`
+  /// references a non-local variable, it is strongly recommended to access it
+  /// with a `WeakReference`:
+  ///
+  /// ```dart
+  /// final WeakReference weakMyVariable = WeakReference(myVariable);
+  /// final GeckoSessionScrollDelegate instance = GeckoSessionScrollDelegate(
+  ///  onScrollChanged: (GeckoSessionScrollDelegate pigeon_instance, ...) {
+  ///    print(weakMyVariable?.target);
+  ///  },
+  /// );
+  /// ```
+  ///
+  /// Alternatively, [PigeonInstanceManager.removeWeakReference] can be used to
+  /// release the associated Native object manually.
+  final void Function(
+    GeckoSessionScrollDelegate pigeon_instance,
+    GeckoSession session,
+    int scrollX,
+    int scrollY,
+  )? onScrollChanged;
+
+  static void pigeon_setUpMessageHandlers({
+    bool pigeon_clearHandlers = false,
+    BinaryMessenger? pigeon_binaryMessenger,
+    PigeonInstanceManager? pigeon_instanceManager,
+    GeckoSessionScrollDelegate Function()? pigeon_newInstance,
+    void Function(
+      GeckoSessionScrollDelegate pigeon_instance,
+      GeckoSession session,
+      int scrollX,
+      int scrollY,
+    )? onScrollChanged,
+  }) {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _PigeonInternalProxyApiBaseCodec(
+            pigeon_instanceManager ?? PigeonInstanceManager.instance);
+    final BinaryMessenger? binaryMessenger = pigeon_binaryMessenger;
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionScrollDelegate.pigeon_newInstance',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final int arg_pigeon_instanceIdentifier = args[0]! as int;
+          try {
+            (pigeon_instanceManager ?? PigeonInstanceManager.instance)
+                .addHostCreatedInstance(
+              pigeon_newInstance?.call() ??
+                  GeckoSessionScrollDelegate.pigeon_detached(
+                    pigeon_binaryMessenger: pigeon_binaryMessenger,
+                    pigeon_instanceManager: pigeon_instanceManager,
+                  ),
+              arg_pigeon_instanceIdentifier,
+            );
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+
+    {
+      final pigeonVar_channel = BasicMessageChannel<Object?>(
+          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionScrollDelegate.onScrollChanged',
+          pigeonChannelCodec,
+          binaryMessenger: binaryMessenger);
+      if (pigeon_clearHandlers) {
+        pigeonVar_channel.setMessageHandler(null);
+      } else {
+        pigeonVar_channel.setMessageHandler((Object? message) async {
+          final List<Object?> args = message! as List<Object?>;
+          final GeckoSessionScrollDelegate arg_pigeon_instance =
+              args[0]! as GeckoSessionScrollDelegate;
+          final GeckoSession arg_session = args[1]! as GeckoSession;
+          final int arg_scrollX = args[2]! as int;
+          final int arg_scrollY = args[3]! as int;
+          try {
+            (onScrollChanged ?? arg_pigeon_instance.onScrollChanged)?.call(
+                arg_pigeon_instance, arg_session, arg_scrollX, arg_scrollY);
+            return wrapResponse(empty: true);
+          } on PlatformException catch (e) {
+            return wrapResponse(error: e);
+          } catch (e) {
+            return wrapResponse(
+                error: PlatformException(code: 'error', message: e.toString()));
+          }
+        });
+      }
+    }
+  }
+
+  @override
+  GeckoSessionScrollDelegate pigeon_copy() {
+    return GeckoSessionScrollDelegate.pigeon_detached(
+      pigeon_binaryMessenger: pigeon_binaryMessenger,
+      pigeon_instanceManager: pigeon_instanceManager,
+      onScrollChanged: onScrollChanged,
     );
   }
 }

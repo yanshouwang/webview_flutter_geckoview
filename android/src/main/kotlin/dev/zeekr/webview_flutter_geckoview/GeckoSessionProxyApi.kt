@@ -74,6 +74,10 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         return pigeon_instance.promptDelegate
     }
 
+    override fun getScrollDelegate(pigeon_instance: GeckoSession): GeckoSession.ScrollDelegate? {
+        return pigeon_instance.scrollDelegate
+    }
+
     override fun open(pigeon_instance: GeckoSession, runtime: GeckoRuntime) {
         pigeon_instance.open(runtime)
     }
@@ -86,37 +90,31 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         pigeon_instance.purgeHistory()
     }
 
-    override fun setContentDelegate(
-        pigeon_instance: GeckoSession, delegate: GeckoSession.ContentDelegate
-    ) {
+    override fun setContentDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.ContentDelegate?) {
         pigeon_instance.contentDelegate = delegate
     }
 
-    override fun setFocused(
-        pigeon_instance: GeckoSession, focused: Boolean
-    ) {
+    override fun setFocused(pigeon_instance: GeckoSession, focused: Boolean) {
         pigeon_instance.setFocused(focused)
     }
 
-    override fun setProgressDelegate(
-        pigeon_instance: GeckoSession, delegate: GeckoSession.ProgressDelegate
-    ) {
+    override fun setProgressDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.ProgressDelegate?) {
         pigeon_instance.progressDelegate = delegate
+    }
+
+    override fun setScrollDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.ScrollDelegate?) {
+        pigeon_instance.scrollDelegate = delegate
     }
 
     override fun stop(pigeon_instance: GeckoSession) {
         pigeon_instance.stop()
     }
 
-    override fun setNavigationDelegate(
-        pigeon_instance: GeckoSession, delegate: GeckoSession.NavigationDelegate
-    ) {
+    override fun setNavigationDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.NavigationDelegate?) {
         pigeon_instance.navigationDelegate = delegate
     }
 
-    override fun setPermissionDelegate(
-        pigeon_instance: GeckoSession, delegate: GeckoSession.PermissionDelegate
-    ) {
+    override fun setPermissionDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.PermissionDelegate?) {
         pigeon_instance.permissionDelegate = delegate
     }
 
@@ -140,11 +138,11 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         pigeon_instance.gotoHistoryIndex(index.toInt())
     }
 
-    override fun hasCookieBannerRuleForBrowsingContextTree(
-        pigeon_instance: GeckoSession, callback: (Result<Boolean?>) -> Unit
-    ) {
-        pigeon_instance.hasCookieBannerRuleForBrowsingContextTree()
-            .accept({ ResultCompat.success(it, callback) }, { ResultCompat.failure(it, callback) })
+    override fun hasCookieBannerRuleForBrowsingContextTree(pigeon_instance: GeckoSession, callback: (Result<Boolean?>) -> Unit) {
+        pigeon_instance.hasCookieBannerRuleForBrowsingContextTree().accept(
+            { ResultCompat.success(it, callback) },
+            { ResultCompat.failure(it, callback) }
+        )
     }
 
     override fun isOpen(pigeon_instance: GeckoSession): Boolean {
@@ -154,7 +152,8 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     override fun isPdfJs(pigeon_instance: GeckoSession, callback: (Result<Boolean?>) -> Unit) {
         pigeon_instance.isPdfJs.accept(
             { ResultCompat.success(it, callback) },
-            { ResultCompat.failure(it, callback) })
+            { ResultCompat.failure(it, callback) }
+        )
     }
 
     override fun load(pigeon_instance: GeckoSession, request: GeckoSession.Loader) {
@@ -165,13 +164,11 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         pigeon_instance.reload()
     }
 
-    override fun sendMoreWebCompatInfo(
-        pigeon_instance: GeckoSession, info: String, callback: (Result<Unit>) -> Unit
-    ) {
-        pigeon_instance.sendMoreWebCompatInfo(JSONObject(info))
-            .accept(
-                { ResultCompat.success(Unit, callback) },
-                { ResultCompat.failure(it, callback) })
+    override fun sendMoreWebCompatInfo(pigeon_instance: GeckoSession, info: String, callback: (Result<Unit>) -> Unit) {
+        pigeon_instance.sendMoreWebCompatInfo(JSONObject(info)).accept(
+            { ResultCompat.success(Unit, callback) },
+            { ResultCompat.failure(it, callback) }
+        )
     }
 
     override fun setActive(pigeon_instance: GeckoSession, active: Boolean) {
@@ -181,14 +178,14 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     override fun getUserAgent(pigeon_instance: GeckoSession, callback: (Result<String?>) -> Unit) {
         pigeon_instance.userAgent.accept(
             { ResultCompat.success(it, callback) },
-            { ResultCompat.failure(it, callback) })
+            { ResultCompat.failure(it, callback) }
+        )
     }
 
-    override fun getWebCompatInfo(
-        pigeon_instance: GeckoSession, callback: (Result<String?>) -> Unit
-    ) {
+    override fun getWebCompatInfo(pigeon_instance: GeckoSession, callback: (Result<String?>) -> Unit) {
         pigeon_instance.webCompatInfo.accept(
             { ResultCompat.success(it?.toString(), callback) },
-            { ResultCompat.failure(it, callback) })
+            { ResultCompat.failure(it, callback) }
+        )
     }
 }

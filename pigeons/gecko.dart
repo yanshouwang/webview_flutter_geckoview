@@ -151,31 +151,31 @@ abstract class WebExtensionController {
 )
 abstract class WebExtension {
   /// Returns the delegate handling browsing-data operations for this extension.
-  // WebExtensionBrowsingDataDelegate getBrowsingDataDelegate();
+  // WebExtensionBrowsingDataDelegate? getBrowsingDataDelegate();
 
   /// Get the download delegate for this extension.
-  // WebExtensionDownloadDelegate getDownloadDelegate();
+  // WebExtensionDownloadDelegate? getDownloadDelegate();
 
   /// Get the tab delegate for this extension.
   WebExtensionTabDelegate? getTabDelegate();
 
   /// Set the Action delegate for this WebExtension.
-  // void setActionDelegate(WebExtensionActionDelegate delegate);
+  // void setActionDelegate(WebExtensionActionDelegate? delegate);
 
   /// Sets the delegate to handle browsing-data operations (clear, remove, get settings).
-  // void setBrowsingDataDelegate(WebExtensionBrowsingDataDelegate delegate);
+  // void setBrowsingDataDelegate(WebExtensionBrowsingDataDelegate? delegate);
 
   /// Set the download delegate for this extension.
-  // void setDownloadDelegate(WebExtensionDownloadDelegate delegate);
+  // void setDownloadDelegate(WebExtensionDownloadDelegate? delegate);
 
   /// Defines the message delegate for a Native App.
   void setMessageDelegate(
-    WebExtensionMessageDelegate delegate,
+    WebExtensionMessageDelegate? delegate,
     String nativeApp,
   );
 
   /// Set the tab delegate for this extension.
-  void setTabDelegate(WebExtensionTabDelegate delegate);
+  void setTabDelegate(WebExtensionTabDelegate? delegate);
 }
 
 @ProxyApi(
@@ -215,7 +215,7 @@ abstract class WebExtensionTabDelegate {
   onNewTab;
 
   /// Called when runtime.openOptionsPage is invoked with options_ui.open_in_tab = false.
-  late void Function(WebExtension source) onOpenOptionsPage;
+  late void Function(WebExtension source)? onOpenOptionsPage;
 }
 
 @ProxyApi(
@@ -257,7 +257,7 @@ abstract class WebExtensionPort {
   void postMessage(String message);
 
   /// Set a delegate for incoming messages through this WebExtension.Port.
-  void setDelegate(WebExtensionPortDelegate delegate);
+  void setDelegate(WebExtensionPortDelegate? delegate);
 }
 
 @ProxyApi(
@@ -279,7 +279,7 @@ abstract class WebExtensionPortDelegate {
 )
 abstract class WebExtensionSessionController {
   /// Get the Action delegate for this session.
-  // WebExtensionActionDelegate getActionDelegate(WebExtension extension);
+  // WebExtensionActionDelegate? getActionDelegate(WebExtension extension);
 
   /// Get the message delegate for nativeApp.
   WebExtensionMessageDelegate? getMessageDelegate(
@@ -288,26 +288,68 @@ abstract class WebExtensionSessionController {
   );
 
   /// Get the TabDelegate for the given extension.
-  // WebExtensionSessionTabDelegate getTabDelegate(WebExtension extension);
+  WebExtensionSessionTabDelegate? getTabDelegate(WebExtension extension);
 
   /// Set the Action delegate for this session.
   // void setActionDelegate(
   //   WebExtension extension,
-  //   WebExtensionActionDelegate delegate,
+  //   WebExtensionActionDelegate? delegate,
   // );
 
   /// Defines a message delegate for a Native App.
   void setMessageDelegate(
     WebExtension extension,
-    WebExtensionMessageDelegate delegate,
+    WebExtensionMessageDelegate? delegate,
     String nativeApp,
   );
 
   /// Set the TabDelegate for this session.
-  // void setTabDelegate(
-  //   WebExtension extension,
-  //   WebExtensionSessionTabDelegate delegate,
-  // );
+  void setTabDelegate(
+    WebExtension extension,
+    WebExtensionSessionTabDelegate? delegate,
+  );
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.SessionTabDelegate',
+  ),
+)
+abstract class WebExtensionSessionTabDelegate {
+  WebExtensionSessionTabDelegate();
+
+  late bool Function(WebExtension? source, GeckoSession session) onCloseTab;
+  late bool Function(
+    WebExtension extension,
+    GeckoSession session,
+    WebExtensionUpdateTabDetails details,
+  )
+  onUpdateTab;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.UpdateTabDetails',
+  ),
+)
+abstract class WebExtensionUpdateTabDetails {
+  /// Whether the tab should become active.
+  late final bool? active;
+
+  /// Whether the tab should be discarded automatically by the app when resources are low.
+  late final bool? autoDiscardable;
+
+  /// If true and the tab is not highlighted, it should become active by default.
+  late final bool? highlighted;
+
+  /// Whether the tab should be muted.
+  late final bool? muted;
+
+  /// Whether the tab should be pinned.
+  late final bool? pinned;
+
+  /// The url that the tab will be navigated to.
+  late final String? url;
 }
 
 @ProxyApi(
@@ -355,10 +397,10 @@ abstract class GeckoSession {
   void flushSessionState();
 
   /// Get the SessionAccessibility instance for this session.
-  // SessionAccessibility getAccessibility();
+  // SessionAccessibility? getAccessibility();
 
   ///
-  // AutofillDelegate getAutofillDelegate();
+  // AutofillDelegate? getAutofillDelegate();
 
   /// Provides an autofill structure similar to
   /// View.onProvideAutofillVirtualStructure(ViewStructure, int) , but does not
@@ -432,7 +474,7 @@ abstract class GeckoSession {
   GeckoSessionPromptDelegate? getPromptDelegate();
 
   /// Get the current scroll callback handler.
-  // GeckoSessionScrollDelegate? getScrollDelegate();
+  GeckoSessionScrollDelegate? getScrollDelegate();
 
   /// Get the current selection action delegate for this GeckoSession.
   // GeckoSessionSelectionActionDelegate? getSelectionActionDelegate();
@@ -450,7 +492,7 @@ abstract class GeckoSession {
   // SessionTextInput getTextInput();
 
   /// Get the translations delegate.
-  // TranslationsControllerSessionTranslationDelegate
+  // TranslationsControllerSessionTranslationDelegate?
   // getTranslationsSessionDelegate();
 
   /// Get the current user agent string for this GeckoSession.
@@ -534,58 +576,58 @@ abstract class GeckoSession {
   void setActive(bool active);
 
   /// Sets the autofill delegate for this session.
-  // void setAutofillDelegate(AutofillDelegate delegate);
+  // void setAutofillDelegate(AutofillDelegate? delegate);
 
   /// Set the compositor scroll callback handler.
   // void setCompositorScrollDelegate(
-  //   GeckoSessionCompositorScrollDelegate delegate,
+  //   GeckoSessionCompositorScrollDelegate? delegate,
   // );
 
   /// Set the content blocking callback handler.
-  // void setContentBlockingDelegate(ContentBlockingDelegate delegate);
+  // void setContentBlockingDelegate(ContentBlockingDelegate? delegate);
 
   /// Set the content callback handler.
-  void setContentDelegate(GeckoSessionContentDelegate delegate);
+  void setContentDelegate(GeckoSessionContentDelegate? delegate);
 
   /// Sets the experiment delegate for this session.
-  // void setExperimentDelegate(ExperimentDelegate delegate);
+  // void setExperimentDelegate(ExperimentDelegate? delegate);
 
   /// Move focus to this session or away from this session.
   void setFocused(bool focused);
 
   /// Set the history tracking delegate for this session, replacing the current delegate if one is set.
-  // void setHistoryDelegate(GeckoSessionHistoryDelegate delegate);
+  // void setHistoryDelegate(GeckoSessionHistoryDelegate? delegate);
 
   /// Set the media callback handler.
-  // void setMediaDelegate(GeckoSessionMediaDelegate delegate);
+  // void setMediaDelegate(GeckoSessionMediaDelegate? delegate);
 
   /// Set the media session delegate.
-  // void setMediaSessionDelegate(MediaSessionDelegate delegate);
+  // void setMediaSessionDelegate(MediaSessionDelegate? delegate);
 
   /// Set the navigation callback handler.
-  void setNavigationDelegate(GeckoSessionNavigationDelegate delegate);
+  void setNavigationDelegate(GeckoSessionNavigationDelegate? delegate);
 
   /// Set the current permission delegate for this GeckoSession.
-  void setPermissionDelegate(GeckoSessionPermissionDelegate delegate);
+  void setPermissionDelegate(GeckoSessionPermissionDelegate? delegate);
 
   /// Sets the print delegate for this session.
-  // void setPrintDelegate(GeckoSessionPrintDelegate delegate);
+  // void setPrintDelegate(GeckoSessionPrintDelegate? delegate);
 
   /// Notify GeckoView of the priority for this GeckoSession.
   void setPriorityHint(int priorityHint);
 
   /// Set the progress callback handler.
-  void setProgressDelegate(GeckoSessionProgressDelegate delegate);
+  void setProgressDelegate(GeckoSessionProgressDelegate? delegate);
 
   /// Set the content scroll callback handler.
-  // void setScrollDelegate(GeckoSessionScrollDelegate delegate);
+  void setScrollDelegate(GeckoSessionScrollDelegate? delegate);
 
   /// Set the current selection action delegate for this GeckoSession.
-  // void setSelectionActionDelegate(GeckoSessionSelectionActionDelegate delegate);
+  // void setSelectionActionDelegate(GeckoSessionSelectionActionDelegate? delegate);
 
   /// Set the translation delegate, which receives translations events.
   // void setTranslationsSessionDelegate(
-  //   TranslationsControllerSessionTranslationDelegate delegate,
+  //   TranslationsControllerSessionTranslationDelegate? delegate,
   // );
 
   /// Stop loading.
@@ -928,6 +970,18 @@ abstract class GeckoSessionProgressDelegate {
   //   GeckoSessionSessionState sessionState,
   // )?
   // onSessionStateChange;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.GeckoSession.ScrollDelegate',
+  ),
+)
+abstract class GeckoSessionScrollDelegate {
+  GeckoSessionScrollDelegate();
+
+  late void Function(GeckoSession session, int scrollX, int scrollY)?
+  onScrollChanged;
 }
 
 /// A View that displays web pages.

@@ -168,6 +168,17 @@ class GeckoWebViewController extends PlatformWebViewController {
     ),
   );
 
+  late final _geckoSessionScrollDelegate = gecko.GeckoSessionScrollDelegate(
+    onScrollChanged: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, scrollX, scrollY) {
+        weakThis.target?._onScrollPositionChangeCallback?.call(
+          ScrollPositionChange(scrollX.toDouble(), scrollY.toDouble()),
+        );
+      },
+    ),
+  );
+
   var _canGoBack = false;
   var _canGoForward = false;
 
@@ -175,6 +186,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   String? _title;
   GeckoNavigationDelegate? _currentNavigationDelegate;
   void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
+  void Function(ScrollPositionChange)? _onScrollPositionChangeCallback;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
     : _webView = gecko.GeckoView(
@@ -415,19 +427,24 @@ class GeckoWebViewController extends PlatformWebViewController {
       _geckoSession.settings.setUserAgentOverride(userAgent);
 
   @override
-  Future<void> setOnScrollPositionChange(
-    void Function(ScrollPositionChange scrollPositionChange)?
-    onScrollPositionChange,
-  ) {
-    // TODO: implement setOnScrollPositionChange
-    return super.setOnScrollPositionChange(onScrollPositionChange);
-  }
-
-  @override
   Future<void> setOnPlatformPermissionRequest(
     void Function(PlatformWebViewPermissionRequest request) onPermissionRequest,
   ) async {
     _onPermissionRequestCallback = onPermissionRequest;
+  }
+
+  @override
+  Future<void> setOnScrollPositionChange(
+    void Function(ScrollPositionChange scrollPositionChange)?
+    onScrollPositionChange,
+  ) {
+    _onScrollPositionChangeCallback = onScrollPositionChange;
+
+    if (onScrollPositionChange != null) {
+      return _webView.session.setScrollDelegate(_geckoSessionScrollDelegate);
+    } else {
+      return _webView.session.setScrollDelegate(null);
+    }
   }
 
   @override
@@ -580,25 +597,24 @@ class GeckoWebViewWidget extends PlatformWebViewWidget {
 
   @override
   Widget build(BuildContext context) {
-    _trySetDefaultOnShowCustomWidgetCallbacks(context);
+    // Setting a default key using `params` ensures the `PlatformViewLink`
+    // recreates the PlatformView when changes are made.
+    final key =
+        _geckoParams.key ??
+        ValueKey<GeckoWebViewWidgetCreationParams>(
+          params as GeckoWebViewWidgetCreationParams,
+        );
     return PlatformViewLink(
-      // Setting a default key using `params` ensures the `PlatformViewLink`
-      // recreates the PlatformView when changes are made.
-      key:
-          _geckoParams.key ??
-          ValueKey<GeckoWebViewWidgetCreationParams>(
-            params as GeckoWebViewWidgetCreationParams,
-          ),
+      key: key,
       viewType: 'plugins.flutter.io/webview',
-      surfaceFactory:
-          (BuildContext context, PlatformViewController controller) {
-            return AndroidViewSurface(
-              controller: controller as AndroidViewController,
-              gestureRecognizers: _geckoParams.gestureRecognizers,
-              hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-            );
-          },
-      onCreatePlatformView: (PlatformViewCreationParams params) {
+      surfaceFactory: (context, controller) {
+        return AndroidViewSurface(
+          controller: controller as AndroidViewController,
+          gestureRecognizers: _geckoParams.gestureRecognizers,
+          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+        );
+      },
+      onCreatePlatformView: (params) {
         return _initAndroidView(
             params,
             displayWithHybridComposition:
@@ -611,30 +627,6 @@ class GeckoWebViewWidget extends PlatformWebViewWidget {
           ..create();
       },
     );
-  }
-
-  // Attempt to handle custom views with a default implementation if it has not
-  // been set.
-  void _trySetDefaultOnShowCustomWidgetCallbacks(BuildContext context) {
-    // TODO: Uncomment this.
-    // final controller = _geckoParams.controller as GeckoWebViewController;
-
-    // if (controller._onShowCustomWidgetCallback == null) {
-    //   controller.setCustomWidgetCallbacks(
-    //     onShowCustomWidget:
-    //         (Widget widget, OnHideCustomWidgetCallback callback) {
-    //           Navigator.of(context).push(
-    //             MaterialPageRoute<void>(
-    //               builder: (BuildContext context) => widget,
-    //               fullscreenDialog: true,
-    //             ),
-    //           );
-    //         },
-    //     onHideCustomWidget: () {
-    //       Navigator.of(context).pop();
-    //     },
-    //   );
-    // }
   }
 }
 

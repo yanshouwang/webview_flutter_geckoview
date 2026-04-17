@@ -4,8 +4,6 @@ import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.WebExtension
 
-val sessions = mutableListOf<GeckoSession>()
-
 class WebExtensionTabDelegateProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiWebExtensionTabDelegate(pigeonRegistrar) {
     override fun pigeon_defaultConstructor(): WebExtension.TabDelegate {
@@ -16,7 +14,7 @@ class WebExtensionTabDelegateProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
                 val result = GeckoResult<GeckoSession>()
                 this@WebExtensionTabDelegateProxyApi.onNewTab(this, source, createDetails) {
                     it.onSuccess { session -> result.complete(session) }
-                        .onFailure { throwable -> result.completeExceptionally(throwable) }
+                        .onFailure { error -> result.completeExceptionally(error) }
                 }
                 return result
             }

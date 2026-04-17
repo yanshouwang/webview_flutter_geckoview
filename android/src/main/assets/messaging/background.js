@@ -84,29 +84,24 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 async function addJavascriptChannel(javascriptChannelName) {
-    const javascript = `
-        window["${javascriptChannelName}"] = {
-            postMessage: function(message) {
-                browser.runtime.sendMessage({
-                    category: 2,
-                    type: 0,
-                    name: "${javascriptChannelName}",
-                    message: message
-                });
-            }
-        };
-    `;
-    const tabs = await browser.tabs.query({});
-    for (const tab of tabs) {
-        await runJavascript(tab.id, javascript);
-    }
     const javascriptChannel = await browser.contentScripts.register({
         matches: [
             "<all_urls>"
         ],
         js: [
             {
-                code: javascript
+                code: `
+window["${javascriptChannelName}"] = {
+    postMessage: function(message) {
+        browser.runtime.sendMessage({
+            category: 2,
+            type: 0,
+            name: "${javascriptChannelName}",
+            message: message
+        });
+    }
+};
+                `
             }
         ],
         runAt: "document_start"
@@ -117,11 +112,6 @@ async function addJavascriptChannel(javascriptChannelName) {
 async function removeJavascriptChannel(javascriptChannelName) {
     const javascriptChannel = javascriptChannels.get(javascriptChannelName);
     await javascriptChannel.unregister();
-    const javascript = `delete window["${javascriptChannelName}"];`;
-    const tabs = await browser.tabs.query({});
-    for (const tab of tabs) {
-        await runJavascript(tab.id, javascript);
-    }
     javascriptChannels.delete(javascriptChannelName);
 }
 
@@ -130,7 +120,7 @@ async function runJavascript(tabId, javascript) {
         tabId,
         {
             code: javascript,
-            runAt: "document_start"
+            runAt: "document_start",
         }
     );
     return result[0] || null;

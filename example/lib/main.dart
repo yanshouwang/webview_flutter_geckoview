@@ -23,10 +23,10 @@ const String kNavigationExamplePage = '''
 <head><title>Navigation Delegate Example</title></head>
 <body>
 <p>
-The navigation delegate is set to block navigation to the pub.dev website.
+The navigation delegate is set to block navigation to the youtube website.
 </p>
 <ul>
-<ul><a href="https://pub.dev/">https://pub.dev/</a></ul>
+<ul><a href="https://www.youtube.com/">https://www.youtube.com/</a></ul>
 <ul><a href="https://www.google.com/">https://www.google.com/</a></ul>
 </ul>
 </body>
@@ -52,6 +52,7 @@ const String kLocalExamplePage = '''
 </html>
 ''';
 
+// NOTE: This is used by the transparency test in `example/ios/RunnerUITests/FLTWebViewUITests.m`.
 const String kTransparentBackgroundPage = '''
 <!DOCTYPE html>
 <html>
@@ -109,54 +110,34 @@ const String kLogExamplePage = '''
 
 const String kAlertTestPage = '''
 <!DOCTYPE html>
-<html>  
-   <head>     
-      <script type = "text/javascript">  
-            function showAlert(text) {	          
-	            alert(text);      
-            }  
-            
+<html>
+   <head>
+      <script type = "text/javascript">
+            function showAlert(text) {
+	            alert(text);
+            }
+
             function showConfirm(text) {
               var result = confirm(text);
               alert(result);
             }
-            
+
             function showPrompt(text, defaultText) {
               var inputString = prompt('Enter input', 'Default text');
-	            alert(inputString);            
-            }            
-      </script>       
-   </head>  
-     
-   <body>  
-      <p> Click the following button to see the effect </p>        
-      <form>  
-        <input type = "button" value = "Alert" onclick = "showAlert('Test Alert');" />
-        <input type = "button" value = "Confirm" onclick = "showConfirm('Test Confirm');" />  
-        <input type = "button" value = "Prompt" onclick = "showPrompt('Test Prompt', 'Default Value');" />    
-      </form>       
-   </body>  
-</html>  
-''';
+	            alert(inputString);
+            }
+      </script>
+   </head>
 
-const String kViewportMetaPage = '''
-  <!DOCTYPE html>
-  <html>
-  <head>
-      <title>Viewport meta example</title>
-  </head>
-  <meta name="viewport" content="width=1000, initial-scale=1" />
-  <style type="text/css">
-      body { background: transparent; margin: 0; padding: 0; }
-      #shape { background: red; width: 50vw; height: 50vw; }
-  </style>
-  <body>
-  <div>
-      <p>Viewport meta example</p>
-      <img id="shape" src="https://storage.googleapis.com/cms-storage-bucket/4fd5520fe28ebf839174.svg"/>
-  </div>
-  </body>
-  </html>
+   <body>
+      <p> Click the following button to see the effect </p>
+      <form>
+        <input type = "button" value = "Alert" onclick = "showAlert('Test Alert');" />
+        <input type = "button" value = "Confirm" onclick = "showConfirm('Test Confirm');" />
+        <input type = "button" value = "Prompt" onclick = "showPrompt('Test Prompt', 'Default Value');" />
+      </form>
+   </body>
+</html>
 ''';
 
 class WebViewExample extends StatefulWidget {
@@ -178,26 +159,31 @@ class _WebViewExampleState extends State<WebViewExample> {
     _controller = PlatformWebViewController(GeckoWebViewControllerCreationParams())
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x80000000))
+      ..setOnScrollPositionChange((ScrollPositionChange scrollPositionChange) {
+        debugPrint(
+          'Scroll position change to x = ${scrollPositionChange.x}, y = ${scrollPositionChange.y}',
+        );
+      })
       ..setPlatformNavigationDelegate(
         PlatformNavigationDelegate(
             const PlatformNavigationDelegateCreationParams(),
           )
+          ..setOnProgress((int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
+          })
           ..setOnPageStarted((String url) {
             debugPrint('Page started loading: $url');
           })
           ..setOnPageFinished((String url) {
             debugPrint('Page finished loading: $url');
-          })
-          ..setOnProgress((int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
           }),
-        //           ..setOnHttpError((HttpResponseError error) {
-        //             debugPrint(
-        //               'HTTP error occured on page: ${error.response?.statusCode}',
-        //             );
-        //           })
-        //           ..setOnWebResourceError((WebResourceError error) {
-        //             debugPrint('''
+        //               ..setOnHttpError((HttpResponseError error) {
+        //                 debugPrint(
+        //                   'Error occurred on page: ${error.response?.statusCode}',
+        //                 );
+        //               })
+        //               ..setOnWebResourceError((WebResourceError error) {
+        //                 debugPrint('''
         // Page resource error:
         //   code: ${error.errorCode}
         //   description: ${error.description}
@@ -205,25 +191,27 @@ class _WebViewExampleState extends State<WebViewExample> {
         //   isForMainFrame: ${error.isForMainFrame}
         //   url: ${error.url}
         //           ''');
-        //           })
-        //           ..setOnNavigationRequest((NavigationRequest request) {
-        //             if (request.url.contains('pub.dev')) {
-        //               debugPrint('blocking navigation to ${request.url}');
-        //               return NavigationDecision.prevent;
-        //             }
-        //             debugPrint('allowing navigation to ${request.url}');
-        //             return NavigationDecision.navigate;
-        //           })
-        //           ..setOnUrlChange((UrlChange change) {
-        //             debugPrint('url change to ${change.url}');
-        //           })
-        //           ..setOnHttpAuthRequest((HttpAuthRequest request) {
-        //             openDialog(request);
-        //           })
-        //           ..setOnSSlAuthError((PlatformSslAuthError error) {
-        //             // debugPrint('SSL error from ${(error as GeckoSslAuthError).url}');
-        //             error.cancel();
-        //           }),
+        //               })
+        //               ..setOnNavigationRequest((NavigationRequest request) {
+        //                 if (request.url.startsWith('https://www.youtube.com/')) {
+        //                   debugPrint('blocking navigation to ${request.url}');
+        //                   return NavigationDecision.prevent;
+        //                 }
+        //                 debugPrint('allowing navigation to ${request.url}');
+        //                 return NavigationDecision.navigate;
+        //               })
+        //               ..setOnUrlChange((UrlChange change) {
+        //                 debugPrint('url change to ${change.url}');
+        //               })
+        //               ..setOnHttpAuthRequest((HttpAuthRequest request) {
+        //                 openDialog(request);
+        //               })
+        //               ..setOnSSlAuthError((PlatformSslAuthError error) {
+        //                 debugPrint(
+        //                   'SSL error from ${(error as GeckoSslAuthError).host}',
+        //                 );
+        //                 error.cancel();
+        //               }),
       )
       ..addJavaScriptChannel(
         JavaScriptChannelParams(
@@ -235,16 +223,12 @@ class _WebViewExampleState extends State<WebViewExample> {
           },
         ),
       )
-      ..setOnPlatformPermissionRequest((
-        PlatformWebViewPermissionRequest request,
-      ) {
+      ..setOnPlatformPermissionRequest((PlatformWebViewPermissionRequest request) {
         debugPrint(
           'requesting permissions for ${request.types.map((WebViewPermissionResourceType type) => type.name)}',
         );
         request.grant();
-      })
-      ..loadRequest(LoadRequestParams(uri: Uri.parse('https://flutter.dev')));
-    // ..loadRequest(LoadRequestParams(uri: Uri.parse('https://permission.site')));
+      });
   }
 
   @override
@@ -289,24 +273,36 @@ class _WebViewExampleState extends State<WebViewExample> {
 
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('${httpRequest.host}: ${httpRequest.realm ?? '-'}'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                decoration: const InputDecoration(labelText: 'Username'),
-                autofocus: true,
-                controller: usernameTextController,
-              ),
-              TextField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                controller: passwordTextController,
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Username'),
+                  autofocus: true,
+                  controller: usernameTextController,
+                ),
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  controller: passwordTextController,
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
+            // Explicitly cancel the request on iOS as the OS does not emit new
+            // requests when a previous request is pending.
+            TextButton(
+              onPressed: () {
+                httpRequest.onCancel();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
             TextButton(
               onPressed: () {
                 httpRequest.onProceed(
@@ -327,6 +323,7 @@ class _WebViewExampleState extends State<WebViewExample> {
 }
 
 enum MenuOptions {
+  loadFlutterDev,
   showUserAgent,
   listCookies,
   clearCookies,
@@ -340,11 +337,9 @@ enum MenuOptions {
   loadHtmlString,
   transparentBackground,
   setCookie,
-  videoExample,
   logExample,
   basicAuthentication,
   javaScriptAlert,
-  viewportMeta,
 }
 
 class SampleMenu extends StatelessWidget {
@@ -367,6 +362,8 @@ class SampleMenu extends StatelessWidget {
       key: const ValueKey<String>('ShowPopupMenu'),
       onSelected: (MenuOptions value) {
         switch (value) {
+          case MenuOptions.loadFlutterDev:
+            _loadFlutterDev();
           case MenuOptions.showUserAgent:
             _onShowUserAgent();
           case MenuOptions.listCookies:
@@ -393,19 +390,19 @@ class SampleMenu extends StatelessWidget {
             _onTransparentBackground();
           case MenuOptions.setCookie:
             _onSetCookie();
-          case MenuOptions.videoExample:
-            _onVideoExample(context);
           case MenuOptions.logExample:
             _onLogExample();
           case MenuOptions.basicAuthentication:
             _promptForUrl(context);
           case MenuOptions.javaScriptAlert:
             _onJavaScriptAlertExample(context);
-          case MenuOptions.viewportMeta:
-            _onViewportMetaExample();
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<MenuOptions>>[
+        const PopupMenuItem<MenuOptions>(
+          value: MenuOptions.loadFlutterDev,
+          child: Text('Load flutter.dev'),
+        ),
         const PopupMenuItem<MenuOptions>(
           value: MenuOptions.showUserAgent,
           child: Text('Show user agent'),
@@ -464,10 +461,6 @@ class SampleMenu extends StatelessWidget {
           child: Text('Log example'),
         ),
         const PopupMenuItem<MenuOptions>(
-          value: MenuOptions.videoExample,
-          child: Text('Video example'),
-        ),
-        const PopupMenuItem<MenuOptions>(
           value: MenuOptions.basicAuthentication,
           child: Text('Basic Authentication Example'),
         ),
@@ -475,11 +468,13 @@ class SampleMenu extends StatelessWidget {
           value: MenuOptions.javaScriptAlert,
           child: Text('JavaScript Alert Example'),
         ),
-        const PopupMenuItem<MenuOptions>(
-          value: MenuOptions.viewportMeta,
-          child: Text('Viewport meta example'),
-        ),
       ],
+    );
+  }
+
+  Future<void> _loadFlutterDev() {
+    return webViewController.loadRequest(
+      LoadRequestParams(uri: Uri.parse('https://flutter.dev')),
     );
   }
 
@@ -571,32 +566,6 @@ class SampleMenu extends StatelessWidget {
     );
     await webViewController.loadRequest(
       LoadRequestParams(uri: Uri.parse('https://httpbin.org/anything')),
-    );
-  }
-
-  Future<void> _onVideoExample(BuildContext context) {
-    final geckoController = webViewController as GeckoWebViewController;
-    // #docregion fullscreen_example
-    // TODO: Uncomment this.
-    // geckoController.setCustomWidgetCallbacks(
-    //   onShowCustomWidget: (Widget widget, OnHideCustomWidgetCallback callback) {
-    //     Navigator.of(context).push(
-    //       MaterialPageRoute<void>(
-    //         builder: (BuildContext context) => widget,
-    //         fullscreenDialog: true,
-    //       ),
-    //     );
-    //   },
-    //   onHideCustomWidget: () {
-    //     Navigator.of(context).pop();
-    //   },
-    // );
-    // #enddocregion fullscreen_example
-
-    return geckoController.loadRequest(
-      LoadRequestParams(
-        uri: Uri.parse('https://www.youtube.com/watch?v=4AoFA19gbLo'),
-      ),
     );
   }
 
@@ -694,11 +663,12 @@ class SampleMenu extends StatelessWidget {
         '== JS == ${consoleMessage.level.name}: ${consoleMessage.message}',
       );
     });
+
     return webViewController.loadHtmlString(kLogExamplePage);
   }
 
   Future<void> _promptForUrl(BuildContext context) {
-    final urlTextController = TextEditingController();
+    final urlTextController = TextEditingController(text: 'https://');
 
     return showDialog<String>(
       context: context,
@@ -796,10 +766,6 @@ class SampleMenu extends StatelessWidget {
           },
         ) ??
         '';
-  }
-
-  Future<void> _onViewportMetaExample() {
-    return webViewController.loadHtmlString(kViewportMetaPage);
   }
 }
 

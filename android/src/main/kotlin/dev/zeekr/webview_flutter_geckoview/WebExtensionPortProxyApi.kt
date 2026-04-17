@@ -23,9 +23,7 @@ class WebExtensionPortProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) 
         pigeon_instance.postMessage(JSONObject(message))
     }
 
-    override fun setDelegate(
-        pigeon_instance: WebExtension.Port, delegate: WebExtension.PortDelegate
-    ) {
+    override fun setDelegate(pigeon_instance: WebExtension.Port, delegate: WebExtension.PortDelegate?) {
         pigeon_instance.setDelegate(delegate)
     }
 }
