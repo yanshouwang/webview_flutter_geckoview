@@ -71,6 +71,7 @@ class GeckoWebViewControllerCreationParams
 class GeckoWebViewController extends PlatformWebViewController {
   final gecko.GeckoView _webView;
   final gecko.GeckoWebExecutor _webExecutor;
+  final gecko.StorageController _storageController;
   final GeckoWebExtensionPort _webExtensionPort;
   final gecko.FlutterAssetManager _flutterAssetManager;
   final Map<String, GeckoJavaScriptChannelParams> _javaScriptChannelParams;
@@ -194,6 +195,7 @@ class GeckoWebViewController extends PlatformWebViewController {
       _webExecutor = gecko.GeckoWebExecutor(
         runtime: gecko.GeckoRuntime.instance,
       ),
+      _storageController = gecko.GeckoRuntime.instance.storageController,
       _webExtensionPort = GeckoWebExtensionPort(),
       _flutterAssetManager = gecko.FlutterAssetManager.instance,
       _javaScriptChannelParams = {},
@@ -323,16 +325,12 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<void> reload() => _geckoSession.reload();
 
   @override
-  Future<void> clearCache() {
-    // TODO: implement clearCache
-    return super.clearCache();
-  }
+  Future<void> clearCache() =>
+      _storageController.clearData(StorageControllerClearFlags.allCaches);
 
   @override
-  Future<void> clearLocalStorage() {
-    // TODO: implement clearLocalStorage
-    return super.clearLocalStorage();
-  }
+  Future<void> clearLocalStorage() =>
+      _storageController.clearData(StorageControllerClearFlags.all);
 
   @override
   Future<void> setPlatformNavigationDelegate(
