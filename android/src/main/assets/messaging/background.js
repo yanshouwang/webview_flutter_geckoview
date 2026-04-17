@@ -50,8 +50,6 @@ webExtensionPort.onMessage.addListener(async (message) => {
                     }
                     case 3: {
                         const details = message.details;
-                        const tab = await getCurrentTab();
-                        details.url = tab.url;
                         reply.result = await browser.cookies.set(details);
                         break;
                     }

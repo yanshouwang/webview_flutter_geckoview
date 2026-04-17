@@ -183,9 +183,8 @@ class GeckoWebExtensionPort {
         'type': 3,
         'id': id,
         'details': {
-          'domain': details.domain,
+          'url': details.url,
           'name': details.name,
-          'path': details.path,
           'value': details.value,
         },
       }),
@@ -205,6 +204,11 @@ class GeckoJavascriptChannel {
 }
 
 class GeckoCookieDetails {
+  final String domain;
+  final String name;
+  final String path;
+  final String value;
+
   const GeckoCookieDetails({
     required this.domain,
     required this.name,
@@ -212,8 +216,5 @@ class GeckoCookieDetails {
     required this.value,
   });
 
-  final String domain;
-  final String name;
-  final String path;
-  final String value;
+  String get url => 'https://$domain$path';
 }
