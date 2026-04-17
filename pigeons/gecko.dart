@@ -649,10 +649,10 @@ abstract class GeckoSessionLoader {
   // GeckoSessionLoader appLinkLaunchType(int appLinkLaunchType);
 
   /// Set the data URI of the resource to load.
-  GeckoSessionLoader bytes(Uint8List bytes, String mimeType);
+  GeckoSessionLoader dataBytes(Uint8List bytes, String? mimeType);
 
   /// Set the data URI of the resource to load.
-  GeckoSessionLoader string(String data, String mimeType);
+  GeckoSessionLoader dataString(String data, String? mimeType);
 
   /// Set the load flags for this load.
   GeckoSessionLoader flags(int flags);
@@ -661,7 +661,7 @@ abstract class GeckoSessionLoader {
   GeckoSessionLoader headerFilter(int filter);
 
   /// If this load originates from the address bar, sets the original user input before it got fixed up to a URI.
-  GeckoSessionLoader originalInput(String originalInput);
+  GeckoSessionLoader originalInput(String? originalInput);
 
   /// Set the referrer for this load.
   // GeckoSessionLoader referrerUri(Uri referrerUri);
@@ -1008,6 +1008,135 @@ abstract class GeckoView extends View {
   /// Attach a session to this view.
   // void setSession(GeckoSession session);
 }
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.GeckoWebExecutor',
+  ),
+)
+abstract class GeckoWebExecutor {
+  GeckoWebExecutor(GeckoRuntime runtime);
+
+  /// Send the given WebRequest.
+  @async
+  WebResponse? fetch(WebRequest request, int? flags);
+
+  /// Resolves the specified host name.
+  // @async
+  // List<InetAddress> resolve(String host);
+
+  ///This causes a speculative connection to be made to the host in the specified URI.
+  void speculativeConnect(String uri);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebRequest',
+  ),
+)
+abstract class WebRequest extends WebMessage {
+  /// An unmodifiable Map of headers.
+  late final Map<String, String> headers;
+
+  /// The URI for the request or response.
+  late final String uri;
+
+  /// If true, do not use newer protocol features that might have interop problems on the Internet.
+  late final bool beConservative;
+
+  /// The body of the request.
+  late final Uint8List? body;
+
+  /// The cache mode for the request.
+  late final int cacheMode;
+
+  /// The HTTP method for the request.
+  late final String method;
+
+  /// The value of the Referer header for this request.
+  late final String? referrer;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebRequest.Builder',
+  ),
+)
+abstract class WebRequestBuilder {
+  /// Construct a Builder instance with the specified URI.
+  WebRequestBuilder(String uri);
+
+  /// Add a HTTP header.
+  WebRequestBuilder addHeader(String key, String value);
+
+  /// Set the beConservative property.
+  WebRequestBuilder beConservative(bool beConservative);
+
+  /// Set the body.
+  WebRequestBuilder bodyString(String? bodyString);
+
+  /// Set the body.
+  WebRequestBuilder bodyBytes(Uint8List? bytes);
+
+  ///
+  WebRequest build();
+
+  /// Set the cache mode.
+  WebRequestBuilder cacheMode(int mode);
+
+  /// Set a HTTP header.
+  WebRequestBuilder header(String key, String value);
+
+  /// Set the HTTP method.
+  WebRequestBuilder method(String method);
+
+  /// Set the HTTP Referer header.
+  WebRequestBuilder referrer(String referrer);
+
+  /// Set the URI
+  WebRequestBuilder uri(String uri);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebResponse',
+  ),
+)
+abstract class WebResponse extends WebMessage {
+  /// An unmodifiable Map of headers.
+  late final Map<String, String> headers;
+
+  /// The URI for the request or response.
+  late final String uri;
+
+  /// An InputStream containing the response body, if available.
+  late final Uint8List? body;
+
+  /// The server certificate used with this response, if any.
+  // late final X509Certificate certificate;
+
+  /// Whether or not this response was delivered via a secure connection.
+  late final bool isSecure;
+
+  /// A boolean indicating whether or not this response is the result of a redirection.
+  late final bool redirected;
+
+  /// Specifies that the contents should request to be opened in another Android application.
+  late final bool requestExternalApp;
+
+  /// Specifies that the app may skip requesting the download in the UI.
+  late final bool skipConfirmation;
+
+  /// The HTTP status code for the response, e.g.
+  late final int statusCode;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebMessage',
+  ),
+)
+abstract class WebMessage {}
 
 /// This class represents the basic building block for user interface
 /// components.

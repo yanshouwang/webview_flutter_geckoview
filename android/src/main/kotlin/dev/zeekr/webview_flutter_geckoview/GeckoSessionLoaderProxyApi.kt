@@ -14,14 +14,14 @@ class GeckoSessionLoaderProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         return pigeon_instance.additionalHeaders(headers)
     }
 
-    override fun bytes(
-        pigeon_instance: GeckoSession.Loader, bytes: ByteArray, mimeType: String
+    override fun dataBytes(
+        pigeon_instance: GeckoSession.Loader, bytes: ByteArray, mimeType: String?
     ): GeckoSession.Loader {
         return pigeon_instance.data(bytes, mimeType)
     }
 
-    override fun string(
-        pigeon_instance: GeckoSession.Loader, data: String, mimeType: String
+    override fun dataString(
+        pigeon_instance: GeckoSession.Loader, data: String, mimeType: String?
     ): GeckoSession.Loader {
         return pigeon_instance.data(data, mimeType)
     }
@@ -39,7 +39,7 @@ class GeckoSessionLoaderProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     }
 
     override fun originalInput(
-        pigeon_instance: GeckoSession.Loader, originalInput: String
+        pigeon_instance: GeckoSession.Loader, originalInput: String?
     ): GeckoSession.Loader {
         return pigeon_instance.originalInput(originalInput)
     }

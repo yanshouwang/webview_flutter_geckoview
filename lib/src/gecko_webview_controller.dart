@@ -70,6 +70,7 @@ class GeckoWebViewControllerCreationParams
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
   final gecko.GeckoView _webView;
+  final gecko.GeckoWebExecutor _webExecutor;
   final GeckoWebExtensionPort _webExtensionPort;
   final gecko.FlutterAssetManager _flutterAssetManager;
   final Map<String, GeckoJavaScriptChannelParams> _javaScriptChannelParams;
@@ -189,16 +190,9 @@ class GeckoWebViewController extends PlatformWebViewController {
   void Function(ScrollPositionChange)? _onScrollPositionChangeCallback;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
-    : _webView = gecko.GeckoView(
-        // onScrollChanged: withWeakReferenceTo(this, (
-        //   WeakReference<AndroidWebViewController> weakReference,
-        // ) {
-        //   return (_, int left, int top, int oldLeft, int oldTop) async {
-        //     final void Function(ScrollPositionChange)? callback =
-        //         weakReference.target?._onScrollPositionChangedCallback;
-        //     callback?.call(ScrollPositionChange(left.toDouble(), top.toDouble()));
-        //   };
-        // }),
+    : _webView = gecko.GeckoView(),
+      _webExecutor = gecko.GeckoWebExecutor(
+        runtime: gecko.GeckoRuntime.instance,
       ),
       _webExtensionPort = GeckoWebExtensionPort(),
       _flutterAssetManager = gecko.FlutterAssetManager.instance,
@@ -260,7 +254,7 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<void> loadHtmlString(String html, {String? baseUrl}) {
-    final request = gecko.GeckoSessionLoader()..string(html, 'text/html');
+    final request = gecko.GeckoSessionLoader()..dataString(html, 'text/html');
     if (baseUrl != null) {
       request.uri(baseUrl);
     }
@@ -268,19 +262,34 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   @override
-  Future<void> loadRequest(LoadRequestParams params) {
+  Future<void> loadRequest(LoadRequestParams params) async {
     if (!params.uri.hasScheme) {
       throw ArgumentError('WebViewRequest#uri is required to have a scheme.');
     }
     switch (params.method) {
       case LoadRequestMethod.get:
-        final request = gecko.GeckoSessionLoader()
+        final loader = gecko.GeckoSessionLoader()
           ..uri(params.uri.toString())
           ..additionalHeaders(params.headers);
-        return _geckoSession.load(request);
+        return _geckoSession.load(loader);
       case LoadRequestMethod.post:
-        // TODO
-        break;
+        final builder = gecko.WebRequestBuilder(uri: params.uri.toString())
+          ..method(params.method.name.toUpperCase())
+          ..bodyBytes(params.body);
+        for (final header in params.headers.entries) {
+          builder.header(header.key, header.value);
+        }
+        final request = await builder.build();
+        final response = await _webExecutor
+            .fetch(request, null)
+            .then((e) => ArgumentError.checkNotNull(e));
+        final loader = gecko.GeckoSessionLoader()..uri(response.uri);
+        final bytes = response.body;
+        final mimeType = response.headers['content-type'];
+        if (bytes != null) {
+          loader.dataBytes(bytes, mimeType);
+        }
+        return _geckoSession.load(loader);
     }
     // The enum comes from a different package, which could get a new value at
     // any time, so a fallback case is necessary. Since there is no reasonable

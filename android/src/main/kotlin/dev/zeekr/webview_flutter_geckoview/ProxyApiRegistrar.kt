@@ -109,6 +109,22 @@ class ProxyApiRegistrar(
         return GeckoViewProxyApi(this)
     }
 
+    override fun getPigeonApiGeckoWebExecutor(): PigeonApiGeckoWebExecutor {
+        return GeckoWebExecutorProxyApi(this)
+    }
+
+    override fun getPigeonApiWebRequest(): PigeonApiWebRequest {
+        return WebRequestProxyApi(this)
+    }
+
+    override fun getPigeonApiWebRequestBuilder(): PigeonApiWebRequestBuilder {
+        return WebRequestBuilderProxyApi(this)
+    }
+
+    override fun getPigeonApiWebResponse(): PigeonApiWebResponse {
+        return WebResponseProxyApi(this)
+    }
+
     override fun getPigeonApiView(): PigeonApiView {
         return ViewProxyApi(this)
     }

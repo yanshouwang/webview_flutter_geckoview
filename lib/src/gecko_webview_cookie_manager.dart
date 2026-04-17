@@ -30,12 +30,12 @@ class GeckoWebViewCookieManagerCreationParams
 
 /// Handles all cookie operations for the GeckoView.
 class GeckoWebViewCookieManager extends PlatformWebViewCookieManager {
-  final gecko.GeckoRuntime _runtime;
+  final gecko.StorageController _storageController;
   final GeckoWebExtensionPort _webExtensionPort;
 
   /// Creates a new [GeckoWebViewCookieManager].
   GeckoWebViewCookieManager(PlatformWebViewCookieManagerCreationParams params)
-    : _runtime = gecko.GeckoRuntime.instance,
+    : _storageController = gecko.GeckoRuntime.instance.storageController,
       _webExtensionPort = GeckoWebExtensionPort(),
       super.implementation(
         params is GeckoWebViewCookieManagerCreationParams
@@ -44,8 +44,6 @@ class GeckoWebViewCookieManager extends PlatformWebViewCookieManager {
                 params,
               ),
       );
-
-  gecko.StorageController get _storageController => _runtime.storageController;
 
   @override
   Future<bool> clearCookies() async {
