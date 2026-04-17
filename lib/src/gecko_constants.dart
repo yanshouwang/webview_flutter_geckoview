@@ -25,3 +25,13 @@ class StorageControllerClearFlags {
   static const int siteData = 471;
   static const int all = 512;
 }
+
+class GeckoViewBackend {
+  static const int surfaceView = 1;
+  static const int textureView = 2;
+}
+
+class PanZoomControllerScrollBehavior {
+  static const int smooth = 0;
+  static const int auto = 1;
+}

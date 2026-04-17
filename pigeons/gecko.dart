@@ -370,6 +370,10 @@ abstract class GeckoSession {
   @static
   String getDefaultUserAgent();
 
+  /// Get the PanZoomController instance for this session.
+  @attached
+  late PanZoomController panZoomController;
+
   /// Returns the settings used by this GeckoSession.
   @attached
   late GeckoSessionSettings settings;
@@ -938,7 +942,195 @@ abstract class GeckoSessionPermissionDelegateCallback {
 )
 abstract class GeckoSessionPromptDelegate {
   GeckoSessionPromptDelegate();
+
+  /// Handle a address save prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAutocompleteRequest<AutocompleteAddressSaveOption>
+  //   request,
+  // )
+  // onAddressSave;
+
+  /// Handle a address selection prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAutocompleteRequest<
+  //     AutocompleteAddressSelectOption
+  //   >
+  //   request,
+  // )
+  // onAddressSelect;
+
+  /// Display an alert prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAlertPrompt prompt,
+  // )
+  // onAlertPrompt;
+
+  /// Display an authorization prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAuthPrompt prompt,
+  // )
+  // onAuthPrompt;
+
+  /// Display a onbeforeunload prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateBeforeUnloadPrompt prompt,
+  // )
+  // onBeforeUnloadPrompt;
+
+  /// Display a button prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateButtonPrompt prompt,
+  // )
+  // onButtonPrompt;
+
+  /// Display a list/menu prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateChoicePrompt prompt,
+  // )
+  // onChoicePrompt;
+
+  /// Display a color prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateColorPrompt prompt,
+  // )
+  // onColorPrompt;
+
+  /// Handle a credit card save prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAutocompleteRequest<
+  //     AutocompleteCreditCardSaveOption
+  //   >
+  //   request,
+  // )
+  // onCreditCardSave;
+
+  /// Handle a credit card selection prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAutocompleteRequest<
+  //     AutocompleteCreditCardSelectOption
+  //   >
+  //   request,
+  // )
+  // onCreditCardSelect;
+
+  /// Display a date/time prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateDateTimePrompt prompt,
+  // )
+  // onDateTimePrompt;
+
+  /// Display a file prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateFilePrompt prompt,
+  // )
+  // onFilePrompt;
+
+  /// Display a folder upload prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateFolderUploadPrompt prompt,
+  // )
+  // onFolderUploadPrompt;
+
+  /// Handle a login save prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAutocompleteRequest<AutocompleteLoginSaveOption>
+  //   request,
+  // )
+  // onLoginSave;
+
+  /// Handle a login selection prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateAutocompleteRequest<AutocompleteLoginSelectOption>
+  //   request,
+  // )
+  // onLoginSelect;
+
+  /// Display a popup request prompt; this occurs when content attempts to open a new window in a way that doesn't appear to be the result of user input.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegatePopupPrompt prompt,
+  // )
+  // onPopupPrompt;
+
+  /// Display a redirect request prompt; this occurs when a third-party frame attempts to redirect the top-level window in a way that doesn't appear to be the result of user input.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateRedirectPrompt prompt,
+  // )
+  // onRedirectPrompt;
+
+  /// Display a POST resubmission confirmation prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateRepostConfirmPrompt prompt,
+  // )
+  // onRepostConfirmPrompt;
+
+  /// Handle a request for a client authentication certificate.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateCertificateRequest request,
+  // )
+  // onRequestCertificate;
+
+  /// Handle an Identity Credential Account selection prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateIdentityCredentialAccountSelectorPrompt prompt,
+  // )
+  // onSelectIdentityCredentialAccount;
+
+  /// Handle an Identity Credential Provider selection prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateIdentityCredentialProviderSelectorPrompt prompt,
+  // )
+  // onSelectIdentityCredentialProvider;
+
+  /// Display a share request prompt; this occurs when content attempts to use the WebShare API.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegate.SharePrompt prompt,
+  // )
+  // onSharePrompt;
+
+  /// Handle an Identity Credential privacy policy prompt request.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateIdentityCredentialPrivacyPolicyPrompt prompt,
+  // )
+  // onShowPrivacyPolicyIdentityCredential;
+
+  /// Display a text prompt.
+  // late GeckoSessionPromptDelegatePromptResponse Function(
+  //   GeckoSession session,
+  //   GeckoSessionPromptDelegateTextPrompt prompt,
+  // )
+  // onTextPrompt;
 }
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse',
+  ),
+)
+abstract class GeckoSessionPromptDelegatePromptResponse {}
 
 @ProxyApi(
   kotlinOptions: KotlinProxyApiOptions(
@@ -996,8 +1188,13 @@ abstract class GeckoView extends View {
   /// Construct a new GeckoView instance.
   GeckoView();
 
+  /// Returns the current GeckoSession attached to this view.
   @attached
   late GeckoSession session;
+
+  /// Retrieves the controller responsible for panning and zooming gestures.
+  @attached
+  late PanZoomController panZoomController;
 
   /// Returns the current GeckoSession attached to this view.
   // GeckoSession? getSession();
@@ -1007,6 +1204,86 @@ abstract class GeckoView extends View {
 
   /// Attach a session to this view.
   // void setSession(GeckoSession session);
+
+  /// Set which view should be used by this GeckoView instance to display content.
+  void setViewBackend(int backend);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.PanZoomController',
+  ),
+)
+abstract class PanZoomController {
+  /// Get the current scroll factor.
+  double getScrollFactor();
+
+  /// Process a drag event.
+  // bool onDragEvent(DragEvent event);
+
+  /// Process a non-touch motion event through the pan-zoom controller.
+  // void onMotionEvent(MotionEvent event);
+
+  /// Process a touch event through the pan-zoom controller.
+  // void onMouseEvent(MotionEvent event);
+
+  /// Process a touch event through the pan-zoom controller.
+  // void onTouchEvent(MotionEvent event);
+
+  /// Process a touch event through the pan-zoom controller.
+  // @async
+  // PanZoomControllerInputResultDetail? onTouchEventForDetailResult(
+  //   MotionEvent event,
+  // );
+
+  /// Scroll the document body by an offset from the current scroll position.
+  void scrollBy(ScreenLength width, ScreenLength height, int? behavior);
+
+  /// Scroll the document body to an absolute position.
+  void scrollTo(ScreenLength width, ScreenLength height, int? behavior);
+
+  /// Scroll to the bottom left corner of the screen.
+  void scrollToBottom();
+
+  /// Scroll to the top left corner of the screen.
+  void scrollToTop();
+
+  /// Set whether Gecko should generate long-press events.
+  void setIsLongpressEnabled(bool isLongpressEnabled);
+
+  /// Set the current scroll factor.
+  void setScrollFactor(double factor);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.ScreenLength',
+  ),
+)
+abstract class ScreenLength {
+  /// Create a ScreenLength of the documents height.
+  ScreenLength.bottom();
+
+  /// Create a ScreenLength of a specific length.
+  ScreenLength.fromPixels(double value);
+
+  /// Create a ScreenLength that uses the visual viewport width as units.
+  ScreenLength.fromVisualViewportHeight(double value);
+
+  /// Create a ScreenLength that uses the visual viewport width as units.
+  ScreenLength.fromVisualViewportWidth(double value);
+
+  /// Create a ScreenLength of zero pixels length.
+  ScreenLength.top();
+
+  /// Create a ScreenLength of zero pixels length.
+  ScreenLength.zero();
+
+  /// Returns the unit type of the length The length can be one of the following: PIXEL, VISUAL_VIEWPORT_WIDTH, VISUAL_VIEWPORT_HEIGHT, DOCUMENT_WIDTH, DOCUMENT_HEIGHT
+  int getType();
+
+  /// Returns the scalar value used to calculate length.
+  double getValue();
 }
 
 @ProxyApi(

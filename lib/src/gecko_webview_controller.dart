@@ -211,14 +211,12 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
-    _geckoSession.setContentDelegate(_geckoSessionContentDelegate);
-    _geckoSession.setNavigationDelegate(_geckoSessionNavigationDelegate);
-    _geckoSession.setPermissionDelegate(_geckoSessionPermissionDelegate);
-    _geckoSession.setProgressDelegate(_geckoSessionProgressDelegate);
-    _geckoSession.settings.setAllowJavascript(true);
+    _webView.session.setContentDelegate(_geckoSessionContentDelegate);
+    _webView.session.setNavigationDelegate(_geckoSessionNavigationDelegate);
+    _webView.session.setPermissionDelegate(_geckoSessionPermissionDelegate);
+    _webView.session.setProgressDelegate(_geckoSessionProgressDelegate);
+    _webView.session.settings.setAllowJavascript(true);
   }
-
-  gecko.GeckoSession get _geckoSession => _webView.session;
 
   @override
   Future<void> loadFile(String absoluteFilePath) {
@@ -234,7 +232,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         final request = gecko.GeckoSessionLoader()
           ..uri(params.absoluteFilePath)
           ..additionalHeaders(params.headers);
-        await _geckoSession.load(request);
+        await _webView.session.load(request);
         break;
       default:
         await loadFileWithParams(
@@ -256,7 +254,7 @@ class GeckoWebViewController extends PlatformWebViewController {
       throw ArgumentError('Asset for key "$key" not found.', 'key');
     }
 
-    return _geckoSession.loadUri('resource://android/assets/$assetFilePath');
+    return _webView.session.loadUri('resource://android/assets/$assetFilePath');
   }
 
   @override
@@ -265,7 +263,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     if (baseUrl != null) {
       request.uri(baseUrl);
     }
-    return _geckoSession.load(request);
+    return _webView.session.load(request);
   }
 
   @override
@@ -278,7 +276,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         final loader = gecko.GeckoSessionLoader()
           ..uri(params.uri.toString())
           ..additionalHeaders(params.headers);
-        return _geckoSession.load(loader);
+        return _webView.session.load(loader);
       case LoadRequestMethod.post:
         final builder = gecko.WebRequestBuilder(uri: params.uri.toString())
           ..method(params.method.name.toUpperCase())
@@ -296,7 +294,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         if (bytes != null) {
           loader.dataBytes(bytes, mimeType);
         }
-        return _geckoSession.load(loader);
+        return _webView.session.load(loader);
     }
     // The enum comes from a different package, which could get a new value at
     // any time, so a fallback case is necessary. Since there is no reasonable
@@ -321,13 +319,13 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<bool> canGoForward() => Future.value(_canGoForward);
 
   @override
-  Future<void> goBack() => _geckoSession.goBack();
+  Future<void> goBack() => _webView.session.goBack();
 
   @override
-  Future<void> goForward() => _geckoSession.goForward();
+  Future<void> goForward() => _webView.session.goForward();
 
   @override
-  Future<void> reload() => _geckoSession.reload();
+  Future<void> reload() => _webView.session.reload();
 
   @override
   Future<void> clearCache() =>
@@ -399,15 +397,17 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<String?> getTitle() => Future.value(_title);
 
   @override
-  Future<void> scrollTo(int x, int y) {
-    // TODO: implement scrollTo
-    return super.scrollTo(x, y);
+  Future<void> scrollTo(int x, int y) async {
+    final width = gecko.ScreenLength.fromPixels(value: x.toDouble());
+    final height = gecko.ScreenLength.fromPixels(value: y.toDouble());
+    await _webView.panZoomController.scrollTo(width, height, null);
   }
 
   @override
-  Future<void> scrollBy(int x, int y) {
-    // TODO: implement scrollBy
-    return super.scrollBy(x, y);
+  Future<void> scrollBy(int x, int y) async {
+    final width = gecko.ScreenLength.fromPixels(value: x.toDouble());
+    final height = gecko.ScreenLength.fromPixels(value: y.toDouble());
+    await _webView.panZoomController.scrollBy(width, height, null);
   }
 
   @override
@@ -424,16 +424,17 @@ class GeckoWebViewController extends PlatformWebViewController {
       _webView.setBackgroundColor(color.toARGB32());
 
   @override
-  Future<void> setJavaScriptMode(JavaScriptMode javaScriptMode) => _geckoSession
+  Future<void> setJavaScriptMode(JavaScriptMode javaScriptMode) => _webView
+      .session
       .settings
       .setAllowJavascript(javaScriptMode == .unrestricted);
 
   @override
-  Future<String?> getUserAgent() => _geckoSession.getUserAgent();
+  Future<String?> getUserAgent() => _webView.session.getUserAgent();
 
   @override
   Future<void> setUserAgent(String? userAgent) =>
-      _geckoSession.settings.setUserAgentOverride(userAgent);
+      _webView.session.settings.setUserAgentOverride(userAgent);
 
   @override
   Future<void> setOnPlatformPermissionRequest(

@@ -109,6 +109,14 @@ class ProxyApiRegistrar(
         return GeckoViewProxyApi(this)
     }
 
+    override fun getPigeonApiPanZoomController(): PigeonApiPanZoomController {
+        return PanZoomControllerProxyApi(this)
+    }
+
+    override fun getPigeonApiScreenLength(): PigeonApiScreenLength {
+        return ScreenLengthProxyApi(this)
+    }
+
     override fun getPigeonApiGeckoWebExecutor(): PigeonApiGeckoWebExecutor {
         return GeckoWebExecutorProxyApi(this)
     }

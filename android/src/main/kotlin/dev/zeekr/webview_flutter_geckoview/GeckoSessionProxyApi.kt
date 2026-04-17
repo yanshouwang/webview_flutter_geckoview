@@ -4,6 +4,7 @@ import org.json.JSONObject
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoSessionSettings
+import org.mozilla.geckoview.PanZoomController
 import org.mozilla.geckoview.WebExtension
 
 class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
@@ -12,20 +13,24 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         return GeckoSession()
     }
 
-    override fun settings(pigeon_instance: GeckoSession): GeckoSessionSettings {
-        return pigeon_instance.settings
-    }
-
-    override fun webExtensionController(pigeon_instance: GeckoSession): WebExtension.SessionController {
-        return pigeon_instance.webExtensionController
-    }
-
     override fun createAsync(): GeckoSession {
         return GeckoSession()
     }
 
     override fun getDefaultUserAgent(): String {
         return GeckoSession.getDefaultUserAgent()
+    }
+
+    override fun panZoomController(pigeon_instance: GeckoSession): PanZoomController {
+        return pigeon_instance.panZoomController
+    }
+
+    override fun settings(pigeon_instance: GeckoSession): GeckoSessionSettings {
+        return pigeon_instance.settings
+    }
+
+    override fun webExtensionController(pigeon_instance: GeckoSession): WebExtension.SessionController {
+        return pigeon_instance.webExtensionController
     }
 
     override fun close(pigeon_instance: GeckoSession) {
@@ -138,7 +143,10 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
         pigeon_instance.gotoHistoryIndex(index.toInt())
     }
 
-    override fun hasCookieBannerRuleForBrowsingContextTree(pigeon_instance: GeckoSession, callback: (Result<Boolean?>) -> Unit) {
+    override fun hasCookieBannerRuleForBrowsingContextTree(
+        pigeon_instance: GeckoSession,
+        callback: (Result<Boolean?>) -> Unit
+    ) {
         pigeon_instance.hasCookieBannerRuleForBrowsingContextTree().accept(
             { ResultCompat.success(it, callback) },
             { ResultCompat.failure(it, callback) }

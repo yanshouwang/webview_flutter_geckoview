@@ -4,6 +4,7 @@ import android.view.View
 import io.flutter.plugin.platform.PlatformView
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoView
+import org.mozilla.geckoview.PanZoomController
 
 class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiGeckoView(pigeonRegistrar) {
@@ -33,5 +34,13 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
 
     override fun session(pigeon_instance: GeckoView): GeckoSession {
         return pigeon_instance.session ?: throw NullPointerException("session is null")
+    }
+
+    override fun panZoomController(pigeon_instance: GeckoView): PanZoomController {
+        return pigeon_instance.panZoomController
+    }
+
+    override fun setViewBackend(pigeon_instance: GeckoView, backend: Long) {
+        pigeon_instance.setViewBackend(backend.toInt())
     }
 }
