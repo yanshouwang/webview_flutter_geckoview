@@ -174,8 +174,12 @@ class GeckoWebViewController extends PlatformWebViewController {
     onScrollChanged: withWeakReferenceTo(
       this,
       (weakThis) => (_, session, scrollX, scrollY) {
-        weakThis.target?._onScrollPositionChangeCallback?.call(
-          ScrollPositionChange(scrollX.toDouble(), scrollY.toDouble()),
+        final target = weakThis.target;
+        if (target == null) return;
+        final scrollPosition = Offset(scrollX.toDouble(), scrollY.toDouble());
+        target._scrollPosition = scrollPosition;
+        target._onScrollPositionChangeCallback?.call(
+          ScrollPositionChange(scrollPosition.dx, scrollPosition.dy),
         );
       },
     ),
@@ -186,6 +190,7 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   String? _currentUrl;
   String? _title;
+  Offset? _scrollPosition;
   GeckoNavigationDelegate? _currentNavigationDelegate;
   void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
   void Function(ScrollPositionChange)? _onScrollPositionChangeCallback;
@@ -406,10 +411,7 @@ class GeckoWebViewController extends PlatformWebViewController {
   }
 
   @override
-  Future<Offset> getScrollPosition() {
-    // TODO: implement getScrollPosition
-    return super.getScrollPosition();
-  }
+  Future<Offset> getScrollPosition() => Future.value(_scrollPosition);
 
   @override
   Future<void> enableZoom(bool enabled) {
@@ -688,6 +690,46 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
   @override
   Future<void> setOnProgress(ProgressCallback onProgress) async {
     _onProgress = onProgress;
+  }
+
+  @override
+  Future<void> setOnUrlChange(UrlChangeCallback onUrlChange) {
+    // TODO: implement setOnUrlChange
+    return super.setOnUrlChange(onUrlChange);
+  }
+
+  @override
+  Future<void> setOnNavigationRequest(
+    NavigationRequestCallback onNavigationRequest,
+  ) {
+    // TODO: implement setOnNavigationRequest
+    return super.setOnNavigationRequest(onNavigationRequest);
+  }
+
+  @override
+  Future<void> setOnHttpAuthRequest(HttpAuthRequestCallback onHttpAuthRequest) {
+    // TODO: implement setOnHttpAuthRequest
+    return super.setOnHttpAuthRequest(onHttpAuthRequest);
+  }
+
+  @override
+  Future<void> setOnHttpError(HttpResponseErrorCallback onHttpError) {
+    // TODO: implement setOnHttpError
+    return super.setOnHttpError(onHttpError);
+  }
+
+  @override
+  Future<void> setOnWebResourceError(
+    WebResourceErrorCallback onWebResourceError,
+  ) {
+    // TODO: implement setOnWebResourceError
+    return super.setOnWebResourceError(onWebResourceError);
+  }
+
+  @override
+  Future<void> setOnSSlAuthError(SslAuthErrorCallback onSslAuthError) {
+    // TODO: implement setOnSSlAuthError
+    return super.setOnSSlAuthError(onSslAuthError);
   }
 }
 
