@@ -1,15 +1,51 @@
 # webview_flutter_geckoview
 
-A new Flutter plugin project.
+The Gecko implementation of [`webview_flutter`][1].
 
-## Getting Started
+## Usage
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/to/develop-plugins),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+This package is not an endorsed implementation of the `webview_flutter` plugin
+yet, so it currently requires extra setup to use:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* [Add this package][3] as an explicit dependency of your project, in addition to depending on `webview_flutter`.
 
+Once the step above is complete, you can use the [`webview_flutter`][1] APIs as you normally would.
+
+## Missing features
+
+The following APIs are not implemented yet.
+
+* WebViewController.enableZoom
+* WebViewController.setOnConsoleMessage
+* NavigationDelegate.onHttpError
+* NavigationDelegate.onWebResourceError
+* NavigationDelegate.onHttpAuthRequest
+
+## Display Mode
+
+This plugin supports two different platform view display modes. The default display mode is subject
+to change in the future, and will not be considered a breaking change, so if you want to ensure a
+specific mode, you can set it explicitly.
+
+### Texture Layer Hybrid Composition
+
+This is the current default mode, and is the display mode used by most
+plugins starting with Flutter 3.0. This is more performant than Hybrid Composition, but has some
+limitations from using an Android [SurfaceTexture](https://developer.android.com/reference/android/graphics/SurfaceTexture).
+See:
+* https://github.com/flutter/flutter/issues/104889
+* https://github.com/flutter/flutter/issues/116954
+
+### Hybrid Composition
+
+This ensures that the WebView will display and work as expected in the edge cases noted above, at
+the cost of some performance. See:
+* https://docs.flutter.dev/platform-integration/android/platform-views#performance
+
+This can be configured with
+`GeckoWebViewWidgetCreationParams.displayWithHybridComposition`. See https://pub.dev/packages/webview_flutter#platform-specific-features
+for more details on setting platform-specific features in the main plugin.
+
+[1]: https://pub.dev/packages/webview_flutter
+[2]: https://flutter.dev/to/endorsed-federated-plugin
+[3]: https://pub.dev/packages/webview_flutter_geckoview/install
