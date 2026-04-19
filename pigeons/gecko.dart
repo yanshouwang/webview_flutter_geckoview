@@ -12,6 +12,27 @@ import 'package:pigeon/pigeon.dart';
     ),
   ),
 )
+enum AllowOrDeny { allow, deny }
+
+/// The over-scroll mode for a view.
+///
+/// See https://developer.android.com/reference/android/view/View#OVER_SCROLL_ALWAYS.
+enum OverScrollMode {
+  /// Always allow a user to over-scroll this view, provided it is a view that
+  /// can scroll.
+  always,
+
+  /// Allow a user to over-scroll this view only if the content is large enough
+  /// to meaningfully scroll, provided it is a view that can scroll.
+  ifContentScrolls,
+
+  /// Never allow a user to over-scroll this view.
+  never,
+
+  /// The type is not recognized by this wrapper.
+  unknown,
+}
+
 @ProxyApi(
   kotlinOptions: KotlinProxyApiOptions(
     fullClassName: 'org.mozilla.geckoview.GeckoRuntime',
@@ -45,311 +66,6 @@ abstract class GeckoRuntimeSettings {
 
   /// Set whether or not web console messages should go to logcat.
   GeckoRuntimeSettings setConsoleOutputEnabled(bool value);
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.StorageController',
-  ),
-)
-abstract class StorageController {
-  /// Clear data for all hosts.
-  @async
-  void clearData(int flags);
-
-  /// Clear data for the given context ID.
-  void clearDataForSessionContext(String contextId);
-
-  /// Clear data owned by the given base domain (eTLD+1).
-  @async
-  void clearDataFromBaseDomain(String baseDomain, int flags);
-
-  /// Clear data owned by the given host.
-  @async
-  void clearDataFromHost(String host, int flags);
-
-  /// Get all currently stored permissions.
-  // @async
-  // List<GeckoSessionPermissionDelegateContentPermission> getAllPermissions();
-
-  /// Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
-  @async
-  int? getCookieBannerModeForDomain(String uri, bool isPrivateBrowsing);
-
-  /// Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
-  // @async
-  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
-  //   String uri,
-  // );
-
-  /// Get all currently stored permissions for a given URI and default (unset) context ID.
-  // @async
-  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
-  //   String uri,
-  //   bool privateMode,
-  // );
-
-  /// Get all currently stored permissions for a given URI and context ID.
-  // @async
-  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
-  //   String uri,
-  //   String contextId,
-  //   bool privateMode,
-  // );
-
-  /// Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
-  @async
-  void removeCookieBannerModeForDomain(String uri, bool isPrivateBrowsing);
-
-  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode.
-  @async
-  void setCookieBannerModeAndPersistInPrivateBrowsingForDomain(
-    String uri,
-    int mode,
-  );
-
-  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
-  @async
-  void setCookieBannerModeForDomain(
-    String uri,
-    int mode,
-    bool isPrivateBrowsing,
-  );
-
-  /// Set a new value for an existing permission.
-  // void setPermission(
-  //   GeckoSessionPermissionDelegateContentPermission perm,
-  //   int value,
-  // );
-
-  /// Set a permanent value for a permission in a private browsing session.
-  // void setPrivateBrowsingPermanentPermission(
-  //   GeckoSessionPermissionDelegateContentPermission perm,
-  //   int value,
-  // );
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtensionController',
-  ),
-)
-abstract class WebExtensionController {
-  /// Ensure that a built-in extension is installed.
-  @async
-  WebExtension? ensureBuiltIn(String uri, String? id);
-
-  /// List installed extensions for this GeckoRuntime.
-  @async
-  List<WebExtension>? list();
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension',
-  ),
-)
-abstract class WebExtension {
-  /// Returns the delegate handling browsing-data operations for this extension.
-  // WebExtensionBrowsingDataDelegate? getBrowsingDataDelegate();
-
-  /// Get the download delegate for this extension.
-  // WebExtensionDownloadDelegate? getDownloadDelegate();
-
-  /// Get the tab delegate for this extension.
-  WebExtensionTabDelegate? getTabDelegate();
-
-  /// Set the Action delegate for this WebExtension.
-  // void setActionDelegate(WebExtensionActionDelegate? delegate);
-
-  /// Sets the delegate to handle browsing-data operations (clear, remove, get settings).
-  // void setBrowsingDataDelegate(WebExtensionBrowsingDataDelegate? delegate);
-
-  /// Set the download delegate for this extension.
-  // void setDownloadDelegate(WebExtensionDownloadDelegate? delegate);
-
-  /// Defines the message delegate for a Native App.
-  void setMessageDelegate(
-    WebExtensionMessageDelegate? delegate,
-    String nativeApp,
-  );
-
-  /// Set the tab delegate for this extension.
-  void setTabDelegate(WebExtensionTabDelegate? delegate);
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.MessageDelegate',
-  ),
-)
-abstract class WebExtensionMessageDelegate {
-  WebExtensionMessageDelegate();
-
-  /// Called whenever the WebExtension connects to an app using runtime.connectNative.
-  late void Function(WebExtensionPort port)? onConnect;
-
-  /// Called whenever the WebExtension sends a message to an app using runtime.sendNativeMessage.
-  // late GeckoResult<Object> Function(
-  //   String nativeApp,
-  //   Object message,
-  //   WebExtensionMessageSender sender,
-  // )?
-  // onMessage;
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.TabDelegate',
-  ),
-)
-abstract class WebExtensionTabDelegate {
-  WebExtensionTabDelegate();
-
-  /// Called when tabs.create is invoked, this method returns a *newly-created* session that GeckoView will use to load the requested page on.
-  @async
-  late GeckoSession Function(
-    WebExtension source,
-    WebExtensionCreateTabDetails createDetails,
-  )
-  onNewTab;
-
-  /// Called when runtime.openOptionsPage is invoked with options_ui.open_in_tab = false.
-  late void Function(WebExtension source)? onOpenOptionsPage;
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.CreateTabDetails',
-  ),
-)
-abstract class WebExtensionCreateTabDetails {
-  late final bool? active;
-  late final String? cookieStoreId;
-  late final bool? discarded;
-  late final int? index;
-  late final bool? openInReaderMode;
-  late final bool? pinned;
-  late final String? url;
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.Port',
-  ),
-)
-abstract class WebExtensionPort {
-  @async
-  @static
-  WebExtensionPort? getAsync();
-
-  /// WebExtension.MessageSender corresponding to this port.
-  // @attached
-  // late WebExtensionMessageSender sender;
-
-  /// The application identifier of the MessageDelegate that opened this port.
-  late final String name;
-
-  /// Disconnects this port and notifies the other end.
-  void disconnect();
-
-  /// Post a message to the WebExtension connected to this WebExtension.Port instance.
-  void postMessage(String message);
-
-  /// Set a delegate for incoming messages through this WebExtension.Port.
-  void setDelegate(WebExtensionPortDelegate? delegate);
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.PortDelegate',
-  ),
-)
-abstract class WebExtensionPortDelegate {
-  WebExtensionPortDelegate();
-
-  late void Function(WebExtensionPort port)? onDisconnect;
-  late void Function(String message, WebExtensionPort port)? onPortMessage;
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.SessionController',
-  ),
-)
-abstract class WebExtensionSessionController {
-  /// Get the Action delegate for this session.
-  // WebExtensionActionDelegate? getActionDelegate(WebExtension extension);
-
-  /// Get the message delegate for nativeApp.
-  WebExtensionMessageDelegate? getMessageDelegate(
-    WebExtension extension,
-    String nativeApp,
-  );
-
-  /// Get the TabDelegate for the given extension.
-  WebExtensionSessionTabDelegate? getTabDelegate(WebExtension extension);
-
-  /// Set the Action delegate for this session.
-  // void setActionDelegate(
-  //   WebExtension extension,
-  //   WebExtensionActionDelegate? delegate,
-  // );
-
-  /// Defines a message delegate for a Native App.
-  void setMessageDelegate(
-    WebExtension extension,
-    WebExtensionMessageDelegate? delegate,
-    String nativeApp,
-  );
-
-  /// Set the TabDelegate for this session.
-  void setTabDelegate(
-    WebExtension extension,
-    WebExtensionSessionTabDelegate? delegate,
-  );
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.SessionTabDelegate',
-  ),
-)
-abstract class WebExtensionSessionTabDelegate {
-  WebExtensionSessionTabDelegate();
-
-  late bool Function(WebExtension? source, GeckoSession session) onCloseTab;
-  late bool Function(
-    WebExtension extension,
-    GeckoSession session,
-    WebExtensionUpdateTabDetails details,
-  )
-  onUpdateTab;
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.WebExtension.UpdateTabDetails',
-  ),
-)
-abstract class WebExtensionUpdateTabDetails {
-  /// Whether the tab should become active.
-  late final bool? active;
-
-  /// Whether the tab should be discarded automatically by the app when resources are low.
-  late final bool? autoDiscardable;
-
-  /// If true and the tab is not highlighted, it should become active by default.
-  late final bool? highlighted;
-
-  /// Whether the tab should be muted.
-  late final bool? muted;
-
-  /// Whether the tab should be pinned.
-  late final bool? pinned;
-
-  /// The url that the tab will be navigated to.
-  late final String? url;
 }
 
 @ProxyApi(
@@ -623,6 +339,9 @@ abstract class GeckoSession {
   /// Set the progress callback handler.
   void setProgressDelegate(GeckoSessionProgressDelegate? delegate);
 
+  /// Set the current prompt delegate for this GeckoSession.
+  void setPromptDelegate(GeckoSessionPromptDelegate? delegate);
+
   /// Set the content scroll callback handler.
   void setScrollDelegate(GeckoSessionScrollDelegate? delegate);
 
@@ -853,39 +572,78 @@ abstract class GeckoSessionNavigationDelegate {
   late void Function(GeckoSession session, bool canGoForward)? onCanGoForward;
 
   ///
-  // late GeckoResult<String> Function(
-  //   GeckoSession session,
-  //   String uri,
-  //   WebRequestError error,
-  // )?
-  // onLoadError;
+  late String? Function(GeckoSession session, String uri, WebRequestError error)
+  onLoadError;
 
   /// A request to open an URI.
-  // late GeckoResult<AllowOrDeny> Function(
-  //   GeckoSession session,
-  //   GeckoSessionNavigationDelegateLoadRequest request,
-  // )?
-  // onLoadRequest;
+  @async
+  late AllowOrDeny Function(
+    GeckoSession session,
+    GeckoSessionNavigationDelegateLoadRequest request,
+  )
+  onLoadRequest;
 
   /// A view has started loading content from the network.
-  // late void Function(
-  //   GeckoSession session,
-  //   String url,
-  //   List<GeckoSessionPermissionDelegateContentPermission> perms,
-  //   bool hasUserGesture,
-  // )?
-  // onLocationChange;
+  late void Function(
+    GeckoSession session,
+    String? url,
+    List<GeckoSessionPermissionDelegateContentPermission> perms,
+    bool hasUserGesture,
+  )?
+  onLocationChange;
 
   /// A request has been made to open a new session.
-  // late GeckoResult<GeckoSession> Function(GeckoSession session, String uri)?
-  // onNewSession;
+  // late GeckoSession Function(GeckoSession session, String uri) onNewSession;
 
   /// A request to load a URI in a non-top-level context.
-  // late GeckoResult<AllowOrDeny> Function(
-  //   GeckoSession session,
-  //   GeckoSessionNavigationDelegateLoadRequest request,
-  // )?
-  // onSubframeLoadRequest;
+  @async
+  late AllowOrDeny Function(
+    GeckoSession session,
+    GeckoSessionNavigationDelegateLoadRequest request,
+  )
+  onSubframeLoadRequest;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest',
+  ),
+)
+abstract class GeckoSessionNavigationDelegateLoadRequest {
+  /// True if there was an active user gesture when the load was requested.
+  late final bool hasUserGesture;
+
+  /// This load request was initiated by a direct navigation from the application.
+  late final bool isDirectNavigation;
+
+  /// True if and only if the request was triggered by an HTTP redirect.
+  late final bool isRedirect;
+
+  /// The target where the window has requested to open.
+  late final int target;
+
+  /// The URI of the origin page that triggered the load request.
+  late final String? triggerUri;
+
+  /// The URI to be loaded.
+  late final String uri;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebRequestError',
+  ),
+)
+abstract class WebRequestError {
+  /// The error category, e.g.
+  late final int category;
+
+  /// The server certificate used.
+  late final X509Certificate? certificate;
+
+  /// The error code, e.g.
+  late final int code;
 }
 
 @ProxyApi(
@@ -905,10 +663,10 @@ abstract class GeckoSessionPermissionDelegate {
   onAndroidPermissionsRequest;
 
   /// Request content permission.
-  // late GeckoResult<int> Function(
+  // late int Function(
   //   GeckoSession session,
   //   GeckoSessionPermissionDelegateContentPermission perm,
-  // )?
+  // )
   // onContentPermissionRequest;
 
   /// Request content media permissions, including request for which video and/or audio source to use.
@@ -933,6 +691,32 @@ abstract class GeckoSessionPermissionDelegateCallback {
 
   /// Called by the implementation when permissions are not granted; the implementation must call either grant() or reject() for every request.
   void reject();
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission',
+  ),
+)
+abstract class GeckoSessionPermissionDelegateContentPermission {
+  /// The context ID associated with the permission if any.
+  late final String? contextId;
+
+  /// The type of this permission; one of PERMISSION_*.
+  late final int permission;
+
+  /// A boolean indicating whether this content permission is associated with private browsing.
+  late final bool privateMode;
+
+  /// The third party origin associated with the request; currently only used for storage access permission.
+  late final String? thirdPartyOrigin;
+
+  /// The URI associated with this content permission.
+  late final String uri;
+
+  /// The value of the permission; one of VALUE_.
+  late final int value;
 }
 
 @ProxyApi(
@@ -962,18 +746,20 @@ abstract class GeckoSessionPromptDelegate {
   // onAddressSelect;
 
   /// Display an alert prompt.
-  // late GeckoSessionPromptDelegatePromptResponse Function(
-  //   GeckoSession session,
-  //   GeckoSessionPromptDelegateAlertPrompt prompt,
-  // )
-  // onAlertPrompt;
+  @async
+  late GeckoSessionPromptDelegatePromptResponse Function(
+    GeckoSession session,
+    GeckoSessionPromptDelegateAlertPrompt prompt,
+  )
+  onAlertPrompt;
 
   /// Display an authorization prompt.
-  // late GeckoSessionPromptDelegatePromptResponse Function(
-  //   GeckoSession session,
-  //   GeckoSessionPromptDelegateAuthPrompt prompt,
-  // )
-  // onAuthPrompt;
+  @async
+  late GeckoSessionPromptDelegatePromptResponse Function(
+    GeckoSession session,
+    GeckoSessionPromptDelegateAuthPrompt prompt,
+  )
+  onAuthPrompt;
 
   /// Display a onbeforeunload prompt.
   // late GeckoSessionPromptDelegatePromptResponse Function(
@@ -983,11 +769,12 @@ abstract class GeckoSessionPromptDelegate {
   // onBeforeUnloadPrompt;
 
   /// Display a button prompt.
-  // late GeckoSessionPromptDelegatePromptResponse Function(
-  //   GeckoSession session,
-  //   GeckoSessionPromptDelegateButtonPrompt prompt,
-  // )
-  // onButtonPrompt;
+  @async
+  late GeckoSessionPromptDelegatePromptResponse Function(
+    GeckoSession session,
+    GeckoSessionPromptDelegateButtonPrompt prompt,
+  )
+  onButtonPrompt;
 
   /// Display a list/menu prompt.
   // late GeckoSessionPromptDelegatePromptResponse Function(
@@ -1117,11 +904,136 @@ abstract class GeckoSessionPromptDelegate {
   // onShowPrivacyPolicyIdentityCredential;
 
   /// Display a text prompt.
-  // late GeckoSessionPromptDelegatePromptResponse Function(
-  //   GeckoSession session,
-  //   GeckoSessionPromptDelegateTextPrompt prompt,
-  // )
-  // onTextPrompt;
+  @async
+  late GeckoSessionPromptDelegatePromptResponse Function(
+    GeckoSession session,
+    GeckoSessionPromptDelegateTextPrompt prompt,
+  )
+  onTextPrompt;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt',
+  ),
+)
+abstract class GeckoSessionPromptDelegateBasePrompt {
+  /// This dismisses the prompt without sending any meaningful information back to content.
+  GeckoSessionPromptDelegatePromptResponse dismiss();
+
+  /// Get the delegate for this prompt.
+  // GeckoSessionPromptDelegatePromptInstanceDelegate getDelegate();
+
+  /// This returns true if the prompt has already been confirmed or dismissed.
+  bool isComplete();
+
+  /// Set the delegate for this prompt.
+  // void setDelegate(GeckoSessionPromptDelegatePromptInstanceDelegate delegate);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.AlertPrompt',
+  ),
+)
+abstract class GeckoSessionPromptDelegateAlertPrompt
+    extends GeckoSessionPromptDelegateBasePrompt {
+  /// The title of this prompt; may be null.
+  late final String? title;
+
+  /// The message to be displayed with this alert; may be null.
+  late final String? message;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt',
+  ),
+)
+abstract class GeckoSessionPromptDelegateAuthPrompt
+    extends GeckoSessionPromptDelegateBasePrompt {
+  /// The title of this prompt; may be null.
+  late final String? title;
+
+  /// The GeckoSession.PromptDelegate.AuthPrompt.AuthOptions that describe the type of authorization prompt.
+  late final GeckoSessionPromptDelegateAuthPromptAuthOptions authOptions;
+
+  /// The message to be displayed with this prompt; may be null.
+  late final String? message;
+
+  /// Confirms this prompt with just a password, returning the password to content.
+  GeckoSessionPromptDelegatePromptResponse confirmWithPassword(String password);
+
+  /// Confirms this prompt with a username and password, returning both to content.
+  GeckoSessionPromptDelegatePromptResponse confirmWithUsernameAndPassword(
+    String username,
+    String password,
+  );
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions',
+  ),
+)
+abstract class GeckoSessionPromptDelegateAuthPromptAuthOptions {
+  /// An int bit-field of GeckoSession.PromptDelegate.AuthPrompt.AuthOptions.Flags.
+  late final int flags;
+
+  /// An int, one of GeckoSession.PromptDelegate.AuthPrompt.AuthOptions.Level, indicating level of encryption.
+  late final int level;
+
+  /// A string containing the initial password.
+  late final String? password;
+
+  /// A string containing the URI for the auth request or null if unknown.
+  late final String? uri;
+
+  /// A string containing the initial username or null if password-only.
+  late final String? username;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt',
+  ),
+)
+abstract class GeckoSessionPromptDelegateButtonPrompt
+    extends GeckoSessionPromptDelegateBasePrompt {
+  /// The title of this prompt; may be null.
+  late final String? title;
+
+  /// The message to be displayed with this prompt; may be null.
+  late final String? message;
+
+  /// Confirms this prompt, returning the selected button to content.
+  GeckoSessionPromptDelegatePromptResponse confirm(int selection);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName:
+        'org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt',
+  ),
+)
+abstract class GeckoSessionPromptDelegateTextPrompt
+    extends GeckoSessionPromptDelegateBasePrompt {
+  /// The title of this prompt; may be null.
+  late final String? title;
+
+  /// The default value for the text field; may be null.
+  late final String? defaultValue;
+
+  /// The message to be displayed with this prompt; may be null.
+  late final String? message;
+
+  /// Confirms this prompt, returning the input text to content.
+  GeckoSessionPromptDelegatePromptResponse confirm(String text);
 }
 
 @ProxyApi(
@@ -1174,116 +1086,6 @@ abstract class GeckoSessionScrollDelegate {
 
   late void Function(GeckoSession session, int scrollX, int scrollY)?
   onScrollChanged;
-}
-
-/// A View that displays web pages.
-///
-/// See https://developer.android.com/reference/android/webkit/WebView.
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.GeckoView',
-  ),
-)
-abstract class GeckoView extends View {
-  /// Construct a new GeckoView instance.
-  GeckoView();
-
-  /// Returns the current GeckoSession attached to this view.
-  @attached
-  late GeckoSession session;
-
-  /// Retrieves the controller responsible for panning and zooming gestures.
-  @attached
-  late PanZoomController panZoomController;
-
-  /// Returns the current GeckoSession attached to this view.
-  // GeckoSession? getSession();
-
-  /// Unsets the current session from this instance and returns it, if any.
-  // GeckoSession? releaseSession();
-
-  /// Attach a session to this view.
-  // void setSession(GeckoSession session);
-
-  /// Set which view should be used by this GeckoView instance to display content.
-  void setViewBackend(int backend);
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.PanZoomController',
-  ),
-)
-abstract class PanZoomController {
-  /// Get the current scroll factor.
-  double getScrollFactor();
-
-  /// Process a drag event.
-  // bool onDragEvent(DragEvent event);
-
-  /// Process a non-touch motion event through the pan-zoom controller.
-  // void onMotionEvent(MotionEvent event);
-
-  /// Process a touch event through the pan-zoom controller.
-  // void onMouseEvent(MotionEvent event);
-
-  /// Process a touch event through the pan-zoom controller.
-  // void onTouchEvent(MotionEvent event);
-
-  /// Process a touch event through the pan-zoom controller.
-  // @async
-  // PanZoomControllerInputResultDetail? onTouchEventForDetailResult(
-  //   MotionEvent event,
-  // );
-
-  /// Scroll the document body by an offset from the current scroll position.
-  void scrollBy(ScreenLength width, ScreenLength height, int? behavior);
-
-  /// Scroll the document body to an absolute position.
-  void scrollTo(ScreenLength width, ScreenLength height, int? behavior);
-
-  /// Scroll to the bottom left corner of the screen.
-  void scrollToBottom();
-
-  /// Scroll to the top left corner of the screen.
-  void scrollToTop();
-
-  /// Set whether Gecko should generate long-press events.
-  void setIsLongpressEnabled(bool isLongpressEnabled);
-
-  /// Set the current scroll factor.
-  void setScrollFactor(double factor);
-}
-
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'org.mozilla.geckoview.ScreenLength',
-  ),
-)
-abstract class ScreenLength {
-  /// Create a ScreenLength of the documents height.
-  ScreenLength.bottom();
-
-  /// Create a ScreenLength of a specific length.
-  ScreenLength.fromPixels(double value);
-
-  /// Create a ScreenLength that uses the visual viewport width as units.
-  ScreenLength.fromVisualViewportHeight(double value);
-
-  /// Create a ScreenLength that uses the visual viewport width as units.
-  ScreenLength.fromVisualViewportWidth(double value);
-
-  /// Create a ScreenLength of zero pixels length.
-  ScreenLength.top();
-
-  /// Create a ScreenLength of zero pixels length.
-  ScreenLength.zero();
-
-  /// Returns the unit type of the length The length can be one of the following: PIXEL, VISUAL_VIEWPORT_WIDTH, VISUAL_VIEWPORT_HEIGHT, DOCUMENT_WIDTH, DOCUMENT_HEIGHT
-  int getType();
-
-  /// Returns the scalar value used to calculate length.
-  double getValue();
 }
 
 @ProxyApi(
@@ -1390,7 +1192,7 @@ abstract class WebResponse extends WebMessage {
   late final Uint8List? body;
 
   /// The server certificate used with this response, if any.
-  // late final X509Certificate certificate;
+  late final X509Certificate? certificate;
 
   /// Whether or not this response was delivered via a secure connection.
   late final bool isSecure;
@@ -1415,48 +1217,449 @@ abstract class WebResponse extends WebMessage {
 )
 abstract class WebMessage {}
 
-/// This class represents the basic building block for user interface
-/// components.
+/// A View that displays web pages.
 ///
-/// See https://developer.android.com/reference/android/view/View.
+/// See https://developer.android.com/reference/android/webkit/WebView.
 @ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(fullClassName: 'android.view.View'),
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.GeckoView',
+  ),
 )
-abstract class View {
-  /// Sets the background color for this view.
-  void setBackgroundColor(int color);
+abstract class GeckoView extends View {
+  /// Construct a new GeckoView instance.
+  GeckoView();
 
-  /// Set the scrolled position of your view.
-  // void scrollTo(int x, int y);
+  /// This is called in response to an internal scroll in this view (i.e., the
+  /// view scrolled its own contents).
+  late void Function(int left, int top, int oldLeft, int oldTop)?
+  onScrollChanged;
 
-  /// Move the scrolled position of your view.
-  // void scrollBy(int x, int y);
+  /// Returns the current GeckoSession attached to this view.
+  @attached
+  late GeckoSession session;
 
-  /// Return the scrolled position of this view.
-  // WebViewPoint getScrollPosition();
+  /// Retrieves the controller responsible for panning and zooming gestures.
+  @attached
+  late PanZoomController panZoomController;
 
-  /// Define whether the vertical scrollbar should be drawn or not.
+  /// Returns the current GeckoSession attached to this view.
+  // GeckoSession? getSession();
+
+  /// Unsets the current session from this instance and returns it, if any.
+  // GeckoSession? releaseSession();
+
+  /// Attach a session to this view.
+  // void setSession(GeckoSession session);
+
+  /// Set which view should be used by this GeckoView instance to display content.
+  void setViewBackend(int backend);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.PanZoomController',
+  ),
+)
+abstract class PanZoomController {
+  /// Get the current scroll factor.
+  double getScrollFactor();
+
+  /// Process a drag event.
+  // bool onDragEvent(DragEvent event);
+
+  /// Process a non-touch motion event through the pan-zoom controller.
+  // void onMotionEvent(MotionEvent event);
+
+  /// Process a touch event through the pan-zoom controller.
+  // void onMouseEvent(MotionEvent event);
+
+  /// Process a touch event through the pan-zoom controller.
+  // void onTouchEvent(MotionEvent event);
+
+  /// Process a touch event through the pan-zoom controller.
+  // @async
+  // PanZoomControllerInputResultDetail? onTouchEventForDetailResult(
+  //   MotionEvent event,
+  // );
+
+  /// Scroll the document body by an offset from the current scroll position.
+  void scrollBy(ScreenLength width, ScreenLength height, int? behavior);
+
+  /// Scroll the document body to an absolute position.
+  void scrollTo(ScreenLength width, ScreenLength height, int? behavior);
+
+  /// Scroll to the bottom left corner of the screen.
+  void scrollToBottom();
+
+  /// Scroll to the top left corner of the screen.
+  void scrollToTop();
+
+  /// Set whether Gecko should generate long-press events.
+  void setIsLongpressEnabled(bool isLongpressEnabled);
+
+  /// Set the current scroll factor.
+  void setScrollFactor(double factor);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.ScreenLength',
+  ),
+)
+abstract class ScreenLength {
+  /// Create a ScreenLength of the documents height.
+  ScreenLength.bottom();
+
+  /// Create a ScreenLength of a specific length.
+  ScreenLength.fromPixels(double value);
+
+  /// Create a ScreenLength that uses the visual viewport width as units.
+  ScreenLength.fromVisualViewportHeight(double value);
+
+  /// Create a ScreenLength that uses the visual viewport width as units.
+  ScreenLength.fromVisualViewportWidth(double value);
+
+  /// Create a ScreenLength of zero pixels length.
+  ScreenLength.top();
+
+  /// Create a ScreenLength of zero pixels length.
+  ScreenLength.zero();
+
+  /// Returns the unit type of the length The length can be one of the following: PIXEL, VISUAL_VIEWPORT_WIDTH, VISUAL_VIEWPORT_HEIGHT, DOCUMENT_WIDTH, DOCUMENT_HEIGHT
+  int getType();
+
+  /// Returns the scalar value used to calculate length.
+  double getValue();
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.StorageController',
+  ),
+)
+abstract class StorageController {
+  /// Clear data for all hosts.
+  @async
+  void clearData(int flags);
+
+  /// Clear data for the given context ID.
+  void clearDataForSessionContext(String contextId);
+
+  /// Clear data owned by the given base domain (eTLD+1).
+  @async
+  void clearDataFromBaseDomain(String baseDomain, int flags);
+
+  /// Clear data owned by the given host.
+  @async
+  void clearDataFromHost(String host, int flags);
+
+  /// Get all currently stored permissions.
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getAllPermissions();
+
+  /// Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+  @async
+  int? getCookieBannerModeForDomain(String uri, bool isPrivateBrowsing);
+
+  /// Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
+  //   String uri,
+  // );
+
+  /// Get all currently stored permissions for a given URI and default (unset) context ID.
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
+  //   String uri,
+  //   bool privateMode,
+  // );
+
+  /// Get all currently stored permissions for a given URI and context ID.
+  // @async
+  // List<GeckoSessionPermissionDelegateContentPermission> getPermissions(
+  //   String uri,
+  //   String contextId,
+  //   bool privateMode,
+  // );
+
+  /// Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
+  @async
+  void removeCookieBannerModeForDomain(String uri, bool isPrivateBrowsing);
+
+  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode.
+  @async
+  void setCookieBannerModeAndPersistInPrivateBrowsingForDomain(
+    String uri,
+    int mode,
+  );
+
+  /// Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+  @async
+  void setCookieBannerModeForDomain(
+    String uri,
+    int mode,
+    bool isPrivateBrowsing,
+  );
+
+  /// Set a new value for an existing permission.
+  // void setPermission(
+  //   GeckoSessionPermissionDelegateContentPermission perm,
+  //   int value,
+  // );
+
+  /// Set a permanent value for a permission in a private browsing session.
+  // void setPrivateBrowsingPermanentPermission(
+  //   GeckoSessionPermissionDelegateContentPermission perm,
+  //   int value,
+  // );
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtensionController',
+  ),
+)
+abstract class WebExtensionController {
+  /// Ensure that a built-in extension is installed.
+  @async
+  WebExtension? ensureBuiltIn(String uri, String? id);
+
   ///
-  /// The scrollbar is not drawn by default.
-  // void setVerticalScrollBarEnabled(bool enabled);
+  // WebExtensionControllerPromptDelegate? getPromptDelegate();
 
-  /// Define whether the horizontal scrollbar should be drawn or not.
-  ///
-  /// The scrollbar is not drawn by default.
-  // void setHorizontalScrollBarEnabled(bool enabled);
+  /// List installed extensions for this GeckoRuntime.
+  @async
+  List<WebExtension>? list();
 
-  /// Set the over-scroll mode for this view.
-  // void setOverScrollMode(OverScrollMode mode);
+  /// Set the WebExtensionController.PromptDelegate for this instance.
+  // void setPromptDelegate(WebExtensionControllerPromptDelegate? delegate);
+
+  /// Notifies extensions about a active tab change over the `tabs.onActivated` event.
+  void setTabActive(GeckoSession session, bool active);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension',
+  ),
+)
+abstract class WebExtension {
+  /// Returns the delegate handling browsing-data operations for this extension.
+  // WebExtensionBrowsingDataDelegate? getBrowsingDataDelegate();
+
+  /// Get the download delegate for this extension.
+  // WebExtensionDownloadDelegate? getDownloadDelegate();
+
+  /// Get the tab delegate for this extension.
+  WebExtensionTabDelegate? getTabDelegate();
+
+  /// Set the Action delegate for this WebExtension.
+  // void setActionDelegate(WebExtensionActionDelegate? delegate);
+
+  /// Sets the delegate to handle browsing-data operations (clear, remove, get settings).
+  // void setBrowsingDataDelegate(WebExtensionBrowsingDataDelegate? delegate);
+
+  /// Set the download delegate for this extension.
+  // void setDownloadDelegate(WebExtensionDownloadDelegate? delegate);
+
+  /// Defines the message delegate for a Native App.
+  void setMessageDelegate(
+    WebExtensionMessageDelegate? delegate,
+    String nativeApp,
+  );
+
+  /// Set the tab delegate for this extension.
+  void setTabDelegate(WebExtensionTabDelegate? delegate);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.MessageDelegate',
+  ),
+)
+abstract class WebExtensionMessageDelegate {
+  WebExtensionMessageDelegate();
+
+  /// Called whenever the WebExtension connects to an app using runtime.connectNative.
+  late void Function(WebExtensionPort port)? onConnect;
+
+  /// Called whenever the WebExtension sends a message to an app using runtime.sendNativeMessage.
+  // late GeckoResult<Object> Function(
+  //   String nativeApp,
+  //   Object message,
+  //   WebExtensionMessageSender sender,
+  // )?
+  // onMessage;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.TabDelegate',
+  ),
+)
+abstract class WebExtensionTabDelegate {
+  WebExtensionTabDelegate();
+
+  /// Called when tabs.create is invoked, this method returns a *newly-created* session that GeckoView will use to load the requested page on.
+  @async
+  late GeckoSession Function(
+    WebExtension source,
+    WebExtensionCreateTabDetails createDetails,
+  )
+  onNewTab;
+
+  /// Called when runtime.openOptionsPage is invoked with options_ui.open_in_tab = false.
+  late void Function(WebExtension source)? onOpenOptionsPage;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.CreateTabDetails',
+  ),
+)
+abstract class WebExtensionCreateTabDetails {
+  late final bool? active;
+  late final String? cookieStoreId;
+  late final bool? discarded;
+  late final int? index;
+  late final bool? openInReaderMode;
+  late final bool? pinned;
+  late final String? url;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.Port',
+  ),
+)
+abstract class WebExtensionPort {
+  @async
+  @static
+  WebExtensionPort? getAsync();
+
+  /// WebExtension.MessageSender corresponding to this port.
+  // @attached
+  // late WebExtensionMessageSender sender;
+
+  /// The application identifier of the MessageDelegate that opened this port.
+  late final String name;
+
+  /// Disconnects this port and notifies the other end.
+  void disconnect();
+
+  /// Post a message to the WebExtension connected to this WebExtension.Port instance.
+  void postMessage(String message);
+
+  /// Set a delegate for incoming messages through this WebExtension.Port.
+  void setDelegate(WebExtensionPortDelegate? delegate);
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.PortDelegate',
+  ),
+)
+abstract class WebExtensionPortDelegate {
+  WebExtensionPortDelegate();
+
+  late void Function(WebExtensionPort port)? onDisconnect;
+  late void Function(String message, WebExtensionPort port)? onPortMessage;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.SessionController',
+  ),
+)
+abstract class WebExtensionSessionController {
+  /// Get the Action delegate for this session.
+  // WebExtensionActionDelegate? getActionDelegate(WebExtension extension);
+
+  /// Get the message delegate for nativeApp.
+  WebExtensionMessageDelegate? getMessageDelegate(
+    WebExtension extension,
+    String nativeApp,
+  );
+
+  /// Get the TabDelegate for the given extension.
+  WebExtensionSessionTabDelegate? getTabDelegate(WebExtension extension);
+
+  /// Set the Action delegate for this session.
+  // void setActionDelegate(
+  //   WebExtension extension,
+  //   WebExtensionActionDelegate? delegate,
+  // );
+
+  /// Defines a message delegate for a Native App.
+  void setMessageDelegate(
+    WebExtension extension,
+    WebExtensionMessageDelegate? delegate,
+    String nativeApp,
+  );
+
+  /// Set the TabDelegate for this session.
+  void setTabDelegate(
+    WebExtension extension,
+    WebExtensionSessionTabDelegate? delegate,
+  );
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.SessionTabDelegate',
+  ),
+)
+abstract class WebExtensionSessionTabDelegate {
+  WebExtensionSessionTabDelegate();
+
+  late AllowOrDeny Function(WebExtension? source, GeckoSession session)
+  onCloseTab;
+  late AllowOrDeny Function(
+    WebExtension extension,
+    GeckoSession session,
+    WebExtensionUpdateTabDetails details,
+  )
+  onUpdateTab;
+}
+
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'org.mozilla.geckoview.WebExtension.UpdateTabDetails',
+  ),
+)
+abstract class WebExtensionUpdateTabDetails {
+  /// Whether the tab should become active.
+  late final bool? active;
+
+  /// Whether the tab should be discarded automatically by the app when resources are low.
+  late final bool? autoDiscardable;
+
+  /// If true and the tab is not highlighted, it should become active by default.
+  late final bool? highlighted;
+
+  /// Whether the tab should be muted.
+  late final bool? muted;
+
+  /// Whether the tab should be pinned.
+  late final bool? pinned;
+
+  /// The url that the tab will be navigated to.
+  late final String? url;
+}
+
+/// Represents a position on a web page.
+///
+/// This is a custom class created for convenience of the wrapper.
+@ProxyApi()
+abstract class GeckoViewPoint {
+  late int x;
+  late int y;
 }
 
 /// Provides access to the assets registered as part of the App bundle.
 ///
 /// Convenience class for accessing Flutter asset resources.
-@ProxyApi(
-  kotlinOptions: KotlinProxyApiOptions(
-    fullClassName: 'dev.zeekr.webview_flutter_geckoview.FlutterAssetManager',
-  ),
-)
+@ProxyApi()
 abstract class FlutterAssetManager {
   /// The global instance of the `FlutterAssetManager`.
   @static
@@ -1476,3 +1679,63 @@ abstract class FlutterAssetManager {
   /// absolute path.
   String getAssetFilePathByName(String name);
 }
+
+/// This class represents the basic building block for user interface
+/// components.
+///
+/// See https://developer.android.com/reference/android/view/View.
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(fullClassName: 'android.view.View'),
+)
+abstract class View {
+  /// Sets the background color for this view.
+  void setBackgroundColor(int color);
+
+  /// Set the scrolled position of your view.
+  void scrollTo(int x, int y);
+
+  /// Move the scrolled position of your view.
+  void scrollBy(int x, int y);
+
+  /// Return the scrolled position of this view.
+  GeckoViewPoint getScrollPosition();
+
+  /// Define whether the vertical scrollbar should be drawn or not.
+  ///
+  /// The scrollbar is not drawn by default.
+  void setVerticalScrollBarEnabled(bool enabled);
+
+  /// Define whether the horizontal scrollbar should be drawn or not.
+  ///
+  /// The scrollbar is not drawn by default.
+  void setHorizontalScrollBarEnabled(bool enabled);
+
+  /// Set the over-scroll mode for this view.
+  void setOverScrollMode(OverScrollMode mode);
+}
+
+/// Abstract class for managing a variety of identity certificates.
+///
+/// See https://developer.android.com/reference/java/security/cert/Certificate.
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'java.security.cert.Certificate',
+  ),
+)
+abstract class Certificate {
+  /// The encoded form of this certificate.
+  Uint8List getEncoded();
+}
+
+/// Abstract class for X.509 certificates.
+///
+/// This provides a standard way to access all the attributes of an X.509
+/// certificate.
+///
+/// See https://developer.android.com/reference/java/security/cert/X509Certificate.
+@ProxyApi(
+  kotlinOptions: KotlinProxyApiOptions(
+    fullClassName: 'java.security.cert.X509Certificate',
+  ),
+)
+abstract class X509Certificate extends Certificate {}

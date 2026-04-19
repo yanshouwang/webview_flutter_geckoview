@@ -11,7 +11,7 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     override fun pigeon_defaultConstructor(): GeckoView {
         return object : GeckoView(pigeonRegistrar.context), PlatformView {
             init {
-                val runtime = pigeonRegistrar.geckoRuntime
+                val runtime = pigeonRegistrar.runtime
                 val session = GeckoSession().apply {
                     // Workaround for Bug 1758212
                     this.contentDelegate = object : GeckoSession.ContentDelegate {}
@@ -21,6 +21,17 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
                 }
                 runtime.webExtensionController.setTabActive(session, true)
                 this.setSession(session)
+            }
+
+            override fun onScrollChanged(left: Int, top: Int, oldLeft: Int, oldTop: Int) {
+                super.onScrollChanged(left, top, oldLeft, oldTop)
+                this@GeckoViewProxyApi.onScrollChanged(
+                    this,
+                    left.toLong(),
+                    top.toLong(),
+                    oldLeft.toLong(),
+                    oldTop.toLong()
+                ) {}
             }
 
             override fun getView(): View = this

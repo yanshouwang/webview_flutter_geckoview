@@ -1,6 +1,7 @@
 package dev.zeekr.webview_flutter_geckoview
 
 import org.mozilla.geckoview.WebResponse
+import java.security.cert.X509Certificate
 
 class WebResponseProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiWebResponse(pigeonRegistrar) {
@@ -14,6 +15,10 @@ class WebResponseProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
 
     override fun body(pigeon_instance: WebResponse): ByteArray? {
         return pigeon_instance.body?.readBytes()
+    }
+
+    override fun certificate(pigeon_instance: WebResponse): X509Certificate? {
+        return pigeon_instance.certificate
     }
 
     override fun isSecure(pigeon_instance: WebResponse): Boolean {

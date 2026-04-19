@@ -69,14 +69,16 @@ class GeckoWebViewControllerCreationParams
 
 /// Implementation of the [PlatformWebViewController] with the GeckoView API.
 class GeckoWebViewController extends PlatformWebViewController {
-  final gecko.GeckoView _webView;
-  final gecko.GeckoWebExecutor _webExecutor;
-  final gecko.StorageController _storageController;
+  final gecko.GeckoRuntime _runtime;
   final GeckoWebExtensionPort _webExtensionPort;
   final gecko.FlutterAssetManager _flutterAssetManager;
+  final gecko.GeckoView _webView;
   final Map<String, GeckoJavaScriptChannelParams> _javaScriptChannelParams;
 
-  late final _geckoSessionContentDelegate = gecko.GeckoSessionContentDelegate(
+  late final _webExecutor = gecko.GeckoWebExecutor(runtime: _runtime);
+  late final _storageController = _runtime.storageController;
+
+  late final _sessionContentDelegate = gecko.GeckoSessionContentDelegate(
     onTitleChange: withWeakReferenceTo(
       this,
       (weakThis) => (_, session, title) {
@@ -84,80 +86,119 @@ class GeckoWebViewController extends PlatformWebViewController {
       },
     ),
   );
+  late final _sessionNavigationDelegate = gecko.GeckoSessionNavigationDelegate(
+    onCanGoBack: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, canGoBack) {
+        weakThis.target?._canGoBack = canGoBack;
+      },
+    ),
+    onCanGoForward: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, canGoForward) {
+        weakThis.target?._canGoForward = canGoForward;
+      },
+    ),
+    onLoadError: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, uri, error) {
+        return null;
+      },
+    ),
+    onLoadRequest: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, request) async {
+        final onNavigationRequest =
+            weakThis.target?._currentNavigationDelegate?._onNavigationRequest;
+        if (onNavigationRequest == null) return .deny;
+        final decision = await onNavigationRequest(
+          NavigationRequest(url: request.uri, isMainFrame: true),
+        );
+        switch (decision) {
+          case .navigate:
+            return .allow;
+          case .prevent:
+            return .deny;
+        }
+      },
+    ),
+    onLocationChange: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, url, perms, hasUserGesture) {
+        weakThis.target?._currentUrl = url;
+        weakThis.target?._currentNavigationDelegate?._onUrlChange?.call(
+          GeckoUrlChange(url: url, hasUserGesture: hasUserGesture),
+        );
+      },
+    ),
+    onSubframeLoadRequest: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, request) async {
+        final onNavigationRequest =
+            weakThis.target?._currentNavigationDelegate?._onNavigationRequest;
+        if (onNavigationRequest == null) return .deny;
+        final decision = await onNavigationRequest(
+          NavigationRequest(url: request.uri, isMainFrame: false),
+        );
+        switch (decision) {
+          case .navigate:
+            return .allow;
+          case .prevent:
+            return .deny;
+        }
+      },
+    ),
+  );
+  late final _sessionPermissionDelegate = gecko.GeckoSessionPermissionDelegate(
+    onAndroidPermissionsRequest: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, permissioins, callback) async {
+        debugPrint('onAndroidPermissionsRequest: $permissioins');
+        final onPermissionRequestCallback =
+            weakThis.target?._onPermissionRequest;
+        if (onPermissionRequestCallback == null) {
+          return callback.reject();
+        } else {
+          final types = permissioins
+              .map<WebViewPermissionResourceType?>((String type) {
+                switch (type) {
+                  case PermissionRequestConstants.camera:
+                    return WebViewPermissionResourceType.camera;
+                  case PermissionRequestConstants.recordAudio:
+                    return WebViewPermissionResourceType.microphone;
+                }
 
-  late final _geckoSessionNavigationDelegate =
-      gecko.GeckoSessionNavigationDelegate(
-        onCanGoBack: withWeakReferenceTo(
-          this,
-          (weakThis) => (_, session, canGoBack) {
-            weakThis.target?._canGoBack = canGoBack;
-          },
-        ),
-        onCanGoForward: withWeakReferenceTo(
-          this,
-          (weakThis) => (_, session, canGoForward) {
-            weakThis.target?._canGoForward = canGoForward;
-          },
-        ),
-      );
+                // Type not supported.
+                return null;
+              })
+              .whereType<WebViewPermissionResourceType>()
+              .toSet();
 
-  late final _geckoSessionPermissionDelegate =
-      gecko.GeckoSessionPermissionDelegate(
-        onAndroidPermissionsRequest: withWeakReferenceTo(
-          this,
-          (weakThis) => (_, session, permissioins, callback) async {
-            debugPrint('onAndroidPermissionsRequest: $permissioins');
-            final onPermissionRequestCallback =
-                weakThis.target?._onPermissionRequestCallback;
-            if (onPermissionRequestCallback == null) {
-              return callback.reject();
-            } else {
-              final types = permissioins
-                  .map<WebViewPermissionResourceType?>((String type) {
-                    switch (type) {
-                      case PermissionRequestConstants.camera:
-                        return WebViewPermissionResourceType.camera;
-                      case PermissionRequestConstants.recordAudio:
-                        return WebViewPermissionResourceType.microphone;
-                    }
+          // If the request didn't contain any permissions recognized by the
+          // implementation, deny by default.
+          if (types.isEmpty) {
+            return callback.reject();
+          }
 
-                    // Type not supported.
-                    return null;
-                  })
-                  .whereType<WebViewPermissionResourceType>()
-                  .toSet();
-
-              // If the request didn't contain any permissions recognized by the
-              // implementation, deny by default.
-              if (types.isEmpty) {
-                return callback.reject();
-              }
-
-              onPermissionRequestCallback(
-                GeckoWebViewPermissionRequest._(
-                  types: types,
-                  callback: callback,
-                ),
-              );
-            }
-          },
-        ),
-      );
-
-  late final _geckoSessionProgressDelegate = gecko.GeckoSessionProgressDelegate(
+          onPermissionRequestCallback(
+            GeckoWebViewPermissionRequest._(types: types, callback: callback),
+          );
+        }
+      },
+    ),
+  );
+  late final _sessionProgressDelegate = gecko.GeckoSessionProgressDelegate(
     onPageStart: withWeakReferenceTo(
       this,
       (weakThis) => (_, session, url) {
-        weakThis.target?._currentUrl = url;
         weakThis.target?._currentNavigationDelegate?._onPageStarted?.call(url);
       },
     ),
     onPageStop: withWeakReferenceTo(
       this,
       (weakThis) => (_, session, success) {
-        weakThis.target?._currentNavigationDelegate?._onPageFinished?.call(
-          _currentUrl ?? '',
-        );
+        final url = weakThis.target?._currentUrl ?? '';
+        weakThis.target?._currentNavigationDelegate?._onPageFinished?.call(url);
       },
     ),
     onProgressChange: withWeakReferenceTo(
@@ -169,17 +210,100 @@ class GeckoWebViewController extends PlatformWebViewController {
       },
     ),
   );
-
-  late final _geckoSessionScrollDelegate = gecko.GeckoSessionScrollDelegate(
+  late final _sessionPromptDelegate = gecko.GeckoSessionPromptDelegate(
+    onAlertPrompt: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, prompt) async {
+        final onJavaScriptAlert = weakThis.target?._onJavaScriptAlert;
+        if (onJavaScriptAlert != null) {
+          final request = JavaScriptAlertDialogRequest(
+            message: prompt.message ?? '',
+            url: '',
+          );
+          await onJavaScriptAlert(request);
+        }
+        return prompt.dismiss();
+      },
+    ),
+    onAuthPrompt: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, prompt) async {
+        final onHttpAuthRequest =
+            weakThis.target?._currentNavigationDelegate?._onHttpAuthRequest;
+        if (onHttpAuthRequest == null) {
+          return prompt.dismiss();
+        } else {
+          final completer =
+              Completer<gecko.GeckoSessionPromptDelegatePromptResponse>();
+          final uri = prompt.authOptions.uri;
+          final host = uri == null ? null : Uri.parse(uri).host;
+          onHttpAuthRequest(
+            HttpAuthRequest(
+              onProceed: (credential) async {
+                final response = await prompt.confirmWithUsernameAndPassword(
+                  credential.user,
+                  credential.password,
+                );
+                completer.complete(response);
+              },
+              onCancel: () async {
+                final response = await prompt.dismiss();
+                completer.complete(response);
+              },
+              host: host ?? '',
+              realm: null,
+            ),
+          );
+          return completer.future;
+        }
+      },
+    ),
+    onButtonPrompt: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, prompt) async {
+        final onJavaScriptConfirm = weakThis.target?._onJavaScriptConfirm;
+        if (onJavaScriptConfirm == null) {
+          return prompt.dismiss();
+        } else {
+          final request = JavaScriptConfirmDialogRequest(
+            message: prompt.message ?? '',
+            url: '',
+          );
+          final result = await onJavaScriptConfirm(request);
+          final selection = result
+              ? GeckoSessionPromptDelegateButtonPromptType.positive
+              : GeckoSessionPromptDelegateButtonPromptType.negative;
+          return prompt.confirm(selection);
+        }
+      },
+    ),
+    onTextPrompt: withWeakReferenceTo(
+      this,
+      (weakThis) => (_, session, prompt) async {
+        final onJavaScriptPrompt = weakThis.target?._onJavaScriptPrompt;
+        if (onJavaScriptPrompt == null) {
+          return prompt.dismiss();
+        } else {
+          final request = JavaScriptTextInputDialogRequest(
+            message: prompt.message ?? '',
+            url: '',
+            defaultText: prompt.defaultValue,
+          );
+          final result = await onJavaScriptPrompt(request);
+          return prompt.confirm(result);
+        }
+      },
+    ),
+  );
+  late final _sessionScrollDelegate = gecko.GeckoSessionScrollDelegate(
     onScrollChanged: withWeakReferenceTo(
       this,
       (weakThis) => (_, session, scrollX, scrollY) {
-        final target = weakThis.target;
-        if (target == null) return;
-        final scrollPosition = Offset(scrollX.toDouble(), scrollY.toDouble());
-        target._scrollPosition = scrollPosition;
-        target._onScrollPositionChangeCallback?.call(
-          ScrollPositionChange(scrollPosition.dx, scrollPosition.dy),
+        final x = scrollX.toDouble();
+        final y = scrollY.toDouble();
+        weakThis.target?._scrollPosition = Offset(x, y);
+        weakThis.target?._onScrollPositionChange?.call(
+          ScrollPositionChange(x, y),
         );
       },
     ),
@@ -190,20 +314,25 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   String? _currentUrl;
   String? _title;
-  Offset? _scrollPosition;
+  Offset _scrollPosition;
+
   GeckoNavigationDelegate? _currentNavigationDelegate;
-  void Function(PlatformWebViewPermissionRequest)? _onPermissionRequestCallback;
-  void Function(ScrollPositionChange)? _onScrollPositionChangeCallback;
+  void Function(PlatformWebViewPermissionRequest)? _onPermissionRequest;
+  void Function(ScrollPositionChange)? _onScrollPositionChange;
+  Future<void> Function(JavaScriptAlertDialogRequest request)?
+  _onJavaScriptAlert;
+  Future<bool> Function(JavaScriptConfirmDialogRequest request)?
+  _onJavaScriptConfirm;
+  Future<String> Function(JavaScriptTextInputDialogRequest request)?
+  _onJavaScriptPrompt;
 
   GeckoWebViewController(PlatformWebViewControllerCreationParams params)
-    : _webView = gecko.GeckoView(),
-      _webExecutor = gecko.GeckoWebExecutor(
-        runtime: gecko.GeckoRuntime.instance,
-      ),
-      _storageController = gecko.GeckoRuntime.instance.storageController,
+    : _runtime = gecko.GeckoRuntime.instance,
       _webExtensionPort = GeckoWebExtensionPort(),
       _flutterAssetManager = gecko.FlutterAssetManager.instance,
+      _webView = gecko.GeckoView(),
       _javaScriptChannelParams = {},
+      _scrollPosition = Offset.zero,
       super.implementation(
         params is GeckoWebViewControllerCreationParams
             ? params
@@ -211,10 +340,11 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
-    _webView.session.setContentDelegate(_geckoSessionContentDelegate);
-    _webView.session.setNavigationDelegate(_geckoSessionNavigationDelegate);
-    _webView.session.setPermissionDelegate(_geckoSessionPermissionDelegate);
-    _webView.session.setProgressDelegate(_geckoSessionProgressDelegate);
+    _webView.session.setContentDelegate(_sessionContentDelegate);
+    _webView.session.setNavigationDelegate(_sessionNavigationDelegate);
+    _webView.session.setPermissionDelegate(_sessionPermissionDelegate);
+    _webView.session.setProgressDelegate(_sessionProgressDelegate);
+    _webView.session.setPromptDelegate(_sessionPromptDelegate);
     _webView.session.settings.setAllowJavascript(true);
   }
 
@@ -397,17 +527,17 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<String?> getTitle() => Future.value(_title);
 
   @override
-  Future<void> scrollTo(int x, int y) async {
+  Future<void> scrollTo(int x, int y) {
     final width = gecko.ScreenLength.fromPixels(value: x.toDouble());
     final height = gecko.ScreenLength.fromPixels(value: y.toDouble());
-    await _webView.panZoomController.scrollTo(width, height, null);
+    return _webView.panZoomController.scrollTo(width, height, null);
   }
 
   @override
-  Future<void> scrollBy(int x, int y) async {
+  Future<void> scrollBy(int x, int y) {
     final width = gecko.ScreenLength.fromPixels(value: x.toDouble());
     final height = gecko.ScreenLength.fromPixels(value: y.toDouble());
-    await _webView.panZoomController.scrollBy(width, height, null);
+    return _webView.panZoomController.scrollBy(width, height, null);
   }
 
   @override
@@ -440,18 +570,17 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<void> setOnPlatformPermissionRequest(
     void Function(PlatformWebViewPermissionRequest request) onPermissionRequest,
   ) async {
-    _onPermissionRequestCallback = onPermissionRequest;
+    _onPermissionRequest = onPermissionRequest;
   }
 
   @override
   Future<void> setOnScrollPositionChange(
     void Function(ScrollPositionChange scrollPositionChange)?
     onScrollPositionChange,
-  ) {
-    _onScrollPositionChangeCallback = onScrollPositionChange;
-
+  ) async {
+    _onScrollPositionChange = onScrollPositionChange;
     if (onScrollPositionChange != null) {
-      return _webView.session.setScrollDelegate(_geckoSessionScrollDelegate);
+      return _webView.session.setScrollDelegate(_sessionScrollDelegate);
     } else {
       return _webView.session.setScrollDelegate(null);
     }
@@ -469,52 +598,46 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<void> setOnJavaScriptAlertDialog(
     Future<void> Function(JavaScriptAlertDialogRequest request)
     onJavaScriptAlertDialog,
-  ) {
-    // TODO: implement setOnJavaScriptAlertDialog
-    return super.setOnJavaScriptAlertDialog(onJavaScriptAlertDialog);
+  ) async {
+    _onJavaScriptAlert = onJavaScriptAlertDialog;
   }
 
   @override
   Future<void> setOnJavaScriptConfirmDialog(
     Future<bool> Function(JavaScriptConfirmDialogRequest request)
     onJavaScriptConfirmDialog,
-  ) {
-    // TODO: implement setOnJavaScriptConfirmDialog
-    return super.setOnJavaScriptConfirmDialog(onJavaScriptConfirmDialog);
+  ) async {
+    _onJavaScriptConfirm = onJavaScriptConfirmDialog;
   }
 
   @override
   Future<void> setOnJavaScriptTextInputDialog(
     Future<String> Function(JavaScriptTextInputDialogRequest request)
     onJavaScriptTextInputDialog,
-  ) {
-    // TODO: implement setOnJavaScriptTextInputDialog
-    return super.setOnJavaScriptTextInputDialog(onJavaScriptTextInputDialog);
+  ) async {
+    _onJavaScriptPrompt = onJavaScriptTextInputDialog;
   }
 
   @override
-  Future<void> setVerticalScrollBarEnabled(bool enabled) {
-    // TODO: implement setVerticalScrollBarEnabled
-    return super.setVerticalScrollBarEnabled(enabled);
-  }
+  Future<void> setVerticalScrollBarEnabled(bool enabled) =>
+      _webView.setVerticalScrollBarEnabled(enabled);
 
   @override
-  Future<void> setHorizontalScrollBarEnabled(bool enabled) {
-    // TODO: implement setHorizontalScrollBarEnabled
-    return super.setHorizontalScrollBarEnabled(enabled);
-  }
+  Future<void> setHorizontalScrollBarEnabled(bool enabled) =>
+      _webView.setHorizontalScrollBarEnabled(enabled);
 
   @override
-  bool supportsSetScrollBarsEnabled() {
-    // TODO: implement supportsSetScrollBarsEnabled
-    return super.supportsSetScrollBarsEnabled();
-  }
+  bool supportsSetScrollBarsEnabled() => true;
 
   @override
-  Future<void> setOverScrollMode(WebViewOverScrollMode mode) {
-    // TODO: implement setOverScrollMode
-    return super.setOverScrollMode(mode);
-  }
+  Future<void> setOverScrollMode(WebViewOverScrollMode mode) => switch (mode) {
+    .always => _webView.setOverScrollMode(.always),
+    .ifContentScrolls => _webView.setOverScrollMode(.ifContentScrolls),
+    .never => _webView.setOverScrollMode(.never),
+    // This prevents future additions from causing a breaking change.
+    // ignore: unreachable_switch_case
+    _ => throw UnsupportedError('Android does not support $mode.'),
+  };
 }
 
 /// Object specifying creation parameters for creating a [GeckoWebViewWidget].
@@ -640,7 +763,7 @@ class GeckoWebViewWidget extends PlatformWebViewWidget {
   }
 }
 
-/// Object specifying creation parameters for creating a [AndroidNavigationDelegate].
+/// Object specifying creation parameters for creating a [GeckoNavigationDelegate].
 ///
 /// When adding additional fields make sure they can be null or have a default
 /// value to avoid breaking changes. See [PlatformNavigationDelegateCreationParams] for
@@ -677,6 +800,9 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
   PageEventCallback? _onPageStarted;
   PageEventCallback? _onPageFinished;
   ProgressCallback? _onProgress;
+  UrlChangeCallback? _onUrlChange;
+  NavigationRequestCallback? _onNavigationRequest;
+  HttpAuthRequestCallback? _onHttpAuthRequest;
 
   @override
   Future<void> setOnPageStarted(PageEventCallback onPageStarted) async {
@@ -694,23 +820,22 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
   }
 
   @override
-  Future<void> setOnUrlChange(UrlChangeCallback onUrlChange) {
-    // TODO: implement setOnUrlChange
-    return super.setOnUrlChange(onUrlChange);
+  Future<void> setOnUrlChange(UrlChangeCallback onUrlChange) async {
+    _onUrlChange = onUrlChange;
   }
 
   @override
   Future<void> setOnNavigationRequest(
     NavigationRequestCallback onNavigationRequest,
-  ) {
-    // TODO: implement setOnNavigationRequest
-    return super.setOnNavigationRequest(onNavigationRequest);
+  ) async {
+    _onNavigationRequest = onNavigationRequest;
   }
 
   @override
-  Future<void> setOnHttpAuthRequest(HttpAuthRequestCallback onHttpAuthRequest) {
-    // TODO: implement setOnHttpAuthRequest
-    return super.setOnHttpAuthRequest(onHttpAuthRequest);
+  Future<void> setOnHttpAuthRequest(
+    HttpAuthRequestCallback onHttpAuthRequest,
+  ) async {
+    _onHttpAuthRequest = onHttpAuthRequest;
   }
 
   @override
@@ -732,6 +857,15 @@ class GeckoNavigationDelegate extends PlatformNavigationDelegate {
     // TODO: implement setOnSSlAuthError
     return super.setOnSSlAuthError(onSslAuthError);
   }
+}
+
+/// Gecko details of the change to a web view's url.
+class GeckoUrlChange extends UrlChange {
+  /// Constructs an [GeckoUrlChange].
+  const GeckoUrlChange({required super.url, required this.hasUserGesture});
+
+  /// Whether or not there was an active user gesture when the location change was requested.
+  final bool hasUserGesture;
 }
 
 /// Gecko implementation of [PlatformWebViewPermissionRequest].

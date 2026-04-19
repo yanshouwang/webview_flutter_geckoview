@@ -409,6 +409,180 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
   abstract fun getPigeonApiGeckoRuntimeSettings(): PigeonApiGeckoRuntimeSettings
 
   /**
+   * An implementation of [PigeonApiGeckoSession] used to add a new Dart instance of
+   * `GeckoSession` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSession(): PigeonApiGeckoSession
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionLoader] used to add a new Dart instance of
+   * `GeckoSessionLoader` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionLoader(): PigeonApiGeckoSessionLoader
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionSettings] used to add a new Dart instance of
+   * `GeckoSessionSettings` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionSettings(): PigeonApiGeckoSessionSettings
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionContentDelegate] used to add a new Dart instance of
+   * `GeckoSessionContentDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionContentDelegate(): PigeonApiGeckoSessionContentDelegate
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionNavigationDelegate] used to add a new Dart instance of
+   * `GeckoSessionNavigationDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionNavigationDelegate(): PigeonApiGeckoSessionNavigationDelegate
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionNavigationDelegateLoadRequest] used to add a new Dart instance of
+   * `GeckoSessionNavigationDelegateLoadRequest` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionNavigationDelegateLoadRequest(): PigeonApiGeckoSessionNavigationDelegateLoadRequest
+
+  /**
+   * An implementation of [PigeonApiWebRequestError] used to add a new Dart instance of
+   * `WebRequestError` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiWebRequestError(): PigeonApiWebRequestError
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPermissionDelegate] used to add a new Dart instance of
+   * `GeckoSessionPermissionDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPermissionDelegate(): PigeonApiGeckoSessionPermissionDelegate
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPermissionDelegateCallback] used to add a new Dart instance of
+   * `GeckoSessionPermissionDelegateCallback` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPermissionDelegateCallback(): PigeonApiGeckoSessionPermissionDelegateCallback
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPermissionDelegateContentPermission] used to add a new Dart instance of
+   * `GeckoSessionPermissionDelegateContentPermission` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPermissionDelegateContentPermission(): PigeonApiGeckoSessionPermissionDelegateContentPermission
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegate] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegate(): PigeonApiGeckoSessionPromptDelegate
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegateBasePrompt] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegateBasePrompt` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegateBasePrompt(): PigeonApiGeckoSessionPromptDelegateBasePrompt
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegateAlertPrompt] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegateAlertPrompt` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegateAlertPrompt(): PigeonApiGeckoSessionPromptDelegateAlertPrompt
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegateAuthPrompt] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegateAuthPrompt` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegateAuthPrompt(): PigeonApiGeckoSessionPromptDelegateAuthPrompt
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegateAuthPromptAuthOptions] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegateAuthPromptAuthOptions` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegateAuthPromptAuthOptions(): PigeonApiGeckoSessionPromptDelegateAuthPromptAuthOptions
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegateButtonPrompt] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegateButtonPrompt` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegateButtonPrompt(): PigeonApiGeckoSessionPromptDelegateButtonPrompt
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegateTextPrompt] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegateTextPrompt` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionPromptDelegateTextPrompt(): PigeonApiGeckoSessionPromptDelegateTextPrompt
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionPromptDelegatePromptResponse] used to add a new Dart instance of
+   * `GeckoSessionPromptDelegatePromptResponse` to the Dart `InstanceManager`.
+   */
+  open fun getPigeonApiGeckoSessionPromptDelegatePromptResponse(): PigeonApiGeckoSessionPromptDelegatePromptResponse
+  {
+    return PigeonApiGeckoSessionPromptDelegatePromptResponse(this)
+  }
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionProgressDelegate] used to add a new Dart instance of
+   * `GeckoSessionProgressDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionProgressDelegate(): PigeonApiGeckoSessionProgressDelegate
+
+  /**
+   * An implementation of [PigeonApiGeckoSessionScrollDelegate] used to add a new Dart instance of
+   * `GeckoSessionScrollDelegate` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoSessionScrollDelegate(): PigeonApiGeckoSessionScrollDelegate
+
+  /**
+   * An implementation of [PigeonApiGeckoWebExecutor] used to add a new Dart instance of
+   * `GeckoWebExecutor` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoWebExecutor(): PigeonApiGeckoWebExecutor
+
+  /**
+   * An implementation of [PigeonApiWebRequest] used to add a new Dart instance of
+   * `WebRequest` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiWebRequest(): PigeonApiWebRequest
+
+  /**
+   * An implementation of [PigeonApiWebRequestBuilder] used to add a new Dart instance of
+   * `WebRequestBuilder` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiWebRequestBuilder(): PigeonApiWebRequestBuilder
+
+  /**
+   * An implementation of [PigeonApiWebResponse] used to add a new Dart instance of
+   * `WebResponse` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiWebResponse(): PigeonApiWebResponse
+
+  /**
+   * An implementation of [PigeonApiWebMessage] used to add a new Dart instance of
+   * `WebMessage` to the Dart `InstanceManager`.
+   */
+  open fun getPigeonApiWebMessage(): PigeonApiWebMessage
+  {
+    return PigeonApiWebMessage(this)
+  }
+
+  /**
+   * An implementation of [PigeonApiGeckoView] used to add a new Dart instance of
+   * `GeckoView` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiGeckoView(): PigeonApiGeckoView
+
+  /**
+   * An implementation of [PigeonApiPanZoomController] used to add a new Dart instance of
+   * `PanZoomController` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiPanZoomController(): PigeonApiPanZoomController
+
+  /**
+   * An implementation of [PigeonApiScreenLength] used to add a new Dart instance of
+   * `ScreenLength` to the Dart `InstanceManager`.
+   */
+  abstract fun getPigeonApiScreenLength(): PigeonApiScreenLength
+
+  /**
    * An implementation of [PigeonApiStorageController] used to add a new Dart instance of
    * `StorageController` to the Dart `InstanceManager`.
    */
@@ -475,115 +649,16 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
   abstract fun getPigeonApiWebExtensionUpdateTabDetails(): PigeonApiWebExtensionUpdateTabDetails
 
   /**
-   * An implementation of [PigeonApiGeckoSession] used to add a new Dart instance of
-   * `GeckoSession` to the Dart `InstanceManager`.
+   * An implementation of [PigeonApiGeckoViewPoint] used to add a new Dart instance of
+   * `GeckoViewPoint` to the Dart `InstanceManager`.
    */
-  abstract fun getPigeonApiGeckoSession(): PigeonApiGeckoSession
+  abstract fun getPigeonApiGeckoViewPoint(): PigeonApiGeckoViewPoint
 
   /**
-   * An implementation of [PigeonApiGeckoSessionLoader] used to add a new Dart instance of
-   * `GeckoSessionLoader` to the Dart `InstanceManager`.
+   * An implementation of [PigeonApiFlutterAssetManager] used to add a new Dart instance of
+   * `FlutterAssetManager` to the Dart `InstanceManager`.
    */
-  abstract fun getPigeonApiGeckoSessionLoader(): PigeonApiGeckoSessionLoader
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionSettings] used to add a new Dart instance of
-   * `GeckoSessionSettings` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionSettings(): PigeonApiGeckoSessionSettings
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionContentDelegate] used to add a new Dart instance of
-   * `GeckoSessionContentDelegate` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionContentDelegate(): PigeonApiGeckoSessionContentDelegate
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionNavigationDelegate] used to add a new Dart instance of
-   * `GeckoSessionNavigationDelegate` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionNavigationDelegate(): PigeonApiGeckoSessionNavigationDelegate
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionPermissionDelegate] used to add a new Dart instance of
-   * `GeckoSessionPermissionDelegate` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionPermissionDelegate(): PigeonApiGeckoSessionPermissionDelegate
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionPermissionDelegateCallback] used to add a new Dart instance of
-   * `GeckoSessionPermissionDelegateCallback` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionPermissionDelegateCallback(): PigeonApiGeckoSessionPermissionDelegateCallback
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionPromptDelegate] used to add a new Dart instance of
-   * `GeckoSessionPromptDelegate` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionPromptDelegate(): PigeonApiGeckoSessionPromptDelegate
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionProgressDelegate] used to add a new Dart instance of
-   * `GeckoSessionProgressDelegate` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionProgressDelegate(): PigeonApiGeckoSessionProgressDelegate
-
-  /**
-   * An implementation of [PigeonApiGeckoSessionScrollDelegate] used to add a new Dart instance of
-   * `GeckoSessionScrollDelegate` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoSessionScrollDelegate(): PigeonApiGeckoSessionScrollDelegate
-
-  /**
-   * An implementation of [PigeonApiGeckoView] used to add a new Dart instance of
-   * `GeckoView` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoView(): PigeonApiGeckoView
-
-  /**
-   * An implementation of [PigeonApiPanZoomController] used to add a new Dart instance of
-   * `PanZoomController` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiPanZoomController(): PigeonApiPanZoomController
-
-  /**
-   * An implementation of [PigeonApiScreenLength] used to add a new Dart instance of
-   * `ScreenLength` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiScreenLength(): PigeonApiScreenLength
-
-  /**
-   * An implementation of [PigeonApiGeckoWebExecutor] used to add a new Dart instance of
-   * `GeckoWebExecutor` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiGeckoWebExecutor(): PigeonApiGeckoWebExecutor
-
-  /**
-   * An implementation of [PigeonApiWebRequest] used to add a new Dart instance of
-   * `WebRequest` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiWebRequest(): PigeonApiWebRequest
-
-  /**
-   * An implementation of [PigeonApiWebRequestBuilder] used to add a new Dart instance of
-   * `WebRequestBuilder` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiWebRequestBuilder(): PigeonApiWebRequestBuilder
-
-  /**
-   * An implementation of [PigeonApiWebResponse] used to add a new Dart instance of
-   * `WebResponse` to the Dart `InstanceManager`.
-   */
-  abstract fun getPigeonApiWebResponse(): PigeonApiWebResponse
-
-  /**
-   * An implementation of [PigeonApiWebMessage] used to add a new Dart instance of
-   * `WebMessage` to the Dart `InstanceManager`.
-   */
-  open fun getPigeonApiWebMessage(): PigeonApiWebMessage
-  {
-    return PigeonApiWebMessage(this)
-  }
+  abstract fun getPigeonApiFlutterAssetManager(): PigeonApiFlutterAssetManager
 
   /**
    * An implementation of [PigeonApiView] used to add a new Dart instance of
@@ -592,15 +667,43 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
   abstract fun getPigeonApiView(): PigeonApiView
 
   /**
-   * An implementation of [PigeonApiFlutterAssetManager] used to add a new Dart instance of
-   * `FlutterAssetManager` to the Dart `InstanceManager`.
+   * An implementation of [PigeonApiCertificate] used to add a new Dart instance of
+   * `Certificate` to the Dart `InstanceManager`.
    */
-  abstract fun getPigeonApiFlutterAssetManager(): PigeonApiFlutterAssetManager
+  abstract fun getPigeonApiCertificate(): PigeonApiCertificate
+
+  /**
+   * An implementation of [PigeonApiX509Certificate] used to add a new Dart instance of
+   * `X509Certificate` to the Dart `InstanceManager`.
+   */
+  open fun getPigeonApiX509Certificate(): PigeonApiX509Certificate
+  {
+    return PigeonApiX509Certificate(this)
+  }
 
   fun setUp() {
     GeckoLibraryPigeonInstanceManagerApi.setUpMessageHandlers(binaryMessenger, instanceManager)
     PigeonApiGeckoRuntime.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoRuntime())
     PigeonApiGeckoRuntimeSettings.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoRuntimeSettings())
+    PigeonApiGeckoSession.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSession())
+    PigeonApiGeckoSessionLoader.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionLoader())
+    PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionSettings())
+    PigeonApiGeckoSessionContentDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionContentDelegate())
+    PigeonApiGeckoSessionNavigationDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionNavigationDelegate())
+    PigeonApiGeckoSessionPermissionDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPermissionDelegate())
+    PigeonApiGeckoSessionPermissionDelegateCallback.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPermissionDelegateCallback())
+    PigeonApiGeckoSessionPromptDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPromptDelegate())
+    PigeonApiGeckoSessionPromptDelegateBasePrompt.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPromptDelegateBasePrompt())
+    PigeonApiGeckoSessionPromptDelegateAuthPrompt.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPromptDelegateAuthPrompt())
+    PigeonApiGeckoSessionPromptDelegateButtonPrompt.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPromptDelegateButtonPrompt())
+    PigeonApiGeckoSessionPromptDelegateTextPrompt.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPromptDelegateTextPrompt())
+    PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionProgressDelegate())
+    PigeonApiGeckoSessionScrollDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionScrollDelegate())
+    PigeonApiGeckoWebExecutor.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoWebExecutor())
+    PigeonApiWebRequestBuilder.setUpMessageHandlers(binaryMessenger, getPigeonApiWebRequestBuilder())
+    PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoView())
+    PigeonApiPanZoomController.setUpMessageHandlers(binaryMessenger, getPigeonApiPanZoomController())
+    PigeonApiScreenLength.setUpMessageHandlers(binaryMessenger, getPigeonApiScreenLength())
     PigeonApiStorageController.setUpMessageHandlers(binaryMessenger, getPigeonApiStorageController())
     PigeonApiWebExtensionController.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionController())
     PigeonApiWebExtension.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtension())
@@ -610,28 +713,33 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
     PigeonApiWebExtensionPortDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionPortDelegate())
     PigeonApiWebExtensionSessionController.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionSessionController())
     PigeonApiWebExtensionSessionTabDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiWebExtensionSessionTabDelegate())
-    PigeonApiGeckoSession.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSession())
-    PigeonApiGeckoSessionLoader.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionLoader())
-    PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionSettings())
-    PigeonApiGeckoSessionContentDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionContentDelegate())
-    PigeonApiGeckoSessionNavigationDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionNavigationDelegate())
-    PigeonApiGeckoSessionPermissionDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPermissionDelegate())
-    PigeonApiGeckoSessionPermissionDelegateCallback.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPermissionDelegateCallback())
-    PigeonApiGeckoSessionPromptDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionPromptDelegate())
-    PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionProgressDelegate())
-    PigeonApiGeckoSessionScrollDelegate.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoSessionScrollDelegate())
-    PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoView())
-    PigeonApiPanZoomController.setUpMessageHandlers(binaryMessenger, getPigeonApiPanZoomController())
-    PigeonApiScreenLength.setUpMessageHandlers(binaryMessenger, getPigeonApiScreenLength())
-    PigeonApiGeckoWebExecutor.setUpMessageHandlers(binaryMessenger, getPigeonApiGeckoWebExecutor())
-    PigeonApiWebRequestBuilder.setUpMessageHandlers(binaryMessenger, getPigeonApiWebRequestBuilder())
-    PigeonApiView.setUpMessageHandlers(binaryMessenger, getPigeonApiView())
     PigeonApiFlutterAssetManager.setUpMessageHandlers(binaryMessenger, getPigeonApiFlutterAssetManager())
+    PigeonApiView.setUpMessageHandlers(binaryMessenger, getPigeonApiView())
+    PigeonApiCertificate.setUpMessageHandlers(binaryMessenger, getPigeonApiCertificate())
   }
   fun tearDown() {
     GeckoLibraryPigeonInstanceManagerApi.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoRuntime.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiGeckoRuntimeSettings.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSession.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionLoader.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionContentDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionNavigationDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPermissionDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPermissionDelegateCallback.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPromptDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPromptDelegateBasePrompt.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPromptDelegateAuthPrompt.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPromptDelegateButtonPrompt.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionPromptDelegateTextPrompt.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoSessionScrollDelegate.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoWebExecutor.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiWebRequestBuilder.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiPanZoomController.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiScreenLength.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiStorageController.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionController.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtension.setUpMessageHandlers(binaryMessenger, null)
@@ -641,23 +749,9 @@ abstract class GeckoLibraryPigeonProxyApiRegistrar(val binaryMessenger: BinaryMe
     PigeonApiWebExtensionPortDelegate.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionSessionController.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiWebExtensionSessionTabDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSession.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionLoader.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionSettings.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionContentDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionNavigationDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionPermissionDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionPermissionDelegateCallback.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionPromptDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionProgressDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoSessionScrollDelegate.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoView.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiPanZoomController.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiScreenLength.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiGeckoWebExecutor.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiWebRequestBuilder.setUpMessageHandlers(binaryMessenger, null)
-    PigeonApiView.setUpMessageHandlers(binaryMessenger, null)
     PigeonApiFlutterAssetManager.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiView.setUpMessageHandlers(binaryMessenger, null)
+    PigeonApiCertificate.setUpMessageHandlers(binaryMessenger, null)
   }
 }
 private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPigeonProxyApiRegistrar) : GeckoLibraryPigeonCodec() {
@@ -679,7 +773,7 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
   }
 
   override fun writeValue(stream: ByteArrayOutputStream, value: Any?) {
-    if (value is Boolean || value is ByteArray || value is Double || value is DoubleArray || value is FloatArray || value is Int || value is IntArray || value is List<*> || value is Long || value is LongArray || value is Map<*, *> || value is String || value == null) {
+    if (value is Boolean || value is ByteArray || value is Double || value is DoubleArray || value is FloatArray || value is Int || value is IntArray || value is List<*> || value is Long || value is LongArray || value is Map<*, *> || value is String || value is AllowOrDeny || value is OverScrollMode || value == null) {
       super.writeValue(stream, value)
       return
     }
@@ -702,6 +796,202 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
       registrar.getPigeonApiGeckoRuntimeSettings().pigeon_newInstance(value) {
         if (it.isFailure) {
           logNewInstanceFailure("GeckoRuntimeSettings", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession) {
+      registrar.getPigeonApiGeckoSession().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSession", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.Loader) {
+      registrar.getPigeonApiGeckoSessionLoader().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionLoader", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSessionSettings) {
+      registrar.getPigeonApiGeckoSessionSettings().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionSettings", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.ContentDelegate) {
+      registrar.getPigeonApiGeckoSessionContentDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionContentDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.NavigationDelegate) {
+      registrar.getPigeonApiGeckoSessionNavigationDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionNavigationDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest) {
+      registrar.getPigeonApiGeckoSessionNavigationDelegateLoadRequest().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionNavigationDelegateLoadRequest", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.WebRequestError) {
+      registrar.getPigeonApiWebRequestError().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("WebRequestError", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PermissionDelegate) {
+      registrar.getPigeonApiGeckoSessionPermissionDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPermissionDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PermissionDelegate.Callback) {
+      registrar.getPigeonApiGeckoSessionPermissionDelegateCallback().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPermissionDelegateCallback", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission) {
+      registrar.getPigeonApiGeckoSessionPermissionDelegateContentPermission().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPermissionDelegateContentPermission", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate) {
+      registrar.getPigeonApiGeckoSessionPromptDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.AlertPrompt) {
+      registrar.getPigeonApiGeckoSessionPromptDelegateAlertPrompt().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegateAlertPrompt", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt) {
+      registrar.getPigeonApiGeckoSessionPromptDelegateAuthPrompt().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegateAuthPrompt", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions) {
+      registrar.getPigeonApiGeckoSessionPromptDelegateAuthPromptAuthOptions().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegateAuthPromptAuthOptions", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt) {
+      registrar.getPigeonApiGeckoSessionPromptDelegateButtonPrompt().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegateButtonPrompt", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt) {
+      registrar.getPigeonApiGeckoSessionPromptDelegateTextPrompt().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegateTextPrompt", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt) {
+      registrar.getPigeonApiGeckoSessionPromptDelegateBasePrompt().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegateBasePrompt", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse) {
+      registrar.getPigeonApiGeckoSessionPromptDelegatePromptResponse().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionPromptDelegatePromptResponse", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.ProgressDelegate) {
+      registrar.getPigeonApiGeckoSessionProgressDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionProgressDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoSession.ScrollDelegate) {
+      registrar.getPigeonApiGeckoSessionScrollDelegate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoSessionScrollDelegate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoWebExecutor) {
+      registrar.getPigeonApiGeckoWebExecutor().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoWebExecutor", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.WebRequest) {
+      registrar.getPigeonApiWebRequest().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("WebRequest", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.WebRequest.Builder) {
+      registrar.getPigeonApiWebRequestBuilder().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("WebRequestBuilder", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.WebResponse) {
+      registrar.getPigeonApiWebResponse().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("WebResponse", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.WebMessage) {
+      registrar.getPigeonApiWebMessage().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("WebMessage", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.GeckoView) {
+      registrar.getPigeonApiGeckoView().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("GeckoView", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.PanZoomController) {
+      registrar.getPigeonApiPanZoomController().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("PanZoomController", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is org.mozilla.geckoview.ScreenLength) {
+      registrar.getPigeonApiScreenLength().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("ScreenLength", value, it.exceptionOrNull())
         }
       }
     }
@@ -782,129 +1072,17 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
         }
       }
     }
-     else if (value is org.mozilla.geckoview.GeckoSession) {
-      registrar.getPigeonApiGeckoSession().pigeon_newInstance(value) {
+     else if (value is GeckoViewPoint) {
+      registrar.getPigeonApiGeckoViewPoint().pigeon_newInstance(value) {
         if (it.isFailure) {
-          logNewInstanceFailure("GeckoSession", value, it.exceptionOrNull())
+          logNewInstanceFailure("GeckoViewPoint", value, it.exceptionOrNull())
         }
       }
     }
-     else if (value is org.mozilla.geckoview.GeckoSession.Loader) {
-      registrar.getPigeonApiGeckoSessionLoader().pigeon_newInstance(value) {
+     else if (value is FlutterAssetManager) {
+      registrar.getPigeonApiFlutterAssetManager().pigeon_newInstance(value) {
         if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionLoader", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSessionSettings) {
-      registrar.getPigeonApiGeckoSessionSettings().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionSettings", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.ContentDelegate) {
-      registrar.getPigeonApiGeckoSessionContentDelegate().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionContentDelegate", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.NavigationDelegate) {
-      registrar.getPigeonApiGeckoSessionNavigationDelegate().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionNavigationDelegate", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.PermissionDelegate) {
-      registrar.getPigeonApiGeckoSessionPermissionDelegate().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionPermissionDelegate", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.PermissionDelegate.Callback) {
-      registrar.getPigeonApiGeckoSessionPermissionDelegateCallback().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionPermissionDelegateCallback", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.PromptDelegate) {
-      registrar.getPigeonApiGeckoSessionPromptDelegate().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionPromptDelegate", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.ProgressDelegate) {
-      registrar.getPigeonApiGeckoSessionProgressDelegate().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionProgressDelegate", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoSession.ScrollDelegate) {
-      registrar.getPigeonApiGeckoSessionScrollDelegate().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoSessionScrollDelegate", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoView) {
-      registrar.getPigeonApiGeckoView().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoView", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.PanZoomController) {
-      registrar.getPigeonApiPanZoomController().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("PanZoomController", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.ScreenLength) {
-      registrar.getPigeonApiScreenLength().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("ScreenLength", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.GeckoWebExecutor) {
-      registrar.getPigeonApiGeckoWebExecutor().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("GeckoWebExecutor", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.WebRequest) {
-      registrar.getPigeonApiWebRequest().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("WebRequest", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.WebRequest.Builder) {
-      registrar.getPigeonApiWebRequestBuilder().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("WebRequestBuilder", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.WebResponse) {
-      registrar.getPigeonApiWebResponse().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("WebResponse", value, it.exceptionOrNull())
-        }
-      }
-    }
-     else if (value is org.mozilla.geckoview.WebMessage) {
-      registrar.getPigeonApiWebMessage().pigeon_newInstance(value) {
-        if (it.isFailure) {
-          logNewInstanceFailure("WebMessage", value, it.exceptionOrNull())
+          logNewInstanceFailure("FlutterAssetManager", value, it.exceptionOrNull())
         }
       }
     }
@@ -915,10 +1093,17 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
         }
       }
     }
-     else if (value is dev.zeekr.webview_flutter_geckoview.FlutterAssetManager) {
-      registrar.getPigeonApiFlutterAssetManager().pigeon_newInstance(value) {
+     else if (value is java.security.cert.X509Certificate) {
+      registrar.getPigeonApiX509Certificate().pigeon_newInstance(value) {
         if (it.isFailure) {
-          logNewInstanceFailure("FlutterAssetManager", value, it.exceptionOrNull())
+          logNewInstanceFailure("X509Certificate", value, it.exceptionOrNull())
+        }
+      }
+    }
+     else if (value is java.security.cert.Certificate) {
+      registrar.getPigeonApiCertificate().pigeon_newInstance(value) {
+        if (it.isFailure) {
+          logNewInstanceFailure("Certificate", value, it.exceptionOrNull())
         }
       }
     }
@@ -932,12 +1117,73 @@ private class GeckoLibraryPigeonProxyApiBaseCodec(val registrar: GeckoLibraryPig
     }
   }
 }
+
+enum class AllowOrDeny(val raw: Int) {
+  ALLOW(0),
+  DENY(1);
+
+  companion object {
+    fun ofRaw(raw: Int): AllowOrDeny? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
+
+/**
+ * The over-scroll mode for a view.
+ *
+ * See https://developer.android.com/reference/android/view/View#OVER_SCROLL_ALWAYS.
+ */
+enum class OverScrollMode(val raw: Int) {
+  /**
+   * Always allow a user to over-scroll this view, provided it is a view that
+   * can scroll.
+   */
+  ALWAYS(0),
+  /**
+   * Allow a user to over-scroll this view only if the content is large enough
+   * to meaningfully scroll, provided it is a view that can scroll.
+   */
+  IF_CONTENT_SCROLLS(1),
+  /** Never allow a user to over-scroll this view. */
+  NEVER(2),
+  /** The type is not recognized by this wrapper. */
+  UNKNOWN(3);
+
+  companion object {
+    fun ofRaw(raw: Int): OverScrollMode? {
+      return values().firstOrNull { it.raw == raw }
+    }
+  }
+}
 private open class GeckoLibraryPigeonCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
-    return     super.readValueOfType(type, buffer)
+    return when (type) {
+      129.toByte() -> {
+        return (readValue(buffer) as Long?)?.let {
+          AllowOrDeny.ofRaw(it.toInt())
+        }
+      }
+      130.toByte() -> {
+        return (readValue(buffer) as Long?)?.let {
+          OverScrollMode.ofRaw(it.toInt())
+        }
+      }
+      else -> super.readValueOfType(type, buffer)
+    }
   }
   override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
-    super.writeValue(stream, value)
+    when (value) {
+      is AllowOrDeny -> {
+        stream.write(129)
+        writeValue(stream, value.raw.toLong())
+      }
+      is OverScrollMode -> {
+        stream.write(130)
+        writeValue(stream, value.raw.toLong())
+      }
+      else -> super.writeValue(stream, value)
+    }
   }
 }
 
@@ -1149,1262 +1395,6 @@ abstract class PigeonApiGeckoRuntimeSettings(open val pigeonRegistrar: GeckoLibr
 
 }
 @Suppress("UNCHECKED_CAST")
-abstract class PigeonApiStorageController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** Clear data for all hosts. */
-  abstract fun clearData(pigeon_instance: org.mozilla.geckoview.StorageController, flags: Long, callback: (Result<Unit>) -> Unit)
-
-  /** Clear data for the given context ID. */
-  abstract fun clearDataForSessionContext(pigeon_instance: org.mozilla.geckoview.StorageController, contextId: String)
-
-  /** Clear data owned by the given base domain (eTLD+1). */
-  abstract fun clearDataFromBaseDomain(pigeon_instance: org.mozilla.geckoview.StorageController, baseDomain: String, flags: Long, callback: (Result<Unit>) -> Unit)
-
-  /** Clear data owned by the given host. */
-  abstract fun clearDataFromHost(pigeon_instance: org.mozilla.geckoview.StorageController, host: String, flags: Long, callback: (Result<Unit>) -> Unit)
-
-  /**
-   * Get all currently stored permissions.
-   * Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
-   */
-  abstract fun getCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, isPrivateBrowsing: Boolean, callback: (Result<Long?>) -> Unit)
-
-  /**
-   * Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
-   * Get all currently stored permissions for a given URI and default (unset) context ID.
-   * Get all currently stored permissions for a given URI and context ID.
-   * Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
-   */
-  abstract fun removeCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, isPrivateBrowsing: Boolean, callback: (Result<Unit>) -> Unit)
-
-  /** Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode. */
-  abstract fun setCookieBannerModeAndPersistInPrivateBrowsingForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, mode: Long, callback: (Result<Unit>) -> Unit)
-
-  /** Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode. */
-  abstract fun setCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, mode: Long, isPrivateBrowsing: Boolean, callback: (Result<Unit>) -> Unit)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiStorageController?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearData", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val flagsArg = args[1] as Long
-            api.clearData(pigeon_instanceArg, flagsArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataForSessionContext", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val contextIdArg = args[1] as String
-            val wrapped: List<Any?> = try {
-              api.clearDataForSessionContext(pigeon_instanceArg, contextIdArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromBaseDomain", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val baseDomainArg = args[1] as String
-            val flagsArg = args[2] as Long
-            api.clearDataFromBaseDomain(pigeon_instanceArg, baseDomainArg, flagsArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromHost", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val hostArg = args[1] as String
-            val flagsArg = args[2] as Long
-            api.clearDataFromHost(pigeon_instanceArg, hostArg, flagsArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.getCookieBannerModeForDomain", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val uriArg = args[1] as String
-            val isPrivateBrowsingArg = args[2] as Boolean
-            api.getCookieBannerModeForDomain(pigeon_instanceArg, uriArg, isPrivateBrowsingArg) { result: Result<Long?> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.removeCookieBannerModeForDomain", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val uriArg = args[1] as String
-            val isPrivateBrowsingArg = args[2] as Boolean
-            api.removeCookieBannerModeForDomain(pigeon_instanceArg, uriArg, isPrivateBrowsingArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeAndPersistInPrivateBrowsingForDomain", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val uriArg = args[1] as String
-            val modeArg = args[2] as Long
-            api.setCookieBannerModeAndPersistInPrivateBrowsingForDomain(pigeon_instanceArg, uriArg, modeArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeForDomain", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
-            val uriArg = args[1] as String
-            val modeArg = args[2] as Long
-            val isPrivateBrowsingArg = args[3] as Boolean
-            api.setCookieBannerModeForDomain(pigeon_instanceArg, uriArg, modeArg, isPrivateBrowsingArg) { result: Result<Unit> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of StorageController and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.StorageController, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** Ensure that a built-in extension is installed. */
-  abstract fun ensureBuiltIn(pigeon_instance: org.mozilla.geckoview.WebExtensionController, uri: String, id: String?, callback: (Result<org.mozilla.geckoview.WebExtension?>) -> Unit)
-
-  /** List installed extensions for this GeckoRuntime. */
-  abstract fun list(pigeon_instance: org.mozilla.geckoview.WebExtensionController, callback: (Result<List<org.mozilla.geckoview.WebExtension>?>) -> Unit)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionController?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.ensureBuiltIn", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtensionController
-            val uriArg = args[1] as String
-            val idArg = args[2] as String?
-            api.ensureBuiltIn(pigeon_instanceArg, uriArg, idArg) { result: Result<org.mozilla.geckoview.WebExtension?> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.list", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtensionController
-            api.list(pigeon_instanceArg) { result: Result<List<org.mozilla.geckoview.WebExtension>?> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionController and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtensionController, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtension(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /**
-   * Returns the delegate handling browsing-data operations for this extension.
-   * Get the download delegate for this extension.
-   * Get the tab delegate for this extension.
-   */
-  abstract fun getTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension): org.mozilla.geckoview.WebExtension.TabDelegate?
-
-  /**
-   * Set the Action delegate for this WebExtension.
-   * Sets the delegate to handle browsing-data operations (clear, remove, get settings).
-   * Set the download delegate for this extension.
-   * Defines the message delegate for a Native App.
-   */
-  abstract fun setMessageDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.MessageDelegate?, nativeApp: String)
-
-  /** Set the tab delegate for this extension. */
-  abstract fun setTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.TabDelegate?)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtension?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.getTabDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension
-            val wrapped: List<Any?> = try {
-              listOf(api.getTabDelegate(pigeon_instanceArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.setMessageDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension
-            val delegateArg = args[1] as org.mozilla.geckoview.WebExtension.MessageDelegate?
-            val nativeAppArg = args[2] as String
-            val wrapped: List<Any?> = try {
-              api.setMessageDelegate(pigeon_instanceArg, delegateArg, nativeAppArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.setTabDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension
-            val delegateArg = args[1] as org.mozilla.geckoview.WebExtension.TabDelegate?
-            val wrapped: List<Any?> = try {
-              api.setTabDelegate(pigeon_instanceArg, delegateArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtension and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionMessageDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.MessageDelegate
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionMessageDelegate?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionMessageDelegate.pigeon_defaultConstructor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionMessageDelegate and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.MessageDelegate, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionMessageDelegate.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-  /** Called whenever the WebExtension connects to an app using runtime.connectNative. */
-  fun onConnect(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.MessageDelegate, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionMessageDelegate.onConnect` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionMessageDelegate.onConnect"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, portArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else {
-          callback(Result.success(Unit))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionTabDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.TabDelegate
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionTabDelegate?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionTabDelegate.pigeon_defaultConstructor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionTabDelegate and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.TabDelegate, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      callback(
-          Result.failure(
-              GeckoError("new-instance-error", "Attempting to create a new Dart instance of WebExtensionTabDelegate, but the class has a nonnull callback method.", "")))
-    }
-  }
-
-  /** Called when tabs.create is invoked, this method returns a *newly-created* session that GeckoView will use to load the requested page on. */
-  fun onNewTab(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.TabDelegate, sourceArg: org.mozilla.geckoview.WebExtension, createDetailsArg: org.mozilla.geckoview.WebExtension.CreateTabDetails, callback: (Result<org.mozilla.geckoview.GeckoSession>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionTabDelegate.onNewTab` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionTabDelegate.onNewTab"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, sourceArg, createDetailsArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else if (it[0] == null) {
-          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
-        } else {
-          val output = it[0] as org.mozilla.geckoview.GeckoSession
-          callback(Result.success(output))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-  /** Called when runtime.openOptionsPage is invoked with options_ui.open_in_tab = false. */
-  fun onOpenOptionsPage(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.TabDelegate, sourceArg: org.mozilla.geckoview.WebExtension, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionTabDelegate.onOpenOptionsPage` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionTabDelegate.onOpenOptionsPage"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, sourceArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else {
-          callback(Result.success(Unit))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionCreateTabDetails(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  abstract fun active(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
-
-  abstract fun cookieStoreId(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): String?
-
-  abstract fun discarded(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
-
-  abstract fun index(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Long?
-
-  abstract fun openInReaderMode(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
-
-  abstract fun pinned(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
-
-  abstract fun url(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): String?
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionCreateTabDetails and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.CreateTabDetails, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val activeArg = active(pigeon_instanceArg)
-      val cookieStoreIdArg = cookieStoreId(pigeon_instanceArg)
-      val discardedArg = discarded(pigeon_instanceArg)
-      val indexArg = index(pigeon_instanceArg)
-      val openInReaderModeArg = openInReaderMode(pigeon_instanceArg)
-      val pinnedArg = pinned(pigeon_instanceArg)
-      val urlArg = url(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionCreateTabDetails.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg, activeArg, cookieStoreIdArg, discardedArg, indexArg, openInReaderModeArg, pinnedArg, urlArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /**
-   * WebExtension.MessageSender corresponding to this port.
-   * The application identifier of the MessageDelegate that opened this port.
-   */
-  abstract fun name(pigeon_instance: org.mozilla.geckoview.WebExtension.Port): String
-
-  abstract fun getAsync(callback: (Result<org.mozilla.geckoview.WebExtension.Port?>) -> Unit)
-
-  /** Disconnects this port and notifies the other end. */
-  abstract fun disconnect(pigeon_instance: org.mozilla.geckoview.WebExtension.Port)
-
-  /** Post a message to the WebExtension connected to this WebExtension.Port instance. */
-  abstract fun postMessage(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, message: String)
-
-  /** Set a delegate for incoming messages through this WebExtension.Port. */
-  abstract fun setDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, delegate: org.mozilla.geckoview.WebExtension.PortDelegate?)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionPort?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.getAsync", codec)
-        if (api != null) {
-          channel.setMessageHandler { _, reply ->
-            api.getAsync{ result: Result<org.mozilla.geckoview.WebExtension.Port?> ->
-              val error = result.exceptionOrNull()
-              if (error != null) {
-                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
-              } else {
-                val data = result.getOrNull()
-                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
-              }
-            }
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.disconnect", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
-            val wrapped: List<Any?> = try {
-              api.disconnect(pigeon_instanceArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.postMessage", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
-            val messageArg = args[1] as String
-            val wrapped: List<Any?> = try {
-              api.postMessage(pigeon_instanceArg, messageArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.setDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
-            val delegateArg = args[1] as org.mozilla.geckoview.WebExtension.PortDelegate?
-            val wrapped: List<Any?> = try {
-              api.setDelegate(pigeon_instanceArg, delegateArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionPort and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val nameArg = name(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg, nameArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionPortDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.PortDelegate
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionPortDelegate?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.pigeon_defaultConstructor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionPortDelegate and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-  fun onDisconnect(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionPortDelegate.onDisconnect` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.onDisconnect"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, portArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else {
-          callback(Result.success(Unit))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-  fun onPortMessage(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, messageArg: String, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionPortDelegate.onPortMessage` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.onPortMessage"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, messageArg, portArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else {
-          callback(Result.success(Unit))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionSessionController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /**
-   * Get the Action delegate for this session.
-   * Get the message delegate for nativeApp.
-   */
-  abstract fun getMessageDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension, nativeApp: String): org.mozilla.geckoview.WebExtension.MessageDelegate?
-
-  /** Get the TabDelegate for the given extension. */
-  abstract fun getTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension): org.mozilla.geckoview.WebExtension.SessionTabDelegate?
-
-  /**
-   * Set the Action delegate for this session.
-   * Defines a message delegate for a Native App.
-   */
-  abstract fun setMessageDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.MessageDelegate?, nativeApp: String)
-
-  /** Set the TabDelegate for this session. */
-  abstract fun setTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.SessionTabDelegate?)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionSessionController?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.getMessageDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
-            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
-            val nativeAppArg = args[2] as String
-            val wrapped: List<Any?> = try {
-              listOf(api.getMessageDelegate(pigeon_instanceArg, extensionArg, nativeAppArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.getTabDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
-            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
-            val wrapped: List<Any?> = try {
-              listOf(api.getTabDelegate(pigeon_instanceArg, extensionArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.setMessageDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
-            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
-            val delegateArg = args[2] as org.mozilla.geckoview.WebExtension.MessageDelegate?
-            val nativeAppArg = args[3] as String
-            val wrapped: List<Any?> = try {
-              api.setMessageDelegate(pigeon_instanceArg, extensionArg, delegateArg, nativeAppArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.setTabDelegate", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
-            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
-            val delegateArg = args[2] as org.mozilla.geckoview.WebExtension.SessionTabDelegate?
-            val wrapped: List<Any?> = try {
-              api.setTabDelegate(pigeon_instanceArg, extensionArg, delegateArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionSessionController and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionController, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionSessionTabDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.SessionTabDelegate
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionSessionTabDelegate?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.pigeon_defaultConstructor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionSessionTabDelegate and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionTabDelegate, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      callback(
-          Result.failure(
-              GeckoError("new-instance-error", "Attempting to create a new Dart instance of WebExtensionSessionTabDelegate, but the class has a nonnull callback method.", "")))
-    }
-  }
-
-  fun onCloseTab(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionTabDelegate, sourceArg: org.mozilla.geckoview.WebExtension?, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<Boolean>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionSessionTabDelegate.onCloseTab` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.onCloseTab"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, sourceArg, sessionArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else if (it[0] == null) {
-          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
-        } else {
-          val output = it[0] as Boolean
-          callback(Result.success(output))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-  fun onUpdateTab(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionTabDelegate, extensionArg: org.mozilla.geckoview.WebExtension, sessionArg: org.mozilla.geckoview.GeckoSession, detailsArg: org.mozilla.geckoview.WebExtension.UpdateTabDetails, callback: (Result<Boolean>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-      return
-    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(
-          Result.failure(
-              GeckoError("missing-instance-error", "Callback to `WebExtensionSessionTabDelegate.onUpdateTab` failed because native instance was not in the instance manager.", "")))
-      return
-    }
-    val binaryMessenger = pigeonRegistrar.binaryMessenger
-    val codec = pigeonRegistrar.codec
-    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.onUpdateTab"
-    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-    channel.send(listOf(pigeon_instanceArg, extensionArg, sessionArg, detailsArg)) {
-      if (it is List<*>) {
-        if (it.size > 1) {
-          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-        } else if (it[0] == null) {
-          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
-        } else {
-          val output = it[0] as Boolean
-          callback(Result.success(output))
-        }
-      } else {
-        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-      } 
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiWebExtensionUpdateTabDetails(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** Whether the tab should become active. */
-  abstract fun active(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
-
-  /** Whether the tab should be discarded automatically by the app when resources are low. */
-  abstract fun autoDiscardable(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
-
-  /** If true and the tab is not highlighted, it should become active by default. */
-  abstract fun highlighted(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
-
-  /** Whether the tab should be muted. */
-  abstract fun muted(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
-
-  /** Whether the tab should be pinned. */
-  abstract fun pinned(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
-
-  /** The url that the tab will be navigated to. */
-  abstract fun url(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): String?
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of WebExtensionUpdateTabDetails and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.UpdateTabDetails, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val activeArg = active(pigeon_instanceArg)
-      val autoDiscardableArg = autoDiscardable(pigeon_instanceArg)
-      val highlightedArg = highlighted(pigeon_instanceArg)
-      val mutedArg = muted(pigeon_instanceArg)
-      val pinnedArg = pinned(pigeon_instanceArg)
-      val urlArg = url(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionUpdateTabDetails.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg, activeArg, autoDiscardableArg, highlightedArg, mutedArg, pinnedArg, urlArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
 abstract class PigeonApiGeckoSession(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
   abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoSession
 
@@ -2597,6 +1587,9 @@ abstract class PigeonApiGeckoSession(open val pigeonRegistrar: GeckoLibraryPigeo
 
   /** Set the progress callback handler. */
   abstract fun setProgressDelegate(pigeon_instance: org.mozilla.geckoview.GeckoSession, delegate: org.mozilla.geckoview.GeckoSession.ProgressDelegate?)
+
+  /** Set the current prompt delegate for this GeckoSession. */
+  abstract fun setPromptDelegate(pigeon_instance: org.mozilla.geckoview.GeckoSession, delegate: org.mozilla.geckoview.GeckoSession.PromptDelegate?)
 
   /** Set the content scroll callback handler. */
   abstract fun setScrollDelegate(pigeon_instance: org.mozilla.geckoview.GeckoSession, delegate: org.mozilla.geckoview.GeckoSession.ScrollDelegate?)
@@ -3319,6 +2312,25 @@ abstract class PigeonApiGeckoSession(open val pigeonRegistrar: GeckoLibraryPigeo
             val delegateArg = args[1] as org.mozilla.geckoview.GeckoSession.ProgressDelegate?
             val wrapped: List<Any?> = try {
               api.setProgressDelegate(pigeon_instanceArg, delegateArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSession.setPromptDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession
+            val delegateArg = args[1] as org.mozilla.geckoview.GeckoSession.PromptDelegate?
+            val wrapped: List<Any?> = try {
+              api.setPromptDelegate(pigeon_instanceArg, delegateArg)
               listOf(null)
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)
@@ -4745,22 +3757,9 @@ abstract class PigeonApiGeckoSessionNavigationDelegate(open val pigeonRegistrar:
     }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
       callback(Result.success(Unit))
     }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
+      callback(
+          Result.failure(
+              GeckoError("new-instance-error", "Attempting to create a new Dart instance of GeckoSessionNavigationDelegate, but the class has a nonnull callback method.", "")))
     }
   }
 
@@ -4823,6 +3822,242 @@ abstract class PigeonApiGeckoSessionNavigationDelegate(open val pigeonRegistrar:
       } else {
         callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
       } 
+    }
+  }
+
+  /** */
+  fun onLoadError(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, uriArg: String, errorArg: org.mozilla.geckoview.WebRequestError, callback: (Result<String?>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionNavigationDelegate.onLoadError` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.onLoadError"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, uriArg, errorArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          val output = it[0] as String?
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** A request to open an URI. */
+  fun onLoadRequest(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, requestArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest, callback: (Result<AllowOrDeny>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionNavigationDelegate.onLoadRequest` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.onLoadRequest"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, requestArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as AllowOrDeny
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** A view has started loading content from the network. */
+  fun onLocationChange(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, urlArg: String?, permsArg: List<org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission>, hasUserGestureArg: Boolean, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionNavigationDelegate.onLocationChange` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.onLocationChange"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, urlArg, permsArg, hasUserGestureArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * A request has been made to open a new session.
+   * A request to load a URI in a non-top-level context.
+   */
+  fun onSubframeLoadRequest(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, requestArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest, callback: (Result<AllowOrDeny>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionNavigationDelegate.onSubframeLoadRequest` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegate.onSubframeLoadRequest"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, requestArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as AllowOrDeny
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionNavigationDelegateLoadRequest(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** True if there was an active user gesture when the load was requested. */
+  abstract fun hasUserGesture(pigeon_instance: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest): Boolean
+
+  /** This load request was initiated by a direct navigation from the application. */
+  abstract fun isDirectNavigation(pigeon_instance: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest): Boolean
+
+  /** True if and only if the request was triggered by an HTTP redirect. */
+  abstract fun isRedirect(pigeon_instance: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest): Boolean
+
+  /** The target where the window has requested to open. */
+  abstract fun target(pigeon_instance: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest): Long
+
+  /** The URI of the origin page that triggered the load request. */
+  abstract fun triggerUri(pigeon_instance: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest): String?
+
+  /** The URI to be loaded. */
+  abstract fun uri(pigeon_instance: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest): String
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionNavigationDelegateLoadRequest and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.NavigationDelegate.LoadRequest, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val hasUserGestureArg = hasUserGesture(pigeon_instanceArg)
+      val isDirectNavigationArg = isDirectNavigation(pigeon_instanceArg)
+      val isRedirectArg = isRedirect(pigeon_instanceArg)
+      val targetArg = target(pigeon_instanceArg)
+      val triggerUriArg = triggerUri(pigeon_instanceArg)
+      val uriArg = uri(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionNavigationDelegateLoadRequest.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, hasUserGestureArg, isDirectNavigationArg, isRedirectArg, targetArg, triggerUriArg, uriArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebRequestError(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The error category, e.g. */
+  abstract fun category(pigeon_instance: org.mozilla.geckoview.WebRequestError): Long
+
+  /** The server certificate used. */
+  abstract fun certificate(pigeon_instance: org.mozilla.geckoview.WebRequestError): java.security.cert.X509Certificate?
+
+  /** The error code, e.g. */
+  abstract fun code(pigeon_instance: org.mozilla.geckoview.WebRequestError): Long
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebRequestError and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebRequestError, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val categoryArg = category(pigeon_instanceArg)
+      val certificateArg = certificate(pigeon_instanceArg)
+      val codeArg = code(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebRequestError.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, categoryArg, certificateArg, codeArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
     }
   }
 
@@ -5001,6 +4236,63 @@ abstract class PigeonApiGeckoSessionPermissionDelegateCallback(open val pigeonRe
 
 }
 @Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPermissionDelegateContentPermission(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The context ID associated with the permission if any. */
+  abstract fun contextId(pigeon_instance: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission): String?
+
+  /** The type of this permission; one of PERMISSION_*. */
+  abstract fun permission(pigeon_instance: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission): Long
+
+  /** A boolean indicating whether this content permission is associated with private browsing. */
+  abstract fun privateMode(pigeon_instance: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission): Boolean
+
+  /** The third party origin associated with the request; currently only used for storage access permission. */
+  abstract fun thirdPartyOrigin(pigeon_instance: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission): String?
+
+  /** The URI associated with this content permission. */
+  abstract fun uri(pigeon_instance: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission): String
+
+  /** The value of the permission; one of VALUE_. */
+  abstract fun value(pigeon_instance: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission): Long
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPermissionDelegateContentPermission and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PermissionDelegate.ContentPermission, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val contextIdArg = contextId(pigeon_instanceArg)
+      val permissionArg = permission(pigeon_instanceArg)
+      val privateModeArg = privateMode(pigeon_instanceArg)
+      val thirdPartyOriginArg = thirdPartyOrigin(pigeon_instanceArg)
+      val uriArg = uri(pigeon_instanceArg)
+      val valueArg = value(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPermissionDelegateContentPermission.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, contextIdArg, permissionArg, privateModeArg, thirdPartyOriginArg, uriArg, valueArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
 abstract class PigeonApiGeckoSessionPromptDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
   abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoSession.PromptDelegate
 
@@ -5040,10 +4332,634 @@ abstract class PigeonApiGeckoSessionPromptDelegate(open val pigeonRegistrar: Gec
     }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
       callback(Result.success(Unit))
     }     else {
+      callback(
+          Result.failure(
+              GeckoError("new-instance-error", "Attempting to create a new Dart instance of GeckoSessionPromptDelegate, but the class has a nonnull callback method.", "")))
+    }
+  }
+
+  /**
+   * Handle a address save prompt request.
+   * Handle a address selection prompt request.
+   * Display an alert prompt.
+   */
+  fun onAlertPrompt(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, promptArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.AlertPrompt, callback: (Result<org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionPromptDelegate.onAlertPrompt` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegate.onAlertPrompt"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, promptArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** Display an authorization prompt. */
+  fun onAuthPrompt(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, promptArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt, callback: (Result<org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionPromptDelegate.onAuthPrompt` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegate.onAuthPrompt"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, promptArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * Display a onbeforeunload prompt.
+   * Display a button prompt.
+   */
+  fun onButtonPrompt(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, promptArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt, callback: (Result<org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionPromptDelegate.onButtonPrompt` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegate.onButtonPrompt"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, promptArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /**
+   * Display a list/menu prompt.
+   * Display a color prompt.
+   * Handle a credit card save prompt request.
+   * Handle a credit card selection prompt request.
+   * Display a date/time prompt.
+   * Display a file prompt.
+   * Display a folder upload prompt.
+   * Handle a login save prompt request.
+   * Handle a login selection prompt request.
+   * Display a popup request prompt; this occurs when content attempts to open a new window in a way that doesn't appear to be the result of user input.
+   * Display a redirect request prompt; this occurs when a third-party frame attempts to redirect the top-level window in a way that doesn't appear to be the result of user input.
+   * Display a POST resubmission confirmation prompt.
+   * Handle a request for a client authentication certificate.
+   * Handle an Identity Credential Account selection prompt request.
+   * Handle an Identity Credential Provider selection prompt request.
+   * Display a share request prompt; this occurs when content attempts to use the WebShare API.
+   * Handle an Identity Credential privacy policy prompt request.
+   * Display a text prompt.
+   */
+  fun onTextPrompt(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate, sessionArg: org.mozilla.geckoview.GeckoSession, promptArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt, callback: (Result<org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoSessionPromptDelegate.onTextPrompt` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegate.onTextPrompt"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sessionArg, promptArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPromptDelegateBasePrompt(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** This dismisses the prompt without sending any meaningful information back to content. */
+  abstract fun dismiss(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt): org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+
+  /**
+   * Get the delegate for this prompt.
+   * This returns true if the prompt has already been confirmed or dismissed.
+   */
+  abstract fun isComplete(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt): Boolean
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoSessionPromptDelegateBasePrompt?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateBasePrompt.dismiss", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt
+            val wrapped: List<Any?> = try {
+              listOf(api.dismiss(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateBasePrompt.isComplete", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt
+            val wrapped: List<Any?> = try {
+              listOf(api.isComplete(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegateBasePrompt and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.BasePrompt, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
       val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
       val binaryMessenger = pigeonRegistrar.binaryMessenger
       val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegate.pigeon_newInstance"
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateBasePrompt.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPromptDelegateAlertPrompt(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The title of this prompt; may be null. */
+  abstract fun title(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AlertPrompt): String?
+
+  /** The message to be displayed with this alert; may be null. */
+  abstract fun message(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AlertPrompt): String?
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegateAlertPrompt and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.AlertPrompt, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val titleArg = title(pigeon_instanceArg)
+      val messageArg = message(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateAlertPrompt.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, titleArg, messageArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  @Suppress("FunctionName")
+  /** An implementation of [PigeonApiGeckoSessionPromptDelegateBasePrompt] used to access callback methods */
+  fun pigeon_getPigeonApiGeckoSessionPromptDelegateBasePrompt(): PigeonApiGeckoSessionPromptDelegateBasePrompt
+  {
+    return pigeonRegistrar.getPigeonApiGeckoSessionPromptDelegateBasePrompt()
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPromptDelegateAuthPrompt(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The title of this prompt; may be null. */
+  abstract fun title(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt): String?
+
+  /** The GeckoSession.PromptDelegate.AuthPrompt.AuthOptions that describe the type of authorization prompt. */
+  abstract fun authOptions(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt): org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions
+
+  /** The message to be displayed with this prompt; may be null. */
+  abstract fun message(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt): String?
+
+  /** Confirms this prompt with just a password, returning the password to content. */
+  abstract fun confirmWithPassword(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt, password: String): org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+
+  /** Confirms this prompt with a username and password, returning both to content. */
+  abstract fun confirmWithUsernameAndPassword(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt, username: String, password: String): org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoSessionPromptDelegateAuthPrompt?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateAuthPrompt.confirmWithPassword", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt
+            val passwordArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.confirmWithPassword(pigeon_instanceArg, passwordArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateAuthPrompt.confirmWithUsernameAndPassword", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt
+            val usernameArg = args[1] as String
+            val passwordArg = args[2] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.confirmWithUsernameAndPassword(pigeon_instanceArg, usernameArg, passwordArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegateAuthPrompt and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val titleArg = title(pigeon_instanceArg)
+      val authOptionsArg = authOptions(pigeon_instanceArg)
+      val messageArg = message(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateAuthPrompt.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, titleArg, authOptionsArg, messageArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  @Suppress("FunctionName")
+  /** An implementation of [PigeonApiGeckoSessionPromptDelegateBasePrompt] used to access callback methods */
+  fun pigeon_getPigeonApiGeckoSessionPromptDelegateBasePrompt(): PigeonApiGeckoSessionPromptDelegateBasePrompt
+  {
+    return pigeonRegistrar.getPigeonApiGeckoSessionPromptDelegateBasePrompt()
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPromptDelegateAuthPromptAuthOptions(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** An int bit-field of GeckoSession.PromptDelegate.AuthPrompt.AuthOptions.Flags. */
+  abstract fun flags(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions): Long
+
+  /** An int, one of GeckoSession.PromptDelegate.AuthPrompt.AuthOptions.Level, indicating level of encryption. */
+  abstract fun level(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions): Long
+
+  /** A string containing the initial password. */
+  abstract fun password(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions): String?
+
+  /** A string containing the URI for the auth request or null if unknown. */
+  abstract fun uri(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions): String?
+
+  /** A string containing the initial username or null if password-only. */
+  abstract fun username(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions): String?
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegateAuthPromptAuthOptions and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.AuthPrompt.AuthOptions, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val flagsArg = flags(pigeon_instanceArg)
+      val levelArg = level(pigeon_instanceArg)
+      val passwordArg = password(pigeon_instanceArg)
+      val uriArg = uri(pigeon_instanceArg)
+      val usernameArg = username(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateAuthPromptAuthOptions.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, flagsArg, levelArg, passwordArg, uriArg, usernameArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPromptDelegateButtonPrompt(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The title of this prompt; may be null. */
+  abstract fun title(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt): String?
+
+  /** The message to be displayed with this prompt; may be null. */
+  abstract fun message(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt): String?
+
+  /** Confirms this prompt, returning the selected button to content. */
+  abstract fun confirm(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt, selection: Long): org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoSessionPromptDelegateButtonPrompt?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateButtonPrompt.confirm", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt
+            val selectionArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              listOf(api.confirm(pigeon_instanceArg, selectionArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegateButtonPrompt and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.ButtonPrompt, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val titleArg = title(pigeon_instanceArg)
+      val messageArg = message(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateButtonPrompt.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, titleArg, messageArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  @Suppress("FunctionName")
+  /** An implementation of [PigeonApiGeckoSessionPromptDelegateBasePrompt] used to access callback methods */
+  fun pigeon_getPigeonApiGeckoSessionPromptDelegateBasePrompt(): PigeonApiGeckoSessionPromptDelegateBasePrompt
+  {
+    return pigeonRegistrar.getPigeonApiGeckoSessionPromptDelegateBasePrompt()
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoSessionPromptDelegateTextPrompt(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The title of this prompt; may be null. */
+  abstract fun title(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt): String?
+
+  /** The default value for the text field; may be null. */
+  abstract fun defaultValue(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt): String?
+
+  /** The message to be displayed with this prompt; may be null. */
+  abstract fun message(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt): String?
+
+  /** Confirms this prompt, returning the input text to content. */
+  abstract fun confirm(pigeon_instance: org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt, text: String): org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoSessionPromptDelegateTextPrompt?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateTextPrompt.confirm", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt
+            val textArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.confirm(pigeon_instanceArg, textArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegateTextPrompt and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.TextPrompt, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val titleArg = title(pigeon_instanceArg)
+      val defaultValueArg = defaultValue(pigeon_instanceArg)
+      val messageArg = message(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegateTextPrompt.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, titleArg, defaultValueArg, messageArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  @Suppress("FunctionName")
+  /** An implementation of [PigeonApiGeckoSessionPromptDelegateBasePrompt] used to access callback methods */
+  fun pigeon_getPigeonApiGeckoSessionPromptDelegateBasePrompt(): PigeonApiGeckoSessionPromptDelegateBasePrompt
+  {
+    return pigeonRegistrar.getPigeonApiGeckoSessionPromptDelegateBasePrompt()
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+open class PigeonApiGeckoSessionPromptDelegatePromptResponse(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoSessionPromptDelegatePromptResponse and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoSession.PromptDelegate.PromptResponse, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoSessionPromptDelegatePromptResponse.pigeon_newInstance"
       val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
       channel.send(listOf(pigeon_identifierArg)) {
         if (it is List<*>) {
@@ -5299,560 +5215,6 @@ abstract class PigeonApiGeckoSessionScrollDelegate(open val pigeonRegistrar: Gec
       } else {
         callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
       } 
-    }
-  }
-
-}
-/**
- * A View that displays web pages.
- *
- * See https://developer.android.com/reference/android/webkit/WebView.
- */
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** Construct a new GeckoView instance. */
-  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoView
-
-  /** Returns the current GeckoSession attached to this view. */
-  abstract fun session(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.GeckoSession
-
-  /** Retrieves the controller responsible for panning and zooming gestures. */
-  abstract fun panZoomController(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.PanZoomController
-
-  /**
-   * Returns the current GeckoSession attached to this view.
-   * Unsets the current session from this instance and returns it, if any.
-   * Attach a session to this view.
-   * Set which view should be used by this GeckoView instance to display content.
-   */
-  abstract fun setViewBackend(pigeon_instance: org.mozilla.geckoview.GeckoView, backend: Long)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoView?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.pigeon_defaultConstructor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.session", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
-            val pigeon_identifierArg = args[1] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.session(pigeon_instanceArg), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.panZoomController", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
-            val pigeon_identifierArg = args[1] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.panZoomController(pigeon_instanceArg), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.setViewBackend", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
-            val backendArg = args[1] as Long
-            val wrapped: List<Any?> = try {
-              api.setViewBackend(pigeon_instanceArg, backendArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of GeckoView and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoView, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-  @Suppress("FunctionName")
-  /** An implementation of [PigeonApiView] used to access callback methods */
-  fun pigeon_getPigeonApiView(): PigeonApiView
-  {
-    return pigeonRegistrar.getPigeonApiView()
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiPanZoomController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** Get the current scroll factor. */
-  abstract fun getScrollFactor(pigeon_instance: org.mozilla.geckoview.PanZoomController): Double
-
-  /**
-   * Process a drag event.
-   * Process a non-touch motion event through the pan-zoom controller.
-   * Process a touch event through the pan-zoom controller.
-   * Process a touch event through the pan-zoom controller.
-   * Process a touch event through the pan-zoom controller.
-   * Scroll the document body by an offset from the current scroll position.
-   */
-  abstract fun scrollBy(pigeon_instance: org.mozilla.geckoview.PanZoomController, width: org.mozilla.geckoview.ScreenLength, height: org.mozilla.geckoview.ScreenLength, behavior: Long?)
-
-  /** Scroll the document body to an absolute position. */
-  abstract fun scrollTo(pigeon_instance: org.mozilla.geckoview.PanZoomController, width: org.mozilla.geckoview.ScreenLength, height: org.mozilla.geckoview.ScreenLength, behavior: Long?)
-
-  /** Scroll to the bottom left corner of the screen. */
-  abstract fun scrollToBottom(pigeon_instance: org.mozilla.geckoview.PanZoomController)
-
-  /** Scroll to the top left corner of the screen. */
-  abstract fun scrollToTop(pigeon_instance: org.mozilla.geckoview.PanZoomController)
-
-  /** Set whether Gecko should generate long-press events. */
-  abstract fun setIsLongpressEnabled(pigeon_instance: org.mozilla.geckoview.PanZoomController, isLongpressEnabled: Boolean)
-
-  /** Set the current scroll factor. */
-  abstract fun setScrollFactor(pigeon_instance: org.mozilla.geckoview.PanZoomController, factor: Double)
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiPanZoomController?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.getScrollFactor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val wrapped: List<Any?> = try {
-              listOf(api.getScrollFactor(pigeon_instanceArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollBy", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val widthArg = args[1] as org.mozilla.geckoview.ScreenLength
-            val heightArg = args[2] as org.mozilla.geckoview.ScreenLength
-            val behaviorArg = args[3] as Long?
-            val wrapped: List<Any?> = try {
-              api.scrollBy(pigeon_instanceArg, widthArg, heightArg, behaviorArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollTo", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val widthArg = args[1] as org.mozilla.geckoview.ScreenLength
-            val heightArg = args[2] as org.mozilla.geckoview.ScreenLength
-            val behaviorArg = args[3] as Long?
-            val wrapped: List<Any?> = try {
-              api.scrollTo(pigeon_instanceArg, widthArg, heightArg, behaviorArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollToBottom", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val wrapped: List<Any?> = try {
-              api.scrollToBottom(pigeon_instanceArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollToTop", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val wrapped: List<Any?> = try {
-              api.scrollToTop(pigeon_instanceArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.setIsLongpressEnabled", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val isLongpressEnabledArg = args[1] as Boolean
-            val wrapped: List<Any?> = try {
-              api.setIsLongpressEnabled(pigeon_instanceArg, isLongpressEnabledArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.setScrollFactor", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
-            val factorArg = args[1] as Double
-            val wrapped: List<Any?> = try {
-              api.setScrollFactor(pigeon_instanceArg, factorArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of PanZoomController and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.PanZoomController, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
-    }
-  }
-
-}
-@Suppress("UNCHECKED_CAST")
-abstract class PigeonApiScreenLength(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** Create a ScreenLength of the documents height. */
-  abstract fun bottom(): org.mozilla.geckoview.ScreenLength
-
-  /** Create a ScreenLength of a specific length. */
-  abstract fun fromPixels(value: Double): org.mozilla.geckoview.ScreenLength
-
-  /** Create a ScreenLength that uses the visual viewport width as units. */
-  abstract fun fromVisualViewportHeight(value: Double): org.mozilla.geckoview.ScreenLength
-
-  /** Create a ScreenLength that uses the visual viewport width as units. */
-  abstract fun fromVisualViewportWidth(value: Double): org.mozilla.geckoview.ScreenLength
-
-  /** Create a ScreenLength of zero pixels length. */
-  abstract fun top(): org.mozilla.geckoview.ScreenLength
-
-  /** Create a ScreenLength of zero pixels length. */
-  abstract fun zero(): org.mozilla.geckoview.ScreenLength
-
-  /** Returns the unit type of the length The length can be one of the following: PIXEL, VISUAL_VIEWPORT_WIDTH, VISUAL_VIEWPORT_HEIGHT, DOCUMENT_WIDTH, DOCUMENT_HEIGHT */
-  abstract fun getType(pigeon_instance: org.mozilla.geckoview.ScreenLength): Long
-
-  /** Returns the scalar value used to calculate length. */
-  abstract fun getValue(pigeon_instance: org.mozilla.geckoview.ScreenLength): Double
-
-  companion object {
-    @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiScreenLength?) {
-      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.bottom", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.bottom(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.fromPixels", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val valueArg = args[1] as Double
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromPixels(valueArg), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.fromVisualViewportHeight", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val valueArg = args[1] as Double
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromVisualViewportHeight(valueArg), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.fromVisualViewportWidth", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val valueArg = args[1] as Double
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromVisualViewportWidth(valueArg), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.top", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.top(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.zero", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
-            val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.zero(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.getType", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.ScreenLength
-            val wrapped: List<Any?> = try {
-              listOf(api.getType(pigeon_instanceArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.getValue", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.ScreenLength
-            val wrapped: List<Any?> = try {
-              listOf(api.getValue(pigeon_instanceArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-    }
-  }
-
-  @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of ScreenLength and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.ScreenLength, callback: (Result<Unit>) -> Unit)
-{
-    if (pigeonRegistrar.ignoreCallsToDart) {
-      callback(
-          Result.failure(
-              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
-    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
-      callback(Result.success(Unit))
-    }     else {
-      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
-      val binaryMessenger = pigeonRegistrar.binaryMessenger
-      val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.pigeon_newInstance"
-      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg)) {
-        if (it is List<*>) {
-          if (it.size > 1) {
-            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
-          } else {
-            callback(Result.success(Unit))
-          }
-        } else {
-          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
-        } 
-      }
     }
   }
 
@@ -6320,10 +5682,10 @@ abstract class PigeonApiWebResponse(open val pigeonRegistrar: GeckoLibraryPigeon
   /** An InputStream containing the response body, if available. */
   abstract fun body(pigeon_instance: org.mozilla.geckoview.WebResponse): ByteArray?
 
-  /**
-   * The server certificate used with this response, if any.
-   * Whether or not this response was delivered via a secure connection.
-   */
+  /** The server certificate used with this response, if any. */
+  abstract fun certificate(pigeon_instance: org.mozilla.geckoview.WebResponse): java.security.cert.X509Certificate?
+
+  /** Whether or not this response was delivered via a secure connection. */
   abstract fun isSecure(pigeon_instance: org.mozilla.geckoview.WebResponse): Boolean
 
   /** A boolean indicating whether or not this response is the result of a redirection. */
@@ -6353,6 +5715,7 @@ abstract class PigeonApiWebResponse(open val pigeonRegistrar: GeckoLibraryPigeon
       val headersArg = headers(pigeon_instanceArg)
       val uriArg = uri(pigeon_instanceArg)
       val bodyArg = body(pigeon_instanceArg)
+      val certificateArg = certificate(pigeon_instanceArg)
       val isSecureArg = isSecure(pigeon_instanceArg)
       val redirectedArg = redirected(pigeon_instanceArg)
       val requestExternalAppArg = requestExternalApp(pigeon_instanceArg)
@@ -6362,7 +5725,7 @@ abstract class PigeonApiWebResponse(open val pigeonRegistrar: GeckoLibraryPigeon
       val codec = pigeonRegistrar.codec
       val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebResponse.pigeon_newInstance"
       val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
-      channel.send(listOf(pigeon_identifierArg, headersArg, uriArg, bodyArg, isSecureArg, redirectedArg, requestExternalAppArg, skipConfirmationArg, statusCodeArg)) {
+      channel.send(listOf(pigeon_identifierArg, headersArg, uriArg, bodyArg, certificateArg, isSecureArg, redirectedArg, requestExternalAppArg, skipConfirmationArg, statusCodeArg)) {
         if (it is List<*>) {
           if (it.size > 1) {
             callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
@@ -6418,6 +5781,2043 @@ open class PigeonApiWebMessage(open val pigeonRegistrar: GeckoLibraryPigeonProxy
 
 }
 /**
+ * A View that displays web pages.
+ *
+ * See https://developer.android.com/reference/android/webkit/WebView.
+ */
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Construct a new GeckoView instance. */
+  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoView
+
+  /** Returns the current GeckoSession attached to this view. */
+  abstract fun session(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.GeckoSession
+
+  /** Retrieves the controller responsible for panning and zooming gestures. */
+  abstract fun panZoomController(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.PanZoomController
+
+  /**
+   * Returns the current GeckoSession attached to this view.
+   * Unsets the current session from this instance and returns it, if any.
+   * Attach a session to this view.
+   * Set which view should be used by this GeckoView instance to display content.
+   */
+  abstract fun setViewBackend(pigeon_instance: org.mozilla.geckoview.GeckoView, backend: Long)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiGeckoView?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.pigeon_defaultConstructor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.session", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
+            val pigeon_identifierArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.session(pigeon_instanceArg), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.panZoomController", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
+            val pigeon_identifierArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.panZoomController(pigeon_instanceArg), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.setViewBackend", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
+            val backendArg = args[1] as Long
+            val wrapped: List<Any?> = try {
+              api.setViewBackend(pigeon_instanceArg, backendArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoView and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.GeckoView, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  /**
+   * This is called in response to an internal scroll in this view (i.e., the
+   * view scrolled its own contents).
+   */
+  fun onScrollChanged(pigeon_instanceArg: org.mozilla.geckoview.GeckoView, leftArg: Long, topArg: Long, oldLeftArg: Long, oldTopArg: Long, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `GeckoView.onScrollChanged` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.onScrollChanged"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, leftArg, topArg, oldLeftArg, oldTopArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  @Suppress("FunctionName")
+  /** An implementation of [PigeonApiView] used to access callback methods */
+  fun pigeon_getPigeonApiView(): PigeonApiView
+  {
+    return pigeonRegistrar.getPigeonApiView()
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiPanZoomController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Get the current scroll factor. */
+  abstract fun getScrollFactor(pigeon_instance: org.mozilla.geckoview.PanZoomController): Double
+
+  /**
+   * Process a drag event.
+   * Process a non-touch motion event through the pan-zoom controller.
+   * Process a touch event through the pan-zoom controller.
+   * Process a touch event through the pan-zoom controller.
+   * Process a touch event through the pan-zoom controller.
+   * Scroll the document body by an offset from the current scroll position.
+   */
+  abstract fun scrollBy(pigeon_instance: org.mozilla.geckoview.PanZoomController, width: org.mozilla.geckoview.ScreenLength, height: org.mozilla.geckoview.ScreenLength, behavior: Long?)
+
+  /** Scroll the document body to an absolute position. */
+  abstract fun scrollTo(pigeon_instance: org.mozilla.geckoview.PanZoomController, width: org.mozilla.geckoview.ScreenLength, height: org.mozilla.geckoview.ScreenLength, behavior: Long?)
+
+  /** Scroll to the bottom left corner of the screen. */
+  abstract fun scrollToBottom(pigeon_instance: org.mozilla.geckoview.PanZoomController)
+
+  /** Scroll to the top left corner of the screen. */
+  abstract fun scrollToTop(pigeon_instance: org.mozilla.geckoview.PanZoomController)
+
+  /** Set whether Gecko should generate long-press events. */
+  abstract fun setIsLongpressEnabled(pigeon_instance: org.mozilla.geckoview.PanZoomController, isLongpressEnabled: Boolean)
+
+  /** Set the current scroll factor. */
+  abstract fun setScrollFactor(pigeon_instance: org.mozilla.geckoview.PanZoomController, factor: Double)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiPanZoomController?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.getScrollFactor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val wrapped: List<Any?> = try {
+              listOf(api.getScrollFactor(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollBy", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val widthArg = args[1] as org.mozilla.geckoview.ScreenLength
+            val heightArg = args[2] as org.mozilla.geckoview.ScreenLength
+            val behaviorArg = args[3] as Long?
+            val wrapped: List<Any?> = try {
+              api.scrollBy(pigeon_instanceArg, widthArg, heightArg, behaviorArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollTo", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val widthArg = args[1] as org.mozilla.geckoview.ScreenLength
+            val heightArg = args[2] as org.mozilla.geckoview.ScreenLength
+            val behaviorArg = args[3] as Long?
+            val wrapped: List<Any?> = try {
+              api.scrollTo(pigeon_instanceArg, widthArg, heightArg, behaviorArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollToBottom", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val wrapped: List<Any?> = try {
+              api.scrollToBottom(pigeon_instanceArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.scrollToTop", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val wrapped: List<Any?> = try {
+              api.scrollToTop(pigeon_instanceArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.setIsLongpressEnabled", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val isLongpressEnabledArg = args[1] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setIsLongpressEnabled(pigeon_instanceArg, isLongpressEnabledArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.setScrollFactor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.PanZoomController
+            val factorArg = args[1] as Double
+            val wrapped: List<Any?> = try {
+              api.setScrollFactor(pigeon_instanceArg, factorArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of PanZoomController and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.PanZoomController, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.PanZoomController.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiScreenLength(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Create a ScreenLength of the documents height. */
+  abstract fun bottom(): org.mozilla.geckoview.ScreenLength
+
+  /** Create a ScreenLength of a specific length. */
+  abstract fun fromPixels(value: Double): org.mozilla.geckoview.ScreenLength
+
+  /** Create a ScreenLength that uses the visual viewport width as units. */
+  abstract fun fromVisualViewportHeight(value: Double): org.mozilla.geckoview.ScreenLength
+
+  /** Create a ScreenLength that uses the visual viewport width as units. */
+  abstract fun fromVisualViewportWidth(value: Double): org.mozilla.geckoview.ScreenLength
+
+  /** Create a ScreenLength of zero pixels length. */
+  abstract fun top(): org.mozilla.geckoview.ScreenLength
+
+  /** Create a ScreenLength of zero pixels length. */
+  abstract fun zero(): org.mozilla.geckoview.ScreenLength
+
+  /** Returns the unit type of the length The length can be one of the following: PIXEL, VISUAL_VIEWPORT_WIDTH, VISUAL_VIEWPORT_HEIGHT, DOCUMENT_WIDTH, DOCUMENT_HEIGHT */
+  abstract fun getType(pigeon_instance: org.mozilla.geckoview.ScreenLength): Long
+
+  /** Returns the scalar value used to calculate length. */
+  abstract fun getValue(pigeon_instance: org.mozilla.geckoview.ScreenLength): Double
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiScreenLength?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.bottom", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.bottom(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.fromPixels", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val valueArg = args[1] as Double
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromPixels(valueArg), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.fromVisualViewportHeight", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val valueArg = args[1] as Double
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromVisualViewportHeight(valueArg), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.fromVisualViewportWidth", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val valueArg = args[1] as Double
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.fromVisualViewportWidth(valueArg), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.top", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.top(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.zero", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.zero(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.getType", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.ScreenLength
+            val wrapped: List<Any?> = try {
+              listOf(api.getType(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.getValue", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.ScreenLength
+            val wrapped: List<Any?> = try {
+              listOf(api.getValue(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of ScreenLength and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.ScreenLength, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.ScreenLength.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiStorageController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Clear data for all hosts. */
+  abstract fun clearData(pigeon_instance: org.mozilla.geckoview.StorageController, flags: Long, callback: (Result<Unit>) -> Unit)
+
+  /** Clear data for the given context ID. */
+  abstract fun clearDataForSessionContext(pigeon_instance: org.mozilla.geckoview.StorageController, contextId: String)
+
+  /** Clear data owned by the given base domain (eTLD+1). */
+  abstract fun clearDataFromBaseDomain(pigeon_instance: org.mozilla.geckoview.StorageController, baseDomain: String, flags: Long, callback: (Result<Unit>) -> Unit)
+
+  /** Clear data owned by the given host. */
+  abstract fun clearDataFromHost(pigeon_instance: org.mozilla.geckoview.StorageController, host: String, flags: Long, callback: (Result<Unit>) -> Unit)
+
+  /**
+   * Get all currently stored permissions.
+   * Gets the actual ContentBlocking.CBCookieBannerMode for the given uri and browsing mode.
+   */
+  abstract fun getCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, isPrivateBrowsing: Boolean, callback: (Result<Long?>) -> Unit)
+
+  /**
+   * Get all currently stored permissions for a given URI and default (unset) context ID, in normal mode This API will be deprecated in the future https://bugzilla.mozilla.org/show_bug.cgi?id=1797379
+   * Get all currently stored permissions for a given URI and default (unset) context ID.
+   * Get all currently stored permissions for a given URI and context ID.
+   * Removes a ContentBlocking.CBCookieBannerMode for the given uri and and browsing mode.
+   */
+  abstract fun removeCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, isPrivateBrowsing: Boolean, callback: (Result<Unit>) -> Unit)
+
+  /** Set a permanent ContentBlocking.CBCookieBannerMode for the given uri in private mode. */
+  abstract fun setCookieBannerModeAndPersistInPrivateBrowsingForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, mode: Long, callback: (Result<Unit>) -> Unit)
+
+  /** Set a permanent ContentBlocking.CBCookieBannerMode for the given uri and browsing mode. */
+  abstract fun setCookieBannerModeForDomain(pigeon_instance: org.mozilla.geckoview.StorageController, uri: String, mode: Long, isPrivateBrowsing: Boolean, callback: (Result<Unit>) -> Unit)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiStorageController?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearData", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val flagsArg = args[1] as Long
+            api.clearData(pigeon_instanceArg, flagsArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataForSessionContext", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val contextIdArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              api.clearDataForSessionContext(pigeon_instanceArg, contextIdArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromBaseDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val baseDomainArg = args[1] as String
+            val flagsArg = args[2] as Long
+            api.clearDataFromBaseDomain(pigeon_instanceArg, baseDomainArg, flagsArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.clearDataFromHost", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val hostArg = args[1] as String
+            val flagsArg = args[2] as Long
+            api.clearDataFromHost(pigeon_instanceArg, hostArg, flagsArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.getCookieBannerModeForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val isPrivateBrowsingArg = args[2] as Boolean
+            api.getCookieBannerModeForDomain(pigeon_instanceArg, uriArg, isPrivateBrowsingArg) { result: Result<Long?> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.removeCookieBannerModeForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val isPrivateBrowsingArg = args[2] as Boolean
+            api.removeCookieBannerModeForDomain(pigeon_instanceArg, uriArg, isPrivateBrowsingArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeAndPersistInPrivateBrowsingForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val modeArg = args[2] as Long
+            api.setCookieBannerModeAndPersistInPrivateBrowsingForDomain(pigeon_instanceArg, uriArg, modeArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.setCookieBannerModeForDomain", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.StorageController
+            val uriArg = args[1] as String
+            val modeArg = args[2] as Long
+            val isPrivateBrowsingArg = args[3] as Boolean
+            api.setCookieBannerModeForDomain(pigeon_instanceArg, uriArg, modeArg, isPrivateBrowsingArg) { result: Result<Unit> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(null))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of StorageController and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.StorageController, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.StorageController.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Ensure that a built-in extension is installed. */
+  abstract fun ensureBuiltIn(pigeon_instance: org.mozilla.geckoview.WebExtensionController, uri: String, id: String?, callback: (Result<org.mozilla.geckoview.WebExtension?>) -> Unit)
+
+  /**
+   *
+   * List installed extensions for this GeckoRuntime.
+   */
+  abstract fun list(pigeon_instance: org.mozilla.geckoview.WebExtensionController, callback: (Result<List<org.mozilla.geckoview.WebExtension>?>) -> Unit)
+
+  /**
+   * Set the WebExtensionController.PromptDelegate for this instance.
+   * Notifies extensions about a active tab change over the `tabs.onActivated` event.
+   */
+  abstract fun setTabActive(pigeon_instance: org.mozilla.geckoview.WebExtensionController, session: org.mozilla.geckoview.GeckoSession, active: Boolean)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionController?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.ensureBuiltIn", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtensionController
+            val uriArg = args[1] as String
+            val idArg = args[2] as String?
+            api.ensureBuiltIn(pigeon_instanceArg, uriArg, idArg) { result: Result<org.mozilla.geckoview.WebExtension?> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.list", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtensionController
+            api.list(pigeon_instanceArg) { result: Result<List<org.mozilla.geckoview.WebExtension>?> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.setTabActive", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtensionController
+            val sessionArg = args[1] as org.mozilla.geckoview.GeckoSession
+            val activeArg = args[2] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setTabActive(pigeon_instanceArg, sessionArg, activeArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionController and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtensionController, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionController.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtension(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /**
+   * Returns the delegate handling browsing-data operations for this extension.
+   * Get the download delegate for this extension.
+   * Get the tab delegate for this extension.
+   */
+  abstract fun getTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension): org.mozilla.geckoview.WebExtension.TabDelegate?
+
+  /**
+   * Set the Action delegate for this WebExtension.
+   * Sets the delegate to handle browsing-data operations (clear, remove, get settings).
+   * Set the download delegate for this extension.
+   * Defines the message delegate for a Native App.
+   */
+  abstract fun setMessageDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.MessageDelegate?, nativeApp: String)
+
+  /** Set the tab delegate for this extension. */
+  abstract fun setTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.TabDelegate?)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtension?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.getTabDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension
+            val wrapped: List<Any?> = try {
+              listOf(api.getTabDelegate(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.setMessageDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension
+            val delegateArg = args[1] as org.mozilla.geckoview.WebExtension.MessageDelegate?
+            val nativeAppArg = args[2] as String
+            val wrapped: List<Any?> = try {
+              api.setMessageDelegate(pigeon_instanceArg, delegateArg, nativeAppArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.setTabDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension
+            val delegateArg = args[1] as org.mozilla.geckoview.WebExtension.TabDelegate?
+            val wrapped: List<Any?> = try {
+              api.setTabDelegate(pigeon_instanceArg, delegateArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtension and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtension.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionMessageDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.MessageDelegate
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionMessageDelegate?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionMessageDelegate.pigeon_defaultConstructor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionMessageDelegate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.MessageDelegate, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionMessageDelegate.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  /** Called whenever the WebExtension connects to an app using runtime.connectNative. */
+  fun onConnect(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.MessageDelegate, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionMessageDelegate.onConnect` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionMessageDelegate.onConnect"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, portArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionTabDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.TabDelegate
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionTabDelegate?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionTabDelegate.pigeon_defaultConstructor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionTabDelegate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.TabDelegate, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      callback(
+          Result.failure(
+              GeckoError("new-instance-error", "Attempting to create a new Dart instance of WebExtensionTabDelegate, but the class has a nonnull callback method.", "")))
+    }
+  }
+
+  /** Called when tabs.create is invoked, this method returns a *newly-created* session that GeckoView will use to load the requested page on. */
+  fun onNewTab(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.TabDelegate, sourceArg: org.mozilla.geckoview.WebExtension, createDetailsArg: org.mozilla.geckoview.WebExtension.CreateTabDetails, callback: (Result<org.mozilla.geckoview.GeckoSession>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionTabDelegate.onNewTab` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionTabDelegate.onNewTab"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sourceArg, createDetailsArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as org.mozilla.geckoview.GeckoSession
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  /** Called when runtime.openOptionsPage is invoked with options_ui.open_in_tab = false. */
+  fun onOpenOptionsPage(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.TabDelegate, sourceArg: org.mozilla.geckoview.WebExtension, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionTabDelegate.onOpenOptionsPage` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionTabDelegate.onOpenOptionsPage"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sourceArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionCreateTabDetails(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  abstract fun active(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
+
+  abstract fun cookieStoreId(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): String?
+
+  abstract fun discarded(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
+
+  abstract fun index(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Long?
+
+  abstract fun openInReaderMode(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
+
+  abstract fun pinned(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): Boolean?
+
+  abstract fun url(pigeon_instance: org.mozilla.geckoview.WebExtension.CreateTabDetails): String?
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionCreateTabDetails and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.CreateTabDetails, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val activeArg = active(pigeon_instanceArg)
+      val cookieStoreIdArg = cookieStoreId(pigeon_instanceArg)
+      val discardedArg = discarded(pigeon_instanceArg)
+      val indexArg = index(pigeon_instanceArg)
+      val openInReaderModeArg = openInReaderMode(pigeon_instanceArg)
+      val pinnedArg = pinned(pigeon_instanceArg)
+      val urlArg = url(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionCreateTabDetails.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, activeArg, cookieStoreIdArg, discardedArg, indexArg, openInReaderModeArg, pinnedArg, urlArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionPort(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /**
+   * WebExtension.MessageSender corresponding to this port.
+   * The application identifier of the MessageDelegate that opened this port.
+   */
+  abstract fun name(pigeon_instance: org.mozilla.geckoview.WebExtension.Port): String
+
+  abstract fun getAsync(callback: (Result<org.mozilla.geckoview.WebExtension.Port?>) -> Unit)
+
+  /** Disconnects this port and notifies the other end. */
+  abstract fun disconnect(pigeon_instance: org.mozilla.geckoview.WebExtension.Port)
+
+  /** Post a message to the WebExtension connected to this WebExtension.Port instance. */
+  abstract fun postMessage(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, message: String)
+
+  /** Set a delegate for incoming messages through this WebExtension.Port. */
+  abstract fun setDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.Port, delegate: org.mozilla.geckoview.WebExtension.PortDelegate?)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionPort?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.getAsync", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            api.getAsync{ result: Result<org.mozilla.geckoview.WebExtension.Port?> ->
+              val error = result.exceptionOrNull()
+              if (error != null) {
+                reply.reply(GeckoLibraryPigeonUtils.wrapError(error))
+              } else {
+                val data = result.getOrNull()
+                reply.reply(GeckoLibraryPigeonUtils.wrapResult(data))
+              }
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.disconnect", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
+            val wrapped: List<Any?> = try {
+              api.disconnect(pigeon_instanceArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.postMessage", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
+            val messageArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              api.postMessage(pigeon_instanceArg, messageArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.setDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.Port
+            val delegateArg = args[1] as org.mozilla.geckoview.WebExtension.PortDelegate?
+            val wrapped: List<Any?> = try {
+              api.setDelegate(pigeon_instanceArg, delegateArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionPort and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val nameArg = name(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPort.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, nameArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionPortDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.PortDelegate
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionPortDelegate?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.pigeon_defaultConstructor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionPortDelegate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  fun onDisconnect(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionPortDelegate.onDisconnect` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.onDisconnect"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, portArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  fun onPortMessage(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.PortDelegate, messageArg: String, portArg: org.mozilla.geckoview.WebExtension.Port, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionPortDelegate.onPortMessage` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionPortDelegate.onPortMessage"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, messageArg, portArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else {
+          callback(Result.success(Unit))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionSessionController(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /**
+   * Get the Action delegate for this session.
+   * Get the message delegate for nativeApp.
+   */
+  abstract fun getMessageDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension, nativeApp: String): org.mozilla.geckoview.WebExtension.MessageDelegate?
+
+  /** Get the TabDelegate for the given extension. */
+  abstract fun getTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension): org.mozilla.geckoview.WebExtension.SessionTabDelegate?
+
+  /**
+   * Set the Action delegate for this session.
+   * Defines a message delegate for a Native App.
+   */
+  abstract fun setMessageDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.MessageDelegate?, nativeApp: String)
+
+  /** Set the TabDelegate for this session. */
+  abstract fun setTabDelegate(pigeon_instance: org.mozilla.geckoview.WebExtension.SessionController, extension: org.mozilla.geckoview.WebExtension, delegate: org.mozilla.geckoview.WebExtension.SessionTabDelegate?)
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionSessionController?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.getMessageDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
+            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
+            val nativeAppArg = args[2] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.getMessageDelegate(pigeon_instanceArg, extensionArg, nativeAppArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.getTabDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
+            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
+            val wrapped: List<Any?> = try {
+              listOf(api.getTabDelegate(pigeon_instanceArg, extensionArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.setMessageDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
+            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
+            val delegateArg = args[2] as org.mozilla.geckoview.WebExtension.MessageDelegate?
+            val nativeAppArg = args[3] as String
+            val wrapped: List<Any?> = try {
+              api.setMessageDelegate(pigeon_instanceArg, extensionArg, delegateArg, nativeAppArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.setTabDelegate", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.WebExtension.SessionController
+            val extensionArg = args[1] as org.mozilla.geckoview.WebExtension
+            val delegateArg = args[2] as org.mozilla.geckoview.WebExtension.SessionTabDelegate?
+            val wrapped: List<Any?> = try {
+              api.setTabDelegate(pigeon_instanceArg, extensionArg, delegateArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionSessionController and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionController, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionController.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionSessionTabDelegate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.WebExtension.SessionTabDelegate
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiWebExtensionSessionTabDelegate?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.pigeon_defaultConstructor", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.pigeon_defaultConstructor(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionSessionTabDelegate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionTabDelegate, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      callback(
+          Result.failure(
+              GeckoError("new-instance-error", "Attempting to create a new Dart instance of WebExtensionSessionTabDelegate, but the class has a nonnull callback method.", "")))
+    }
+  }
+
+  fun onCloseTab(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionTabDelegate, sourceArg: org.mozilla.geckoview.WebExtension?, sessionArg: org.mozilla.geckoview.GeckoSession, callback: (Result<AllowOrDeny>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionSessionTabDelegate.onCloseTab` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.onCloseTab"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, sourceArg, sessionArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as AllowOrDeny
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+  fun onUpdateTab(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.SessionTabDelegate, extensionArg: org.mozilla.geckoview.WebExtension, sessionArg: org.mozilla.geckoview.GeckoSession, detailsArg: org.mozilla.geckoview.WebExtension.UpdateTabDetails, callback: (Result<AllowOrDeny>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+      return
+    }     else if (!pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(
+          Result.failure(
+              GeckoError("missing-instance-error", "Callback to `WebExtensionSessionTabDelegate.onUpdateTab` failed because native instance was not in the instance manager.", "")))
+      return
+    }
+    val binaryMessenger = pigeonRegistrar.binaryMessenger
+    val codec = pigeonRegistrar.codec
+    val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionSessionTabDelegate.onUpdateTab"
+    val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+    channel.send(listOf(pigeon_instanceArg, extensionArg, sessionArg, detailsArg)) {
+      if (it is List<*>) {
+        if (it.size > 1) {
+          callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+        } else if (it[0] == null) {
+          callback(Result.failure(GeckoError("null-error", "Flutter api returned null value for non-null return value.", "")))
+        } else {
+          val output = it[0] as AllowOrDeny
+          callback(Result.success(output))
+        }
+      } else {
+        callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+      } 
+    }
+  }
+
+}
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiWebExtensionUpdateTabDetails(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** Whether the tab should become active. */
+  abstract fun active(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
+
+  /** Whether the tab should be discarded automatically by the app when resources are low. */
+  abstract fun autoDiscardable(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
+
+  /** If true and the tab is not highlighted, it should become active by default. */
+  abstract fun highlighted(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
+
+  /** Whether the tab should be muted. */
+  abstract fun muted(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
+
+  /** Whether the tab should be pinned. */
+  abstract fun pinned(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): Boolean?
+
+  /** The url that the tab will be navigated to. */
+  abstract fun url(pigeon_instance: org.mozilla.geckoview.WebExtension.UpdateTabDetails): String?
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of WebExtensionUpdateTabDetails and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: org.mozilla.geckoview.WebExtension.UpdateTabDetails, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val activeArg = active(pigeon_instanceArg)
+      val autoDiscardableArg = autoDiscardable(pigeon_instanceArg)
+      val highlightedArg = highlighted(pigeon_instanceArg)
+      val mutedArg = muted(pigeon_instanceArg)
+      val pinnedArg = pinned(pigeon_instanceArg)
+      val urlArg = url(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.WebExtensionUpdateTabDetails.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, activeArg, autoDiscardableArg, highlightedArg, mutedArg, pinnedArg, urlArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+/**
+ * Represents a position on a web page.
+ *
+ * This is a custom class created for convenience of the wrapper.
+ */
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiGeckoViewPoint(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  abstract fun x(pigeon_instance: GeckoViewPoint): Long
+
+  abstract fun y(pigeon_instance: GeckoViewPoint): Long
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of GeckoViewPoint and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: GeckoViewPoint, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val xArg = x(pigeon_instanceArg)
+      val yArg = y(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.GeckoViewPoint.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg, xArg, yArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+/**
+ * Provides access to the assets registered as part of the App bundle.
+ *
+ * Convenience class for accessing Flutter asset resources.
+ */
+@Suppress("UNCHECKED_CAST")
+abstract class PigeonApiFlutterAssetManager(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The global instance of the `FlutterAssetManager`. */
+  abstract fun instance(): FlutterAssetManager
+
+  /**
+   * Returns a String array of all the assets at the given path.
+   *
+   * Throws an IOException in case I/O operations were interrupted.
+   */
+  abstract fun list(pigeon_instance: FlutterAssetManager, path: String): List<String>
+
+  /**
+   * Gets the relative file path to the Flutter asset with the given name, including the file's
+   * extension, e.g., "myImage.jpg".
+   *
+   * The returned file path is relative to the Android app's standard asset's
+   * directory. Therefore, the returned path is appropriate to pass to
+   * Android's AssetManager, but the path is not appropriate to load as an
+   * absolute path.
+   */
+  abstract fun getAssetFilePathByName(pigeon_instance: FlutterAssetManager, name: String): String
+
+  companion object {
+    @Suppress("LocalVariableName")
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiFlutterAssetManager?) {
+      val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.instance", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_identifierArg = args[0] as Long
+            val wrapped: List<Any?> = try {
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.instance(), pigeon_identifierArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.list", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as FlutterAssetManager
+            val pathArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.list(pigeon_instanceArg, pathArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.getAssetFilePathByName", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as FlutterAssetManager
+            val nameArg = args[1] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.getAssetFilePathByName(pigeon_instanceArg, nameArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+    }
+  }
+
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of FlutterAssetManager and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: FlutterAssetManager, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+}
+/**
  * This class represents the basic building block for user interface
  * components.
  *
@@ -6427,6 +7827,32 @@ open class PigeonApiWebMessage(open val pigeonRegistrar: GeckoLibraryPigeonProxy
 abstract class PigeonApiView(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
   /** Sets the background color for this view. */
   abstract fun setBackgroundColor(pigeon_instance: android.view.View, color: Long)
+
+  /** Set the scrolled position of your view. */
+  abstract fun scrollTo(pigeon_instance: android.view.View, x: Long, y: Long)
+
+  /** Move the scrolled position of your view. */
+  abstract fun scrollBy(pigeon_instance: android.view.View, x: Long, y: Long)
+
+  /** Return the scrolled position of this view. */
+  abstract fun getScrollPosition(pigeon_instance: android.view.View): GeckoViewPoint
+
+  /**
+   * Define whether the vertical scrollbar should be drawn or not.
+   *
+   * The scrollbar is not drawn by default.
+   */
+  abstract fun setVerticalScrollBarEnabled(pigeon_instance: android.view.View, enabled: Boolean)
+
+  /**
+   * Define whether the horizontal scrollbar should be drawn or not.
+   *
+   * The scrollbar is not drawn by default.
+   */
+  abstract fun setHorizontalScrollBarEnabled(pigeon_instance: android.view.View, enabled: Boolean)
+
+  /** Set the over-scroll mode for this view. */
+  abstract fun setOverScrollMode(pigeon_instance: android.view.View, mode: OverScrollMode)
 
   companion object {
     @Suppress("LocalVariableName")
@@ -6441,6 +7867,120 @@ abstract class PigeonApiView(open val pigeonRegistrar: GeckoLibraryPigeonProxyAp
             val colorArg = args[1] as Long
             val wrapped: List<Any?> = try {
               api.setBackgroundColor(pigeon_instanceArg, colorArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.View.scrollTo", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as android.view.View
+            val xArg = args[1] as Long
+            val yArg = args[2] as Long
+            val wrapped: List<Any?> = try {
+              api.scrollTo(pigeon_instanceArg, xArg, yArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.View.scrollBy", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as android.view.View
+            val xArg = args[1] as Long
+            val yArg = args[2] as Long
+            val wrapped: List<Any?> = try {
+              api.scrollBy(pigeon_instanceArg, xArg, yArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.View.getScrollPosition", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as android.view.View
+            val wrapped: List<Any?> = try {
+              listOf(api.getScrollPosition(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.View.setVerticalScrollBarEnabled", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as android.view.View
+            val enabledArg = args[1] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setVerticalScrollBarEnabled(pigeon_instanceArg, enabledArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.View.setHorizontalScrollBarEnabled", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as android.view.View
+            val enabledArg = args[1] as Boolean
+            val wrapped: List<Any?> = try {
+              api.setHorizontalScrollBarEnabled(pigeon_instanceArg, enabledArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.View.setOverScrollMode", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as android.view.View
+            val modeArg = args[1] as OverScrollMode
+            val wrapped: List<Any?> = try {
+              api.setOverScrollMode(pigeon_instanceArg, modeArg)
               listOf(null)
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)
@@ -6486,82 +8026,27 @@ abstract class PigeonApiView(open val pigeonRegistrar: GeckoLibraryPigeonProxyAp
 
 }
 /**
- * Provides access to the assets registered as part of the App bundle.
+ * Abstract class for managing a variety of identity certificates.
  *
- * Convenience class for accessing Flutter asset resources.
+ * See https://developer.android.com/reference/java/security/cert/Certificate.
  */
 @Suppress("UNCHECKED_CAST")
-abstract class PigeonApiFlutterAssetManager(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
-  /** The global instance of the `FlutterAssetManager`. */
-  abstract fun instance(): dev.zeekr.webview_flutter_geckoview.FlutterAssetManager
-
-  /**
-   * Returns a String array of all the assets at the given path.
-   *
-   * Throws an IOException in case I/O operations were interrupted.
-   */
-  abstract fun list(pigeon_instance: dev.zeekr.webview_flutter_geckoview.FlutterAssetManager, path: String): List<String>
-
-  /**
-   * Gets the relative file path to the Flutter asset with the given name, including the file's
-   * extension, e.g., "myImage.jpg".
-   *
-   * The returned file path is relative to the Android app's standard asset's
-   * directory. Therefore, the returned path is appropriate to pass to
-   * Android's AssetManager, but the path is not appropriate to load as an
-   * absolute path.
-   */
-  abstract fun getAssetFilePathByName(pigeon_instance: dev.zeekr.webview_flutter_geckoview.FlutterAssetManager, name: String): String
+abstract class PigeonApiCertificate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  /** The encoded form of this certificate. */
+  abstract fun getEncoded(pigeon_instance: java.security.cert.Certificate): ByteArray
 
   companion object {
     @Suppress("LocalVariableName")
-    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiFlutterAssetManager?) {
+    fun setUpMessageHandlers(binaryMessenger: BinaryMessenger, api: PigeonApiCertificate?) {
       val codec = api?.pigeonRegistrar?.codec ?: GeckoLibraryPigeonCodec()
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.instance", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.Certificate.getEncoded", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
-            val pigeon_identifierArg = args[0] as Long
+            val pigeon_instanceArg = args[0] as java.security.cert.Certificate
             val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.instance(), pigeon_identifierArg)
-              listOf(null)
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.list", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as dev.zeekr.webview_flutter_geckoview.FlutterAssetManager
-            val pathArg = args[1] as String
-            val wrapped: List<Any?> = try {
-              listOf(api.list(pigeon_instanceArg, pathArg))
-            } catch (exception: Throwable) {
-              GeckoLibraryPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.getAssetFilePathByName", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val pigeon_instanceArg = args[0] as dev.zeekr.webview_flutter_geckoview.FlutterAssetManager
-            val nameArg = args[1] as String
-            val wrapped: List<Any?> = try {
-              listOf(api.getAssetFilePathByName(pigeon_instanceArg, nameArg))
+              listOf(api.getEncoded(pigeon_instanceArg))
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)
             }
@@ -6575,8 +8060,8 @@ abstract class PigeonApiFlutterAssetManager(open val pigeonRegistrar: GeckoLibra
   }
 
   @Suppress("LocalVariableName", "FunctionName")
-  /** Creates a Dart instance of FlutterAssetManager and attaches it to [pigeon_instanceArg]. */
-  fun pigeon_newInstance(pigeon_instanceArg: dev.zeekr.webview_flutter_geckoview.FlutterAssetManager, callback: (Result<Unit>) -> Unit)
+  /** Creates a Dart instance of Certificate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: java.security.cert.Certificate, callback: (Result<Unit>) -> Unit)
 {
     if (pigeonRegistrar.ignoreCallsToDart) {
       callback(
@@ -6588,7 +8073,7 @@ abstract class PigeonApiFlutterAssetManager(open val pigeonRegistrar: GeckoLibra
       val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
       val binaryMessenger = pigeonRegistrar.binaryMessenger
       val codec = pigeonRegistrar.codec
-      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.FlutterAssetManager.pigeon_newInstance"
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.Certificate.pigeon_newInstance"
       val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
       channel.send(listOf(pigeon_identifierArg)) {
         if (it is List<*>) {
@@ -6602,6 +8087,54 @@ abstract class PigeonApiFlutterAssetManager(open val pigeonRegistrar: GeckoLibra
         } 
       }
     }
+  }
+
+}
+/**
+ * Abstract class for X.509 certificates.
+ *
+ * This provides a standard way to access all the attributes of an X.509
+ * certificate.
+ *
+ * See https://developer.android.com/reference/java/security/cert/X509Certificate.
+ */
+@Suppress("UNCHECKED_CAST")
+open class PigeonApiX509Certificate(open val pigeonRegistrar: GeckoLibraryPigeonProxyApiRegistrar) {
+  @Suppress("LocalVariableName", "FunctionName")
+  /** Creates a Dart instance of X509Certificate and attaches it to [pigeon_instanceArg]. */
+  fun pigeon_newInstance(pigeon_instanceArg: java.security.cert.X509Certificate, callback: (Result<Unit>) -> Unit)
+{
+    if (pigeonRegistrar.ignoreCallsToDart) {
+      callback(
+          Result.failure(
+              GeckoError("ignore-calls-error", "Calls to Dart are being ignored.", "")))
+    }     else if (pigeonRegistrar.instanceManager.containsInstance(pigeon_instanceArg)) {
+      callback(Result.success(Unit))
+    }     else {
+      val pigeon_identifierArg = pigeonRegistrar.instanceManager.addHostCreatedInstance(pigeon_instanceArg)
+      val binaryMessenger = pigeonRegistrar.binaryMessenger
+      val codec = pigeonRegistrar.codec
+      val channelName = "dev.flutter.pigeon.webview_flutter_geckoview.X509Certificate.pigeon_newInstance"
+      val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
+      channel.send(listOf(pigeon_identifierArg)) {
+        if (it is List<*>) {
+          if (it.size > 1) {
+            callback(Result.failure(GeckoError(it[0] as String, it[1] as String, it[2] as String?)))
+          } else {
+            callback(Result.success(Unit))
+          }
+        } else {
+          callback(Result.failure(GeckoLibraryPigeonUtils.createConnectionError(channelName)))
+        } 
+      }
+    }
+  }
+
+  @Suppress("FunctionName")
+  /** An implementation of [PigeonApiCertificate] used to access callback methods */
+  fun pigeon_getPigeonApiCertificate(): PigeonApiCertificate
+  {
+    return pigeonRegistrar.getPigeonApiCertificate()
   }
 
 }

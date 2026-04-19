@@ -3,6 +3,8 @@ package dev.zeekr.webview_flutter_geckoview
 import android.os.Handler
 import android.os.Looper
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import org.mozilla.geckoview.GeckoResult
 import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.WebExtension
@@ -12,20 +14,20 @@ import org.mozilla.geckoview.WebExtension
  *
  * <p>Register this in an add to app scenario to gracefully handle activity and context changes.
  */
-class WebviewFlutterPlugin : FlutterPlugin {
+class WebviewFlutterPlugin : FlutterPlugin, ActivityAware {
     companion object {
-        var geckoRuntime: GeckoRuntime? = null
+        var runtime: GeckoRuntime? = null
         val webExtensionPort by lazy { GeckoResult<WebExtension.Port>() }
     }
 
-    lateinit var proxyApiRegistrar: ProxyApiRegistrar
+    private var proxyApiRegistrar: ProxyApiRegistrar? = null
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        proxyApiRegistrar = ProxyApiRegistrar(
+        val proxyApiRegistrar = ProxyApiRegistrar(
             binding.binaryMessenger,
             binding.applicationContext,
-            geckoRuntime ?: GeckoRuntime.create(binding.applicationContext).apply {
-                this.settings.consoleOutputEnabled = true
+            runtime ?: GeckoRuntime.create(binding.applicationContext).apply {
+                // this.settings.consoleOutputEnabled = true
                 this.webExtensionController.ensureBuiltIn(
                     "resource://android/assets/messaging/", "messaging@zeekr.dev"
                 ).accept({
@@ -47,12 +49,12 @@ class WebviewFlutterPlugin : FlutterPlugin {
                     val error = it ?: NullPointerException("throwable is null")
                     webExtensionPort.completeExceptionally(error)
                 })
-            }.also { geckoRuntime = it },
+            }.also { runtime = it },
             webExtensionPort,
             FlutterAssetManager.PluginBindingFlutterAssetManager(
                 binding.applicationContext.assets, binding.flutterAssets
             )
-        )
+        ).also { this.proxyApiRegistrar = it }
         binding.platformViewRegistry.registerViewFactory(
             "plugins.flutter.io/webview", FlutterViewFactory(proxyApiRegistrar.instanceManager)
         )
@@ -60,7 +62,25 @@ class WebviewFlutterPlugin : FlutterPlugin {
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+        val proxyApiRegistrar = this.proxyApiRegistrar ?: return
         proxyApiRegistrar.tearDown()
         proxyApiRegistrar.instanceManager.stopFinalizationListener()
+        this.proxyApiRegistrar = null
+    }
+
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        this.proxyApiRegistrar?.setActivity(binding.activity)
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        this.proxyApiRegistrar?.setActivity(null)
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        this.proxyApiRegistrar?.setActivity(binding.activity)
+    }
+
+    override fun onDetachedFromActivity() {
+        this.proxyApiRegistrar?.setActivity(null)
     }
 }

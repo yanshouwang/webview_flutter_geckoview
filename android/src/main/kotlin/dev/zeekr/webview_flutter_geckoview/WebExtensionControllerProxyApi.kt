@@ -1,5 +1,6 @@
 package dev.zeekr.webview_flutter_geckoview
 
+import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.WebExtension
 import org.mozilla.geckoview.WebExtensionController
 
@@ -17,5 +18,9 @@ class WebExtensionControllerProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
             { ResultCompat.success(it, callback) },
             { ResultCompat.failure(it,callback) }
         )
+    }
+
+    override fun setTabActive(pigeon_instance: WebExtensionController, session: GeckoSession, active: Boolean) {
+        pigeon_instance.setTabActive(session, active)
     }
 }

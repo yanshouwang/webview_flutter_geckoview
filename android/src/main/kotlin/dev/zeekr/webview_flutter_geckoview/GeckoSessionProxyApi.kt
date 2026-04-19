@@ -6,6 +6,7 @@ import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.GeckoSessionSettings
 import org.mozilla.geckoview.PanZoomController
 import org.mozilla.geckoview.WebExtension
+import java.security.cert.X509Certificate
 
 class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiGeckoSession(pigeonRegistrar) {
@@ -105,6 +106,10 @@ class GeckoSessionProxyApi(pigeonRegistrar: ProxyApiRegistrar) :
 
     override fun setProgressDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.ProgressDelegate?) {
         pigeon_instance.progressDelegate = delegate
+    }
+
+    override fun setPromptDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.PromptDelegate?) {
+        pigeon_instance.promptDelegate = delegate
     }
 
     override fun setScrollDelegate(pigeon_instance: GeckoSession, delegate: GeckoSession.ScrollDelegate?) {

@@ -176,36 +176,36 @@ class _WebViewExampleState extends State<WebViewExample> {
           })
           ..setOnPageFinished((String url) {
             debugPrint('Page finished loading: $url');
+          })
+          //               ..setOnHttpError((HttpResponseError error) {
+          //                 debugPrint(
+          //                   'Error occurred on page: ${error.response?.statusCode}',
+          //                 );
+          //               })
+          //               ..setOnWebResourceError((WebResourceError error) {
+          //                 debugPrint('''
+          // Page resource error:
+          //   code: ${error.errorCode}
+          //   description: ${error.description}
+          //   errorType: ${error.errorType}
+          //   isForMainFrame: ${error.isForMainFrame}
+          //   url: ${error.url}
+          //           ''');
+          //               })
+          ..setOnNavigationRequest((NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              debugPrint('blocking navigation to ${request.url}');
+              return NavigationDecision.prevent;
+            }
+            debugPrint('allowing navigation to ${request.url}');
+            return NavigationDecision.navigate;
+          })
+          ..setOnUrlChange((UrlChange change) {
+            debugPrint('url change to ${change.url}');
+          })
+          ..setOnHttpAuthRequest((HttpAuthRequest request) {
+            openDialog(request);
           }),
-        //               ..setOnHttpError((HttpResponseError error) {
-        //                 debugPrint(
-        //                   'Error occurred on page: ${error.response?.statusCode}',
-        //                 );
-        //               })
-        //               ..setOnWebResourceError((WebResourceError error) {
-        //                 debugPrint('''
-        // Page resource error:
-        //   code: ${error.errorCode}
-        //   description: ${error.description}
-        //   errorType: ${error.errorType}
-        //   isForMainFrame: ${error.isForMainFrame}
-        //   url: ${error.url}
-        //           ''');
-        //               })
-        //               ..setOnNavigationRequest((NavigationRequest request) {
-        //                 if (request.url.startsWith('https://www.youtube.com/')) {
-        //                   debugPrint('blocking navigation to ${request.url}');
-        //                   return NavigationDecision.prevent;
-        //                 }
-        //                 debugPrint('allowing navigation to ${request.url}');
-        //                 return NavigationDecision.navigate;
-        //               })
-        //               ..setOnUrlChange((UrlChange change) {
-        //                 debugPrint('url change to ${change.url}');
-        //               })
-        //               ..setOnHttpAuthRequest((HttpAuthRequest request) {
-        //                 openDialog(request);
-        //               })
         //               ..setOnSSlAuthError((PlatformSslAuthError error) {
         //                 debugPrint(
         //                   'SSL error from ${(error as GeckoSslAuthError).host}',

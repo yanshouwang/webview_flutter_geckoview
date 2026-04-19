@@ -14,7 +14,14 @@ class WebExtensionSessionTabDelegateProxyApi(pigeonRegistrar: ProxyApiRegistrar)
             ): GeckoResult<AllowOrDeny> {
                 val result = GeckoResult<AllowOrDeny>()
                 this@WebExtensionSessionTabDelegateProxyApi.onCloseTab(this, extension, session) {
-                    it.onSuccess { allow -> result.complete(if (allow) AllowOrDeny.ALLOW else AllowOrDeny.DENY) }
+                    it.onSuccess { allowOrDeny ->
+                        result.complete(
+                            when (allowOrDeny) {
+                                dev.zeekr.webview_flutter_geckoview.AllowOrDeny.ALLOW -> AllowOrDeny.ALLOW
+                                dev.zeekr.webview_flutter_geckoview.AllowOrDeny.DENY -> AllowOrDeny.DENY
+                            }
+                        )
+                    }
                         .onFailure { error -> result.completeExceptionally(error) }
                 }
                 return result
@@ -29,7 +36,14 @@ class WebExtensionSessionTabDelegateProxyApi(pigeonRegistrar: ProxyApiRegistrar)
                 this@WebExtensionSessionTabDelegateProxyApi.onUpdateTab(
                     this, extension, session, details
                 ) {
-                    it.onSuccess { allow -> result.complete(if (allow) AllowOrDeny.ALLOW else AllowOrDeny.DENY) }
+                    it.onSuccess { allowOrDeny ->
+                        result.complete(
+                            when (allowOrDeny) {
+                                dev.zeekr.webview_flutter_geckoview.AllowOrDeny.ALLOW -> AllowOrDeny.ALLOW
+                                dev.zeekr.webview_flutter_geckoview.AllowOrDeny.DENY -> AllowOrDeny.DENY
+                            }
+                        )
+                    }
                         .onFailure { error -> result.completeExceptionally(error) }
                 }
                 return result
