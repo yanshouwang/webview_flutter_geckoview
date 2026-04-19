@@ -16,7 +16,7 @@ import kotlin.test.Test
 internal class WebviewFlutterGeckoviewPluginTest {
     @Test
     fun onMethodCall_getPlatformVersion_returnsExpectedValue() {
-        val plugin = WebviewFlutterGeckoviewPlugin()
+        val plugin = WebviewFlutterPlugin()
 
         val call = MethodCall("getPlatformVersion", null)
         val mockResult: MethodChannel.Result = Mockito.mock(MethodChannel.Result::class.java)
