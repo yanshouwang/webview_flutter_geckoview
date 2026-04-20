@@ -5790,18 +5790,19 @@ abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonPr
   /** Construct a new GeckoView instance. */
   abstract fun pigeon_defaultConstructor(): org.mozilla.geckoview.GeckoView
 
-  /** Returns the current GeckoSession attached to this view. */
-  abstract fun session(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.GeckoSession
-
   /** Retrieves the controller responsible for panning and zooming gestures. */
   abstract fun panZoomController(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.PanZoomController
 
-  /**
-   * Returns the current GeckoSession attached to this view.
-   * Unsets the current session from this instance and returns it, if any.
-   * Attach a session to this view.
-   * Set which view should be used by this GeckoView instance to display content.
-   */
+  /** Returns the current GeckoSession attached to this view. */
+  abstract fun getSession(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.GeckoSession?
+
+  /** Unsets the current session from this instance and returns it, if any. */
+  abstract fun releaseSession(pigeon_instance: org.mozilla.geckoview.GeckoView): org.mozilla.geckoview.GeckoSession?
+
+  /** Attach a session to this view. */
+  abstract fun setSession(pigeon_instance: org.mozilla.geckoview.GeckoView, session: org.mozilla.geckoview.GeckoSession)
+
+  /** Set which view should be used by this GeckoView instance to display content. */
   abstract fun setViewBackend(pigeon_instance: org.mozilla.geckoview.GeckoView, backend: Long)
 
   companion object {
@@ -5827,14 +5828,14 @@ abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonPr
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.session", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.panZoomController", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
             val pigeon_identifierArg = args[1] as Long
             val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.session(pigeon_instanceArg), pigeon_identifierArg)
+              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.panZoomController(pigeon_instanceArg), pigeon_identifierArg)
               listOf(null)
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)
@@ -5846,14 +5847,48 @@ abstract class PigeonApiGeckoView(open val pigeonRegistrar: GeckoLibraryPigeonPr
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.panZoomController", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.getSession", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
             val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
-            val pigeon_identifierArg = args[1] as Long
             val wrapped: List<Any?> = try {
-              api.pigeonRegistrar.instanceManager.addDartCreatedInstance(api.panZoomController(pigeon_instanceArg), pigeon_identifierArg)
+              listOf(api.getSession(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.releaseSession", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
+            val wrapped: List<Any?> = try {
+              listOf(api.releaseSession(pigeon_instanceArg))
+            } catch (exception: Throwable) {
+              GeckoLibraryPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.setSession", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as org.mozilla.geckoview.GeckoView
+            val sessionArg = args[1] as org.mozilla.geckoview.GeckoSession
+            val wrapped: List<Any?> = try {
+              api.setSession(pigeon_instanceArg, sessionArg)
               listOf(null)
             } catch (exception: Throwable) {
               GeckoLibraryPigeonUtils.wrapError(exception)

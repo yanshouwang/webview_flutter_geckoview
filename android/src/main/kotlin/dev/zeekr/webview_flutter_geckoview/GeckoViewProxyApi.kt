@@ -10,19 +10,6 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     PigeonApiGeckoView(pigeonRegistrar) {
     override fun pigeon_defaultConstructor(): GeckoView {
         return object : GeckoView(pigeonRegistrar.context), PlatformView {
-            init {
-                val runtime = pigeonRegistrar.runtime
-                val session = GeckoSession().apply {
-                    // Workaround for Bug 1758212
-                    this.contentDelegate = object : GeckoSession.ContentDelegate {}
-                    this.open(runtime)
-                    this.setActive(true)
-                    this.setFocused(true)
-                }
-                runtime.webExtensionController.setTabActive(session, true)
-                this.setSession(session)
-            }
-
             override fun onScrollChanged(left: Int, top: Int, oldLeft: Int, oldTop: Int) {
                 super.onScrollChanged(left, top, oldLeft, oldTop)
                 this@GeckoViewProxyApi.onScrollChanged(
@@ -36,19 +23,24 @@ class GeckoViewProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
 
             override fun getView(): View = this
 
-            override fun dispose() {
-                val session = this.releaseSession()
-                session?.close()
-            }
+            override fun dispose() {}
         }
-    }
-
-    override fun session(pigeon_instance: GeckoView): GeckoSession {
-        return pigeon_instance.session ?: throw NullPointerException("session is null")
     }
 
     override fun panZoomController(pigeon_instance: GeckoView): PanZoomController {
         return pigeon_instance.panZoomController
+    }
+
+    override fun getSession(pigeon_instance: GeckoView): GeckoSession? {
+        return pigeon_instance.session
+    }
+
+    override fun releaseSession(pigeon_instance: GeckoView): GeckoSession? {
+        return pigeon_instance.releaseSession()
+    }
+
+    override fun setSession(pigeon_instance: GeckoView, session: GeckoSession) {
+        pigeon_instance.setSession(session)
     }
 
     override fun setViewBackend(pigeon_instance: GeckoView, backend: Long) {

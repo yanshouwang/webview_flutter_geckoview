@@ -8077,9 +8077,6 @@ class GeckoView extends View {
     int oldTop,
   )? onScrollChanged;
 
-  /// Returns the current GeckoSession attached to this view.
-  late final GeckoSession session = pigeonVar_session();
-
   /// Retrieves the controller responsible for panning and zooming gestures.
   late final PanZoomController panZoomController =
       pigeonVar_panZoomController();
@@ -8167,37 +8164,6 @@ class GeckoView extends View {
     }
   }
 
-  GeckoSession pigeonVar_session() {
-    final GeckoSession pigeonVar_instance = GeckoSession.pigeon_detached(
-      pigeon_binaryMessenger: pigeon_binaryMessenger,
-      pigeon_instanceManager: pigeon_instanceManager,
-    );
-    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
-        _pigeonVar_codecGeckoView;
-    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
-    final int pigeonVar_instanceIdentifier =
-        pigeon_instanceManager.addDartCreatedInstance(pigeonVar_instance);
-    () async {
-      const pigeonVar_channelName =
-          'dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.session';
-      final pigeonVar_channel = BasicMessageChannel<Object?>(
-        pigeonVar_channelName,
-        pigeonChannelCodec,
-        binaryMessenger: pigeonVar_binaryMessenger,
-      );
-      final Future<Object?> pigeonVar_sendFuture =
-          pigeonVar_channel.send(<Object?>[this, pigeonVar_instanceIdentifier]);
-      final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
-
-      _extractReplyValueOrThrow(
-        pigeonVar_replyList,
-        pigeonVar_channelName,
-        isNullValid: true,
-      );
-    }();
-    return pigeonVar_instance;
-  }
-
   PanZoomController pigeonVar_panZoomController() {
     final PanZoomController pigeonVar_instance =
         PanZoomController.pigeon_detached(
@@ -8231,8 +8197,76 @@ class GeckoView extends View {
   }
 
   /// Returns the current GeckoSession attached to this view.
+  Future<GeckoSession?> getSession() async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoView;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.getSession';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+    return pigeonVar_replyValue as GeckoSession?;
+  }
+
   /// Unsets the current session from this instance and returns it, if any.
+  Future<GeckoSession?> releaseSession() async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoView;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.releaseSession';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+    return pigeonVar_replyValue as GeckoSession?;
+  }
+
   /// Attach a session to this view.
+  Future<void> setSession(GeckoSession session) async {
+    final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =
+        _pigeonVar_codecGeckoView;
+    final BinaryMessenger? pigeonVar_binaryMessenger = pigeon_binaryMessenger;
+    const pigeonVar_channelName =
+        'dev.flutter.pigeon.webview_flutter_geckoview.GeckoView.setSession';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture =
+        pigeonVar_channel.send(<Object?>[this, session]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
   /// Set which view should be used by this GeckoView instance to display content.
   Future<void> setViewBackend(int backend) async {
     final _PigeonInternalProxyApiBaseCodec pigeonChannelCodec =

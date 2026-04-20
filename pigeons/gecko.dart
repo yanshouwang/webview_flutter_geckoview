@@ -1234,22 +1234,18 @@ abstract class GeckoView extends View {
   late void Function(int left, int top, int oldLeft, int oldTop)?
   onScrollChanged;
 
-  /// Returns the current GeckoSession attached to this view.
-  @attached
-  late GeckoSession session;
-
   /// Retrieves the controller responsible for panning and zooming gestures.
   @attached
   late PanZoomController panZoomController;
 
   /// Returns the current GeckoSession attached to this view.
-  // GeckoSession? getSession();
+  GeckoSession? getSession();
 
   /// Unsets the current session from this instance and returns it, if any.
-  // GeckoSession? releaseSession();
+  GeckoSession? releaseSession();
 
   /// Attach a session to this view.
-  // void setSession(GeckoSession session);
+  void setSession(GeckoSession session);
 
   /// Set which view should be used by this GeckoView instance to display content.
   void setViewBackend(int backend);

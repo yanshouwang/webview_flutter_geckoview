@@ -72,11 +72,11 @@ class GeckoWebViewController extends PlatformWebViewController {
   final gecko.GeckoRuntime _runtime;
   final GeckoWebExtensionPort _webExtensionPort;
   final gecko.FlutterAssetManager _flutterAssetManager;
-  final gecko.GeckoView _webView;
+  final gecko.GeckoView _view;
+  final gecko.GeckoSession _session;
   final Map<String, GeckoJavaScriptChannelParams> _javaScriptChannelParams;
 
   late final _webExecutor = gecko.GeckoWebExecutor(runtime: _runtime);
-  late final _storageController = _runtime.storageController;
 
   late final _sessionContentDelegate = gecko.GeckoSessionContentDelegate(
     onTitleChange: withWeakReferenceTo(
@@ -330,7 +330,8 @@ class GeckoWebViewController extends PlatformWebViewController {
     : _runtime = gecko.GeckoRuntime.instance,
       _webExtensionPort = GeckoWebExtensionPort(),
       _flutterAssetManager = gecko.FlutterAssetManager.instance,
-      _webView = gecko.GeckoView(),
+      _view = gecko.GeckoView(),
+      _session = gecko.GeckoSession(),
       _javaScriptChannelParams = {},
       _scrollPosition = Offset.zero,
       super.implementation(
@@ -340,12 +341,18 @@ class GeckoWebViewController extends PlatformWebViewController {
                 params,
               ),
       ) {
-    _webView.session.setContentDelegate(_sessionContentDelegate);
-    _webView.session.setNavigationDelegate(_sessionNavigationDelegate);
-    _webView.session.setPermissionDelegate(_sessionPermissionDelegate);
-    _webView.session.setProgressDelegate(_sessionProgressDelegate);
-    _webView.session.setPromptDelegate(_sessionPromptDelegate);
-    _webView.session.settings.setAllowJavascript(true);
+    _session.settings.setAllowJavascript(true);
+    // Workaround for Bug 1758212
+    _session.setContentDelegate(_sessionContentDelegate);
+    _session.setNavigationDelegate(_sessionNavigationDelegate);
+    _session.setPermissionDelegate(_sessionPermissionDelegate);
+    _session.setProgressDelegate(_sessionProgressDelegate);
+    _session.setPromptDelegate(_sessionPromptDelegate);
+    _session.open(_runtime);
+    _session.setActive(true);
+    _session.setFocused(true);
+    _runtime.webExtensionController.setTabActive(_session, true);
+    _view.setSession(_session);
   }
 
   @override
@@ -362,7 +369,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         final request = gecko.GeckoSessionLoader()
           ..uri(params.absoluteFilePath)
           ..additionalHeaders(params.headers);
-        await _webView.session.load(request);
+        await _session.load(request);
         break;
       default:
         await loadFileWithParams(
@@ -384,7 +391,7 @@ class GeckoWebViewController extends PlatformWebViewController {
       throw ArgumentError('Asset for key "$key" not found.', 'key');
     }
 
-    return _webView.session.loadUri('resource://android/assets/$assetFilePath');
+    return _session.loadUri('resource://android/assets/$assetFilePath');
   }
 
   @override
@@ -393,7 +400,7 @@ class GeckoWebViewController extends PlatformWebViewController {
     if (baseUrl != null) {
       request.uri(baseUrl);
     }
-    return _webView.session.load(request);
+    return _session.load(request);
   }
 
   @override
@@ -406,7 +413,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         final loader = gecko.GeckoSessionLoader()
           ..uri(params.uri.toString())
           ..additionalHeaders(params.headers);
-        return _webView.session.load(loader);
+        return _session.load(loader);
       case LoadRequestMethod.post:
         final builder = gecko.WebRequestBuilder(uri: params.uri.toString())
           ..method(params.method.name.toUpperCase())
@@ -424,7 +431,7 @@ class GeckoWebViewController extends PlatformWebViewController {
         if (bytes != null) {
           loader.dataBytes(bytes, mimeType);
         }
-        return _webView.session.load(loader);
+        return _session.load(loader);
     }
     // The enum comes from a different package, which could get a new value at
     // any time, so a fallback case is necessary. Since there is no reasonable
@@ -449,21 +456,22 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<bool> canGoForward() => Future.value(_canGoForward);
 
   @override
-  Future<void> goBack() => _webView.session.goBack();
+  Future<void> goBack() => _session.goBack();
 
   @override
-  Future<void> goForward() => _webView.session.goForward();
+  Future<void> goForward() => _session.goForward();
 
   @override
-  Future<void> reload() => _webView.session.reload();
+  Future<void> reload() => _session.reload();
 
   @override
-  Future<void> clearCache() =>
-      _storageController.clearData(StorageControllerClearFlags.allCaches);
+  Future<void> clearCache() => _runtime.storageController.clearData(
+    StorageControllerClearFlags.allCaches,
+  );
 
   @override
   Future<void> clearLocalStorage() =>
-      _storageController.clearData(StorageControllerClearFlags.all);
+      _runtime.storageController.clearData(StorageControllerClearFlags.all);
 
   @override
   Future<void> setPlatformNavigationDelegate(
@@ -530,14 +538,14 @@ class GeckoWebViewController extends PlatformWebViewController {
   Future<void> scrollTo(int x, int y) {
     final width = gecko.ScreenLength.fromPixels(value: x.toDouble());
     final height = gecko.ScreenLength.fromPixels(value: y.toDouble());
-    return _webView.panZoomController.scrollTo(width, height, null);
+    return _view.panZoomController.scrollTo(width, height, null);
   }
 
   @override
   Future<void> scrollBy(int x, int y) {
     final width = gecko.ScreenLength.fromPixels(value: x.toDouble());
     final height = gecko.ScreenLength.fromPixels(value: y.toDouble());
-    return _webView.panZoomController.scrollBy(width, height, null);
+    return _view.panZoomController.scrollBy(width, height, null);
   }
 
   @override
@@ -551,20 +559,18 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<void> setBackgroundColor(Color color) =>
-      _webView.setBackgroundColor(color.toARGB32());
+      _view.setBackgroundColor(color.toARGB32());
 
   @override
-  Future<void> setJavaScriptMode(JavaScriptMode javaScriptMode) => _webView
-      .session
-      .settings
-      .setAllowJavascript(javaScriptMode == .unrestricted);
+  Future<void> setJavaScriptMode(JavaScriptMode javaScriptMode) =>
+      _session.settings.setAllowJavascript(javaScriptMode == .unrestricted);
 
   @override
-  Future<String?> getUserAgent() => _webView.session.getUserAgent();
+  Future<String?> getUserAgent() => _session.getUserAgent();
 
   @override
   Future<void> setUserAgent(String? userAgent) =>
-      _webView.session.settings.setUserAgentOverride(userAgent);
+      _session.settings.setUserAgentOverride(userAgent);
 
   @override
   Future<void> setOnPlatformPermissionRequest(
@@ -580,9 +586,9 @@ class GeckoWebViewController extends PlatformWebViewController {
   ) async {
     _onScrollPositionChange = onScrollPositionChange;
     if (onScrollPositionChange != null) {
-      return _webView.session.setScrollDelegate(_sessionScrollDelegate);
+      return _session.setScrollDelegate(_sessionScrollDelegate);
     } else {
-      return _webView.session.setScrollDelegate(null);
+      return _session.setScrollDelegate(null);
     }
   }
 
@@ -620,24 +626,29 @@ class GeckoWebViewController extends PlatformWebViewController {
 
   @override
   Future<void> setVerticalScrollBarEnabled(bool enabled) =>
-      _webView.setVerticalScrollBarEnabled(enabled);
+      _view.setVerticalScrollBarEnabled(enabled);
 
   @override
   Future<void> setHorizontalScrollBarEnabled(bool enabled) =>
-      _webView.setHorizontalScrollBarEnabled(enabled);
+      _view.setHorizontalScrollBarEnabled(enabled);
 
   @override
   bool supportsSetScrollBarsEnabled() => true;
 
   @override
   Future<void> setOverScrollMode(WebViewOverScrollMode mode) => switch (mode) {
-    .always => _webView.setOverScrollMode(.always),
-    .ifContentScrolls => _webView.setOverScrollMode(.ifContentScrolls),
-    .never => _webView.setOverScrollMode(.never),
+    .always => _view.setOverScrollMode(.always),
+    .ifContentScrolls => _view.setOverScrollMode(.ifContentScrolls),
+    .never => _view.setOverScrollMode(.never),
     // This prevents future additions from causing a breaking change.
     // ignore: unreachable_switch_case
     _ => throw UnsupportedError('Android does not support $mode.'),
   };
+
+  Future<void> dispose() async {
+    await _view.releaseSession();
+    await _session.close();
+  }
 }
 
 /// Object specifying creation parameters for creating a [GeckoWebViewWidget].
@@ -753,7 +764,7 @@ class GeckoWebViewWidget extends PlatformWebViewWidget {
             displayWithHybridComposition:
                 _geckoParams.displayWithHybridComposition,
             platformViewsServiceProxy: _geckoParams.platformViewsServiceProxy,
-            view: (_geckoParams.controller as GeckoWebViewController)._webView,
+            view: (_geckoParams.controller as GeckoWebViewController)._view,
             layoutDirection: _geckoParams.layoutDirection,
           )
           ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
