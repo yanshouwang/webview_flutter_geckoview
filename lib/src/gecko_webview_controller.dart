@@ -645,6 +645,8 @@ class GeckoWebViewController extends PlatformWebViewController {
     _ => throw UnsupportedError('Android does not support $mode.'),
   };
 
+  // TODO(yanshouwang): Make this override once the method is added to the platform interface.
+  // See https://github.com/flutter/flutter/issues/119616
   Future<void> dispose() async {
     await _view.releaseSession();
     await _session.close();
