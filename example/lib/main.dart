@@ -276,6 +276,7 @@ class _WebViewExampleState extends State<WebViewExample> {
   @override
   void dispose() {
     if (_controller is GeckoWebViewController) _controller.dispose();
+    _progress.dispose();
     super.dispose();
   }
 
