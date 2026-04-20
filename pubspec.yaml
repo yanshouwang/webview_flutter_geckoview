@@ -1,6 +1,6 @@
 name: webview_flutter_geckoview
 description: A Flutter plugin that provides a WebView widget based on Mozilla's GeckoView control.
-version: 0.0.1+1
+version: 0.0.1+2
 repository: https://github.com/yanshouwang/webview_flutter_geckoview
 topics:
   - html
