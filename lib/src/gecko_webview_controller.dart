@@ -110,7 +110,7 @@ class GeckoWebViewController extends PlatformWebViewController {
       (weakThis) => (_, session, request) async {
         final onNavigationRequest =
             weakThis.target?._currentNavigationDelegate?._onNavigationRequest;
-        if (onNavigationRequest == null) return .deny;
+        if (onNavigationRequest == null) return .allow;
         final decision = await onNavigationRequest(
           NavigationRequest(url: request.uri, isMainFrame: true),
         );
