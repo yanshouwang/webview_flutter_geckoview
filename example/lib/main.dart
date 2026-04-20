@@ -151,6 +151,7 @@ class WebViewExample extends StatefulWidget {
 
 class _WebViewExampleState extends State<WebViewExample> {
   late final PlatformWebViewController _controller;
+  late final ValueNotifier<int> _progress;
 
   @override
   void initState() {
@@ -168,14 +169,15 @@ class _WebViewExampleState extends State<WebViewExample> {
         PlatformNavigationDelegate(
             const PlatformNavigationDelegateCreationParams(),
           )
-          ..setOnProgress((int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
-          })
           ..setOnPageStarted((String url) {
             debugPrint('Page started loading: $url');
           })
           ..setOnPageFinished((String url) {
             debugPrint('Page finished loading: $url');
+          })
+          ..setOnProgress((int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
+            _progress.value = progress;
           })
           //               ..setOnHttpError((HttpResponseError error) {
           //                 debugPrint(
@@ -229,6 +231,7 @@ class _WebViewExampleState extends State<WebViewExample> {
         );
         request.grant();
       });
+    _progress = ValueNotifier(0);
   }
 
   @override
@@ -246,11 +249,34 @@ class _WebViewExampleState extends State<WebViewExample> {
           ),
         ],
       ),
-      body: PlatformWebViewWidget(
-        PlatformWebViewWidgetCreationParams(controller: _controller),
-      ).build(context),
+      body: ValueListenableBuilder(
+        valueListenable: _progress,
+        builder: (context, progress, child) {
+          final webViewWidget = ArgumentError.checkNotNull(child);
+          return progress > 0 && progress < 100
+              ? Stack(
+                  children: [
+                    webViewWidget,
+                    LinearProgressIndicator(value: progress / 100),
+                  ],
+                )
+              : webViewWidget;
+        },
+        child: PlatformWebViewWidget(
+          PlatformWebViewWidgetCreationParams(
+            // key: GlobalKey(),
+            controller: _controller,
+          ),
+        ).build(context),
+      ),
       floatingActionButton: favoriteButton(),
     );
+  }
+
+  @override
+  void dispose() {
+    if (_controller is GeckoWebViewController) _controller.dispose();
+    super.dispose();
   }
 
   Widget favoriteButton() {
