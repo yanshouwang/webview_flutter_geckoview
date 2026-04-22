@@ -264,7 +264,7 @@ class _WebViewExampleState extends State<WebViewExample> {
         },
         child: PlatformWebViewWidget(
           PlatformWebViewWidgetCreationParams(
-            // key: GlobalKey(),
+            key: GlobalKey(),
             controller: _controller,
           ),
         ).build(context),

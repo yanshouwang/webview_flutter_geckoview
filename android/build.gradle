@@ -4,6 +4,7 @@ version = "1.0-SNAPSHOT"
 buildscript {
     ext.kotlin_version = "2.2.20"
     ext.geckoview_version = "144.0.20251027123126"
+    ext.errorpages_version = "143.0.4"
 
     repositories {
         google()
@@ -51,6 +52,7 @@ android {
 
     dependencies {
         implementation("org.mozilla.geckoview:geckoview:$geckoview_version")
+        implementation("org.mozilla.components:browser-errorpages:$errorpages_version")
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")
     }
